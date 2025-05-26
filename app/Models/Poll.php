@@ -8,6 +8,11 @@ class Poll extends Model
 {
     protected $fillable = [
         'title',
-        'voter_identifier'
+        'voter_identifier',
     ];
+
+    public function options()
+    {
+        return $this->hasMany(Option::class);
+    }
 }
