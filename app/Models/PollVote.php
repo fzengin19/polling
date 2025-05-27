@@ -10,6 +10,7 @@ class PollVote extends Model
         'poll_id',
         'option_id',
         'voter_identifier',
+        'user_id'
     ];
 
     public function poll()
@@ -20,5 +21,10 @@ class PollVote extends Model
     public function option()
     {
         return $this->belongsTo(Option::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }
