@@ -9,6 +9,17 @@ class Poll extends Model
     protected $fillable = [
         'title',
         'voter_identifier',
+        'max_votes_per_user',
+        'starts_at',
+        'ends_at',
+        'is_public'
+    ];
+
+    protected $casts = [
+        'max_votes_per_user' => 'integer',
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'is_public' => 'boolean',
     ];
 
     public function options()
