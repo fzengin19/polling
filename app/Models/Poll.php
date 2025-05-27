@@ -8,7 +8,7 @@ class Poll extends Model
 {
     protected $fillable = [
         'title',
-        'voter_identifier',
+        'user_id',
         'max_votes_per_user',
         'starts_at',
         'ends_at',
@@ -25,6 +25,11 @@ class Poll extends Model
     public function options()
     {
         return $this->hasMany(Option::class);
+    }
+
+    public function user()
+    {
+        return $this->hasMany(User::class);
     }
 
     public function votes()
