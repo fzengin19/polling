@@ -10,10 +10,12 @@ class Option extends Model
         'poll_id',
         'type',
         'value',
-        'votes_count'
+        'votes_count',
+        'order'
     ];
     protected $casts = [
         'votes_count' => 'integer',
+        'order' => 'integer'
     ];
 
     public function poll()
