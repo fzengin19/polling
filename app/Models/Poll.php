@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Poll extends Model
 {
@@ -12,7 +13,8 @@ class Poll extends Model
         'max_votes_per_user',
         'starts_at',
         'ends_at',
-        'is_public'
+        'is_public',
+        'uuid',  
     ];
 
     protected $casts = [
@@ -21,6 +23,19 @@ class Poll extends Model
         'ends_at' => 'datetime',
         'is_public' => 'boolean',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($poll) {
+            if (empty($poll->uuid)) {
+                $poll->uuid = Str::random(32);
+            }
+        });
+    }
+
+
 
     public function options()
     {
