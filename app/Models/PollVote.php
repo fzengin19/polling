@@ -9,7 +9,7 @@ class PollVote extends Model
     protected $fillable = [
         'poll_id',
         'option_id',
-        'voter_identifier',
+        'anon_id',
         'user_id'
     ];
 

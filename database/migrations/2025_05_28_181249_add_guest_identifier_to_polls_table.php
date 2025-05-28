@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('polls', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('polls', function (Blueprint $table) {
+            $table->string('anon_id',32)->nullable()->after('user_id');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('polls');
+        Schema::table('polls', function (Blueprint $table) {
+            $table->dropColumn('anon_id');
+        });
     }
 };

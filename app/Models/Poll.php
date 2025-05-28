@@ -15,6 +15,7 @@ class Poll extends Model
         'ends_at',
         'is_public',
         'uuid',  
+        'anon_id',
     ];
 
     protected $casts = [

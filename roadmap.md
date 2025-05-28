@@ -10,7 +10,7 @@ Her aşamayı tamamladikça ✅ işaretle, detayları o aşamayı geliştirirken
 
 ## 2. Temel Veri Modeli  
 - [x] `Poll`, `Option` ve `PollVote` tablolarının migration’larını tanımla  
-- [ ] UUID ve temel alanlar (title, starts_at, ends_at vb.) ekle  
+- [x] UUID ve temel alanlar (title, starts_at, ends_at vb.) ekle  
 
 ## 3. API & Controller Yapısı  
 - [ ] Poll yönetimi (oluşturma, listeme) endpoint’lerini planla  

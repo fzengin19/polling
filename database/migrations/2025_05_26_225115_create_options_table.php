@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('options', function (Blueprint $table) {
             $table->id();
             $table->foreignId('poll_id')->constrained('polls')->onDelete('cascade');
-            $table->string('type')->default('text'); // 'text', 'image', 'video' gibi türler olabilir
-            $table->text('value'); // Seçenek içeriği (metin, url, vb.)
+            $table->string('type')->default('text'); 
+            $table->text('value'); 
             $table->integer('votes_count')->default(0);
             $table->timestamps();
         });

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('poll_votes', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->after('option_id');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->after('id');
         });
     }
 

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('poll_id')->constrained('polls')->onDelete('cascade');
             $table->foreignId('option_id')->constrained('options')->onDelete('cascade');
-            $table->string('voter_identifier');
+            $table->string('anon_id',32)->nullable();
             $table->timestamps();
 
-            $table->unique(['poll_id', 'voter_identifier']);
+            $table->unique(['poll_id', 'anon_id']);
         });
     }
 
