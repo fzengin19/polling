@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PollVote\StorePollVoteRequest;
 use App\Models\PollVote;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class PollVoteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePollVoteRequest $request)
     {
         $option = PollVote::create($request->validated());
         return response()->json($option, 201);
