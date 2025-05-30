@@ -24,4 +24,5 @@ class Option extends Model
     {
         return $this->belongsTo(Poll::class);
     }
+     
 }
