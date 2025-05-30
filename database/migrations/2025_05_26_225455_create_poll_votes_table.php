@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('anon_id',32)->nullable();
             $table->timestamps();
 
-            $table->unique(['poll_id', 'anon_id']);
+            $table->unique(['poll_id', 'anon_id', 'option_id']);
         });
     }
 

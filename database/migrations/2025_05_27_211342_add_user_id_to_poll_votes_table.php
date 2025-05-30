@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::table('poll_votes', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->after('id');
+
+            $table->unique(['poll_id', 'user_id']);
         });
     }
 
