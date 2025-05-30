@@ -13,5 +13,4 @@ class PollVoteRepository extends BaseRepository implements PollVoteRepositoryInt
         $this->model = $model;
     }
 
-
 }
