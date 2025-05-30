@@ -25,7 +25,6 @@ class StoreOptionRequest extends FormRequest
             'poll_id' => ['required', 'exists:polls,id'],
             'type' => ['required', 'in:text,image,video'],
             'value' => ['required', 'string'],
-            'votes_count' => ['sometimes', 'integer', 'min:0'],
             'order' => ['sometimes', 'integer', 'min:0'],
         ];
     }

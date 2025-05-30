@@ -23,12 +23,10 @@ class StorePollRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'user_id' => ['sometimes', 'exists:users,id', 'required_without:anon_id'],
             'max_votes_per_user' => 'nullable|integer|min:1',
             'starts_at' => 'nullable|date',
             'ends_at' => 'nullable|date|after_or_equal:starts_at',
             'is_public' => 'boolean',
-            'anon_id' => ['sometimes', 'string', 'required_without:user_id'],
         ];
     }
 }

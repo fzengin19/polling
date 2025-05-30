@@ -23,12 +23,10 @@ class UpdatePollRequest extends FormRequest
     {
         return [
             'title' => 'sometimes|string|max:255',
-            'user_id' => ['sometimes', 'exists:users,id', 'required_without:anon_id'],
             'max_votes_per_user' => 'sometimes|integer|min:1',
             'starts_at' => 'sometimes|date',
             'ends_at' => 'sometimes|date|after_or_equal:starts_at',
             'is_public' => 'sometimes|boolean',
-            'anon_id' => ['sometimes', 'string', 'required_without:user_id'],
         ];
     }
 }
