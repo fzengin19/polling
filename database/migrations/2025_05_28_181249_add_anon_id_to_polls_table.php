@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('polls', function (Blueprint $table) {
-            $table->string('anon_id',32)->nullable()->after('user_id');
+            $table->string('anon_id',36)->nullable()->after('user_id');
         });
     }
 

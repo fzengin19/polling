@@ -9,7 +9,7 @@ class AddUuidToPollsTable extends Migration
     public function up()
     {
         Schema::table('polls', function (Blueprint $table) {
-            $table->string('uuid', 32)->unique()->after('id');
+            $table->string('uuid', 36)->unique()->after('id');
         });
     }
 

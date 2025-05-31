@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('poll_id')->constrained('polls')->onDelete('cascade');
             $table->foreignId('option_id')->constrained('options')->onDelete('cascade');
-            $table->string('anon_id',32)->nullable();
+            $table->string('anon_id',36)->nullable();
             $table->timestamps();
 
             $table->unique(['poll_id', 'anon_id', 'option_id']);
