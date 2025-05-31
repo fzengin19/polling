@@ -7,5 +7,5 @@ use App\Models\Poll;
 
 interface PollRepositoryInterface extends BaseRepositoryInterface
 {
-    public function findByUuid(string $uuid): ?Poll;
+    public function findByUuid(string $uuid, array $with = []): ?Poll;
 }

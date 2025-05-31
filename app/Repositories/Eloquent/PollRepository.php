@@ -13,8 +13,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $this->model = $model;
     }
 
-    public function findByUuid(string $uuid): ?Poll
+    public function findByUuid(string $uuid, array $with = []): ?Poll
     {
-        return $this->model->where('uuid', $uuid)->first();
+        return $this->model->where('uuid', $uuid)->with($with)->first();
     }
 }

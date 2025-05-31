@@ -7,5 +7,5 @@ use App\Models\PollVote;
 
 interface PollVoteRepositoryInterface extends BaseRepositoryInterface
 {
-    public function getByPoolId(int $id);
+    public function getByPoolId(int $id, array $with = []);
 }
