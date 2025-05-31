@@ -4,11 +4,11 @@ namespace App\Core;
 
 interface BaseRepositoryInterface
 {
-    public function all();
+    public function all(array $with = []);
 
-    public function paginate(int $perPage = 15);
+    public function paginate(int $perPage = 15, array $with = []);
 
-    public function find(int $id);
+    public function find(int $id, array $with = []);
 
     public function create(array $data);
 

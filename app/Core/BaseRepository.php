@@ -8,19 +8,19 @@ abstract class BaseRepository implements BaseRepositoryInterface
 {
     protected Model $model;
 
-    public function all()
+    public function all(array $with = [])
     {
-        return $this->model->all();
+        return $this->model->with($with)->get();
     }
 
-    public function paginate(int $perPage = 15)
+    public function paginate(int $perPage = 15, array $with = [])
     {
-        return $this->model->paginate($perPage);
+        return $this->model->with($with)->paginate($perPage);
     }
 
-    public function find(int $id)
+    public function find(int $id, array $with = [])
     {
-        return $this->model->find($id);
+        return $this->model->with($with)->find($id);
     }
 
     public function create(array $data)
