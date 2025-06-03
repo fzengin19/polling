@@ -18,4 +18,9 @@ class PollVoteRepository extends BaseRepository implements PollVoteRepositoryInt
         return $this->model->where('pool_id', $poolId)->with($with)->get();
     }
 
+   public function getByQuestionId(int $questionId, array $with = [])
+    {
+        return $this->model->where('question_id', $questionId)->with($with)->get();
+    }
+
 }
