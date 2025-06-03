@@ -24,7 +24,7 @@ class PollFactory extends Factory
             'starts_at' => $this->faker->dateTimeBetween('-1 week', '+1 week'),
             'ends_at' => $this->faker->dateTimeBetween('+1 week', '+2 weeks'),
             'is_public' => $this->faker->boolean,
-            'uuid' => Str::random(32),
+            'uuid' => Str::random(36),
             'anon_id' => $this->faker->optional()->word,
         ];
     }

@@ -33,7 +33,7 @@ class Poll extends Model
 
         static::creating(function ($poll) {
             if (empty($poll->uuid)) {
-                $poll->uuid = Str::random(32);
+                $poll->uuid = Str::random(36);
             }
         });
     }
