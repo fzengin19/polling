@@ -11,6 +11,7 @@ class PollVote extends Model
     protected $fillable = [
         'poll_id',
         'option_id',
+        'question_id',
         'anon_id',
         'user_id'
     ];
@@ -23,6 +24,11 @@ class PollVote extends Model
     public function option()
     {
         return $this->belongsTo(Option::class);
+    }
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
     }
 
     public function users()

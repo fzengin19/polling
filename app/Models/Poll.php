@@ -16,7 +16,7 @@ class Poll extends Model
         'starts_at',
         'ends_at',
         'is_public',
-        'uuid',  
+        'uuid',
         'anon_id',
     ];
 
@@ -38,8 +38,6 @@ class Poll extends Model
         });
     }
 
-
-
     public function options()
     {
         return $this->hasMany(Option::class);
@@ -53,5 +51,10 @@ class Poll extends Model
     public function votes()
     {
         return $this->hasMany(PollVote::class);
+    }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
     }
 }
