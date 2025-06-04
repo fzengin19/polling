@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 
-class oı
+class EnsureAnonIdMiddleware
 {
     /**
      * Handle an incoming request.
