@@ -1,0 +1,13 @@
+[90m= [39m[34;4mApp\Models\Poll[39;24m {#6249
+    [34mtitle[39m: "[32mİlk Anketim[39m",
+    [34mmax_votes_per_user[39m: [35m1[39m,
+    [34mstarts_at[39m: "[32m2025-06-15 00:14:19[39m",
+    [34mends_at[39m: "[32m2025-06-22 00:14:19[39m",
+    [34mis_public[39m: [36mtrue[39m,
+    [34muser_id[39m: [35m1[39m,
+    [34muuid[39m: "[32m1aa2fa26-f8f2-4d79-92f7-6860bacc9755[39m",
+    [34mupdated_at[39m: "[32m2025-06-15 00:14:19[39m",
+    [34mcreated_at[39m: "[32m2025-06-15 00:14:19[39m",
+    [34mid[39m: [35m1[39m,
+  }
+
