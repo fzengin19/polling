@@ -9,7 +9,7 @@ Her aşamayı tamamladikça ✅ işaretle, detayları o aşamayı geliştirirken
 - [x] Geliştirme ortamını (Docker veya yerel) hazırla  
 
 ## 2. Temel Veri Modeli  
-- [x] `Poll`, `Option` ve `PollVote` tablolarının migration’larını tanımla  
+- [x] `Poll`, `Option` ve `Vote` tablolarının migration’larını tanımla  
 - [x] UUID ve temel alanlar (title, starts_at, ends_at vb.) ekle  
 
 ## 3. API & Controller Yapısı  
