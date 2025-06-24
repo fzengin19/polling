@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\SurveyController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\MediaController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -74,3 +75,12 @@ Route::prefix('roles')->middleware('auth:sanctum')->group(function () {
     Route::get('/users/{userId}/has/{roleName}', [RoleController::class, 'userHasRole']);
     Route::get('/surveys/{surveyId}/has/{roleName}', [RoleController::class, 'surveyHasRole']);
 });
+
+// Media routes
+Route::prefix('media')->middleware('auth:sanctum')->group(function () {
+    Route::post('/upload', [MediaController::class, 'upload']);
+    Route::delete('/{mediaId}', [MediaController::class, 'delete']);
+    Route::put('/{mediaId}/metadata', [MediaController::class, 'updateMetadata']);
+});
+
+Route::get('/questions/{questionId}/media', [MediaController::class, 'getQuestionMedia']);

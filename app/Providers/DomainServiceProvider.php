@@ -10,6 +10,12 @@ use App\Services\Abstract\SurveyServiceInterface;
 use App\Services\Concrete\SurveyService;
 use App\Services\Abstract\SurveyPageServiceInterface;
 use App\Services\Concrete\SurveyPageService;
+use App\Services\Abstract\QuestionServiceInterface;
+use App\Services\Concrete\QuestionService;
+use App\Services\Abstract\RoleServiceInterface;
+use App\Services\Concrete\RoleService;
+use App\Services\Abstract\MediaServiceInterface;
+use App\Services\Concrete\MediaService;
 use Illuminate\Support\ServiceProvider;
 
 class DomainServiceProvider extends ServiceProvider
@@ -23,10 +29,9 @@ class DomainServiceProvider extends ServiceProvider
         $this->app->bind(TemplateServiceInterface::class, TemplateService::class);
         $this->app->bind(SurveyServiceInterface::class, SurveyService::class);
         $this->app->bind(SurveyPageServiceInterface::class, SurveyPageService::class);
-        $this->app->bind(
-            \App\Services\Abstract\QuestionServiceInterface::class,
-            \App\Services\Concrete\QuestionService::class
-        );
+        $this->app->bind(QuestionServiceInterface::class, QuestionService::class);
+        $this->app->bind(RoleServiceInterface::class, RoleService::class);
+        $this->app->bind(MediaServiceInterface::class, MediaService::class);
     }
 
     /**

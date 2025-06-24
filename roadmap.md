@@ -101,8 +101,8 @@
 - [x] role_has_permissions
 
 ### 📸 Media Tabloları (spatie/laravel-medialibrary)
-- [ ] media
-- [ ] model_has_media
+- [x] media
+- [x] model_has_media
 
 ### 📜 Activity Log Tabloları (spatie/laravel-activitylog)
 - [ ] activity_log
@@ -129,10 +129,10 @@
   - [x] Rol atama/kaldırma API'leri
   - [x] Middleware ile erişim kontrolü
 
-- [ ] **Adım 3: Medya Yönetimi**
-  - [ ] spatie/laravel-medialibrary kurulumu
-  - [ ] Question modeline medya desteği eklenmesi
-  - [ ] Medya yükleme/silme API endpointleri
+- [x] **Adım 3: Medya Yönetimi** ✅ TAMAMLANDI
+  - [x] spatie/laravel-medialibrary kurulumu
+  - [x] Question modeline medya desteği eklenmesi
+  - [x] Medya yükleme/silme API endpointleri
 
 - [ ] **Adım 4: Audit Log Sistemi**
   - [ ] spatie/laravel-activitylog kurulumu
