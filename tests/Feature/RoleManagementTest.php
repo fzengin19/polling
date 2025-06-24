@@ -201,7 +201,7 @@ class RoleManagementTest extends TestCase
         $response = $this->actingAs($this->admin, 'sanctum')
             ->postJson('/api/roles/assign', $data);
         
-        $response->assertStatus(422);
+        $response->assertStatus(404);
     }
 
     public function test_assign_role_validates_user_exists(): void
@@ -214,7 +214,7 @@ class RoleManagementTest extends TestCase
         $response = $this->actingAs($this->admin, 'sanctum')
             ->postJson('/api/roles/assign', $data);
         
-        $response->assertStatus(422);
+        $response->assertStatus(404);
     }
 
     public function test_assign_role_validates_survey_exists(): void
@@ -227,7 +227,7 @@ class RoleManagementTest extends TestCase
         $response = $this->actingAs($this->admin, 'sanctum')
             ->postJson('/api/roles/assign', $data);
         
-        $response->assertStatus(422);
+        $response->assertStatus(404);
     }
 
     public function test_returns_404_for_nonexistent_user(): void

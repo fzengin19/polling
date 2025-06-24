@@ -22,9 +22,9 @@ class CreateSurveyPageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'survey_id' => 'required|exists:surveys,id',
+            'survey_id' => 'required|integer',
             'title' => 'nullable|string|max:255',
-            'order_index' => 'nullable|integer|min:0',
+            'order_index' => 'integer|min:0',
         ];
     }
 

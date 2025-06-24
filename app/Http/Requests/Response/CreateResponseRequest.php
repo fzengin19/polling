@@ -22,7 +22,7 @@ class CreateResponseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'survey_id' => 'required|integer|exists:surveys,id',
+            'survey_id' => 'required|integer',
             'metadata' => 'sometimes|array',
         ];
     }

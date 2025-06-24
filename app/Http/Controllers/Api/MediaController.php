@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Media\UploadMediaRequest;
+use App\Http\Requests\Media\UpdateMediaMetadataRequest;
 use App\Dtos\MediaDto;
 use App\Services\Abstract\MediaServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class MediaController extends Controller
 {
@@ -37,14 +37,9 @@ class MediaController extends Controller
         return $result->toResponse();
     }
 
-    public function updateMetadata(int $mediaId, Request $request): JsonResponse
+    public function updateMetadata(int $mediaId, UpdateMediaMetadataRequest $request): JsonResponse
     {
-        $request->validate([
-            'alt_text' => 'sometimes|string|max:255',
-            'caption' => 'sometimes|string|max:500',
-        ]);
-
-        $result = $this->mediaService->updateMediaMetadata($mediaId, $request->only(['alt_text', 'caption']));
+        $result = $this->mediaService->updateMediaMetadata($mediaId, $request->validated());
         
         return $result->toResponse();
     }

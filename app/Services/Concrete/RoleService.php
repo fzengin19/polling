@@ -20,7 +20,11 @@ class RoleService implements RoleServiceInterface
     public function assignRole(RoleAssignmentDto $dto): ServiceResponse
     {
         try {
-            DB::beginTransaction();
+            // Check if role exists
+            $role = Role::where('name', $dto->roleName)->first();
+            if (!$role) {
+                return new ServiceResponse(['error' => 'Role not found'], $this->resourceMap, 404);
+            }
 
             if ($dto->userId) {
                 $user = User::find($dto->userId);
@@ -38,11 +42,9 @@ class RoleService implements RoleServiceInterface
                 $survey->assignRole($dto->roleName);
             }
 
-            DB::commit();
             return new ServiceResponse(['message' => 'Role assigned successfully'], $this->resourceMap, 200);
 
         } catch (\Exception $e) {
-            DB::rollBack();
             return new ServiceResponse(['error' => $e->getMessage()], $this->resourceMap, 500);
         }
     }
@@ -50,7 +52,11 @@ class RoleService implements RoleServiceInterface
     public function removeRole(RoleAssignmentDto $dto): ServiceResponse
     {
         try {
-            DB::beginTransaction();
+            // Check if role exists
+            $role = Role::where('name', $dto->roleName)->first();
+            if (!$role) {
+                return new ServiceResponse(['error' => 'Role not found'], $this->resourceMap, 404);
+            }
 
             if ($dto->userId) {
                 $user = User::find($dto->userId);
@@ -68,11 +74,9 @@ class RoleService implements RoleServiceInterface
                 $survey->removeRole($dto->roleName);
             }
 
-            DB::commit();
             return new ServiceResponse(['message' => 'Role removed successfully'], $this->resourceMap, 200);
 
         } catch (\Exception $e) {
-            DB::rollBack();
             return new ServiceResponse(['error' => $e->getMessage()], $this->resourceMap, 500);
         }
     }

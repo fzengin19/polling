@@ -23,10 +23,10 @@ class CreateSurveyRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
-            'status' => 'sometimes|in:draft,active,archived',
-            'template_id' => 'nullable|exists:templates,id',
-            'template_version_id' => 'nullable|exists:template_versions,id',
+            'description' => 'nullable|string',
+            'status' => 'required|in:draft,active,archived',
+            'template_id' => 'nullable|integer',
+            'template_version_id' => 'nullable|integer',
             'settings' => 'nullable|array',
             'expires_at' => 'nullable|date|after:now',
             'max_responses' => 'nullable|integer|min:1',

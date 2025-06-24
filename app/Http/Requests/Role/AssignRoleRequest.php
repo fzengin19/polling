@@ -22,9 +22,9 @@ class AssignRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_name' => 'required|string|exists:roles,name',
-            'user_id' => 'nullable|integer|exists:users,id',
-            'survey_id' => 'nullable|integer|exists:surveys,id',
+            'role_name' => 'required|string',
+            'user_id' => 'nullable|integer',
+            'survey_id' => 'nullable|integer',
         ];
     }
 

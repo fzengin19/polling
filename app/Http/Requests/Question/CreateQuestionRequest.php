@@ -14,14 +14,14 @@ class CreateQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page_id' => 'required|integer|exists:survey_pages,id',
-            'type' => 'required|string|max:50',
+            'page_id' => 'required|integer',
+            'type' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'is_required' => 'boolean',
-            'help_text' => 'nullable|string|max:1000',
+            'help_text' => 'nullable|string',
             'placeholder' => 'nullable|string|max:255',
             'config' => 'nullable|array',
-            'order_index' => 'integer',
+            'order_index' => 'integer|min:0',
         ];
     }
 } 

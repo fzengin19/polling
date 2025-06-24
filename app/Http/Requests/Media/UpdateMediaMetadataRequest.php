@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Choice;
+namespace App\Http\Requests\Media;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateChoiceRequest extends FormRequest
+class UpdateMediaMetadataRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,8 @@ class CreateChoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'question_id' => 'required|integer',
-            'label' => 'required|string|max:255',
-            'value' => 'required|string|max:255',
-            'order_index' => 'integer|min:0',
+            'alt_text' => 'sometimes|string|max:255',
+            'caption' => 'sometimes|string|max:500',
         ];
     }
 } 

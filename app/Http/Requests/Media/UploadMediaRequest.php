@@ -22,7 +22,7 @@ class UploadMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'question_id' => 'required|integer|exists:questions,id',
+            'question_id' => 'required|integer',
             'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:10240', // 10MB max
             'alt_text' => 'sometimes|string|max:255',
             'caption' => 'sometimes|string|max:500',

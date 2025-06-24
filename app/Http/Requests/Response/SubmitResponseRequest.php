@@ -23,8 +23,8 @@ class SubmitResponseRequest extends FormRequest
     {
         return [
             'answers' => 'required|array',
-            'answers.*.question_id' => 'required|integer|exists:questions,id',
-            'answers.*.choice_id' => 'sometimes|integer|exists:choices,id',
+            'answers.*.question_id' => 'required|integer',
+            'answers.*.choice_id' => 'sometimes|integer',
             'answers.*.value' => 'sometimes|string',
             'answers.*.order_index' => 'sometimes|integer|min:0',
         ];

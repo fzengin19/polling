@@ -23,9 +23,9 @@ class CreateTemplateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
+            'description' => 'nullable|string',
             'is_public' => 'boolean',
-            'forked_from_template_id' => 'nullable|exists:templates,id',
+            'forked_from_template_id' => 'nullable|integer',
         ];
     }
 
