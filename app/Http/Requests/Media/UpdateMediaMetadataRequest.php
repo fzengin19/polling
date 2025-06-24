@@ -24,6 +24,7 @@ class UpdateMediaMetadataRequest extends FormRequest
         return [
             'alt_text' => 'sometimes|string|max:255',
             'caption' => 'sometimes|string|max:500',
+            'display_order' => 'sometimes|integer|min:0',
         ];
     }
 } 

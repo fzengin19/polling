@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\SurveyController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\MediaController;
+use App\Http\Controllers\Api\EnhancedMediaController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -84,3 +85,12 @@ Route::prefix('media')->middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/questions/{questionId}/media', [MediaController::class, 'getQuestionMedia']);
+
+// Enhanced Media routes for all models
+Route::prefix('enhanced-media')->middleware('auth:sanctum')->group(function () {
+    Route::post('/{modelType}/{modelId}/upload', [EnhancedMediaController::class, 'uploadMedia']);
+    Route::get('/{modelType}/{modelId}/media', [EnhancedMediaController::class, 'getMedia']);
+    Route::put('/{mediaId}/metadata', [EnhancedMediaController::class, 'updateMediaMetadata']);
+    Route::delete('/{mediaId}', [EnhancedMediaController::class, 'deleteMedia']);
+    Route::get('/{modelType}/collections', [EnhancedMediaController::class, 'getCollections']);
+});

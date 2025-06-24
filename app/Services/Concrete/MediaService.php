@@ -5,10 +5,14 @@ namespace App\Services\Concrete;
 use App\Dtos\MediaDto;
 use App\Models\Question;
 use App\Responses\ServiceResponse;
+use App\Responses\Abstract\ResourceMapInterface;
 use App\Responses\Concrete\ApiResourceMap;
 use App\Services\Abstract\MediaServiceInterface;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class MediaService implements MediaServiceInterface
 {
@@ -75,22 +79,50 @@ class MediaService implements MediaServiceInterface
         }
     }
 
-    public function updateMediaMetadata(int $mediaId, array $metadata): ServiceResponse
+    public function updateMediaMetadata(int $mediaId, array $metadata): \Spatie\MediaLibrary\MediaCollections\Models\Media
     {
-        try {
-            $media = Media::find($mediaId);
-            if (!$media) {
-                return new ServiceResponse(['error' => 'Media not found'], $this->resourceMap, 404);
-            }
+        $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::findOrFail($mediaId);
+        
+        \Illuminate\Support\Facades\Log::info('Updating media metadata', [
+            'media_id' => $mediaId,
+            'incoming_metadata' => $metadata,
+            'display_order_value' => $metadata['display_order'] ?? 'not_set',
+            'display_order_type' => gettype($metadata['display_order'] ?? null)
+        ]);
+        
+        $media->setCustomProperty('alt_text', $metadata['alt_text'] ?? null);
+        $media->setCustomProperty('caption', $metadata['caption'] ?? null);
+        $displayOrder = isset($metadata['display_order']) ? (int)$metadata['display_order'] : 0;
+        $media->setCustomProperty('display_order', $displayOrder);
+        
+        \Illuminate\Support\Facades\Log::info('Setting display_order', [
+            'display_order' => $displayOrder,
+            'display_order_type' => gettype($displayOrder)
+        ]);
+        
+        $media->save();
+        $media->refresh();
+        
+        \Illuminate\Support\Facades\Log::info('After save and refresh', [
+            'custom_properties' => $media->custom_properties,
+            'display_order_from_properties' => $media->getCustomProperty('display_order')
+        ]);
+        
+        return $media;
+    }
 
-            $media->setCustomProperty('alt_text', $metadata['alt_text'] ?? null);
-            $media->setCustomProperty('caption', $metadata['caption'] ?? null);
-            $media->save();
+    public function uploadMediaForModel(Model $model, UploadedFile $file, string $collection): \Spatie\MediaLibrary\MediaCollections\Models\Media
+    {
+        return $model->addMedia($file)
+            ->toMediaCollection($collection);
+    }
 
-            return new ServiceResponse(['media' => $media], $this->resourceMap, 200);
-
-        } catch (\Exception $e) {
-            return new ServiceResponse(['error' => $e->getMessage()], $this->resourceMap, 500);
+    public function getMedia(Model $model, ?string $collection = null): \Illuminate\Support\Collection
+    {
+        if ($collection) {
+            return $model->getMedia($collection);
         }
+        
+        return $model->getMedia();
     }
 } 

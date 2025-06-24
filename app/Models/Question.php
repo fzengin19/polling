@@ -60,4 +60,22 @@ class Question extends Model implements HasMedia
     {
         return $this->hasMany(Answer::class);
     }
+
+    /**
+     * Register media collections
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('question-images')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+            ->singleFile();
+        
+        $this->addMediaCollection('question-videos')
+            ->acceptsMimeTypes(['video/mp4', 'video/webm', 'video/ogg'])
+            ->singleFile();
+        
+        $this->addMediaCollection('question-documents')
+            ->acceptsMimeTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+            ->singleFile();
+    }
 } 

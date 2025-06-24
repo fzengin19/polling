@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Survey extends Model
+class Survey extends Model implements HasMedia
 {
-    use HasFactory, HasRoles;
+    use HasFactory, HasRoles, InteractsWithMedia;
 
     /**
      * The guard name for the model.
@@ -115,5 +117,23 @@ class Survey extends Model
             return $this->responses_count < $this->max_responses;
         }
         return true;
+    }
+
+    /**
+     * Register media collections
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('survey-banners')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+            ->singleFile();
+        
+        $this->addMediaCollection('survey-logos')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/svg+xml'])
+            ->singleFile();
+        
+        $this->addMediaCollection('survey-attachments')
+            ->acceptsMimeTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/csv'])
+            ->singleFile();
     }
 }

@@ -134,6 +134,14 @@
   - [x] Question modeline medya desteği eklenmesi
   - [x] Medya yükleme/silme API endpointleri
 
+- [ ] **Adım 3.1: Medya Sistemi Geliştirmeleri**
+  - [ ] Choice modeline HasMedia trait eklenmesi
+  - [ ] Survey modeline medya desteği eklenmesi
+  - [ ] SurveyPage modeline medya desteği eklenmesi
+  - [ ] Media collection'ları spesifikleştirme (question-images, choice-images, survey-banners, etc.)
+  - [ ] Question.config'de medya referanslarını standardize etme
+  - [ ] Gelişmiş medya API endpointleri ve testleri
+
 - [ ] **Adım 4: Audit Log Sistemi**
   - [ ] spatie/laravel-activitylog kurulumu
   - [ ] Loglanacak olayların tanımlanması
