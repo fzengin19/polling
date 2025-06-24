@@ -72,14 +72,6 @@ class Survey extends Model
     }
 
     /**
-     * Get the responses for this survey.
-     */
-    public function responses(): HasMany
-    {
-        return $this->hasMany(Response::class);
-    }
-
-    /**
      * Check if survey is active
      */
     public function isActive(): bool
@@ -93,25 +85,5 @@ class Survey extends Model
     public function isExpired(): bool
     {
         return $this->expires_at && $this->expires_at->isPast();
-    }
-
-    /**
-     * Check if survey has reached max responses
-     */
-    public function hasReachedMaxResponses(): bool
-    {
-        if (!$this->max_responses) {
-            return false;
-        }
-        
-        return $this->responses()->count() >= $this->max_responses;
-    }
-
-    /**
-     * Check if survey can accept responses
-     */
-    public function canAcceptResponses(): bool
-    {
-        return $this->isActive() && !$this->isExpired() && !$this->hasReachedMaxResponses();
     }
 }

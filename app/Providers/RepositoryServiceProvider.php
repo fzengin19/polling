@@ -23,6 +23,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TemplateVersionRepositoryInterface::class, TemplateVersionRepository::class);
         $this->app->bind(SurveyRepositoryInterface::class, SurveyRepository::class);
         $this->app->bind(SurveyPageRepositoryInterface::class, SurveyPageRepository::class);
+        $this->app->bind(
+            \App\Repositories\Abstract\QuestionRepositoryInterface::class,
+            \App\Repositories\Eloquent\QuestionRepository::class
+        );
     }
 
     public function boot()

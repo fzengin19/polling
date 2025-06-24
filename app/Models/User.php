@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -49,8 +50,19 @@ class User extends Authenticatable
         ];
     }
 
-    public function polls()
+    /**
+     * Get the surveys created by this user.
+     */
+    public function surveys(): HasMany
     {
-        return $this->hasMany(Poll::class);
+        return $this->hasMany(Survey::class, 'created_by');
+    }
+
+    /**
+     * Get the templates created by this user.
+     */
+    public function templates(): HasMany
+    {
+        return $this->hasMany(Template::class, 'created_by');
     }
 }

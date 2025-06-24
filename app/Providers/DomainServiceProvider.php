@@ -23,6 +23,10 @@ class DomainServiceProvider extends ServiceProvider
         $this->app->bind(TemplateServiceInterface::class, TemplateService::class);
         $this->app->bind(SurveyServiceInterface::class, SurveyService::class);
         $this->app->bind(SurveyPageServiceInterface::class, SurveyPageService::class);
+        $this->app->bind(
+            \App\Services\Abstract\QuestionServiceInterface::class,
+            \App\Services\Concrete\QuestionService::class
+        );
     }
 
     /**

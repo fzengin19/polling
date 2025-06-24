@@ -51,3 +51,14 @@ Route::prefix('surveys')->group(function () {
     Route::delete('/pages/{id}', [SurveyController::class, 'destroyPage'])->middleware('auth:sanctum');
     Route::post('/{surveyId}/pages/reorder', [SurveyController::class, 'reorderPages'])->middleware('auth:sanctum');
 });
+
+// Question management
+Route::prefix('survey-pages/{surveyPageId}')->group(function () {
+    Route::get('questions', [\App\Http\Controllers\Api\QuestionController::class, 'index']);
+    Route::get('questions/type/{type}', [\App\Http\Controllers\Api\QuestionController::class, 'byType']);
+    Route::post('questions/reorder', [\App\Http\Controllers\Api\QuestionController::class, 'reorder']);
+    Route::post('questions', [\App\Http\Controllers\Api\QuestionController::class, 'store']);
+});
+Route::get('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'show']);
+Route::put('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'update']);
+Route::delete('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'destroy']);
