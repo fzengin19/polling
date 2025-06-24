@@ -10,6 +10,8 @@ use App\Repositories\Abstract\TemplateVersionRepositoryInterface;
 use App\Repositories\Eloquent\TemplateVersionRepository;
 use App\Repositories\Abstract\SurveyRepositoryInterface;
 use App\Repositories\Eloquent\SurveyRepository;
+use App\Repositories\Abstract\SurveyPageRepositoryInterface;
+use App\Repositories\Eloquent\SurveyPageRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -20,6 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TemplateRepositoryInterface::class, TemplateRepository::class);
         $this->app->bind(TemplateVersionRepositoryInterface::class, TemplateVersionRepository::class);
         $this->app->bind(SurveyRepositoryInterface::class, SurveyRepository::class);
+        $this->app->bind(SurveyPageRepositoryInterface::class, SurveyPageRepository::class);
     }
 
     public function boot()
