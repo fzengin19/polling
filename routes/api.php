@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\SurveyController;
+use App\Http\Controllers\Api\RoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -62,3 +63,14 @@ Route::prefix('survey-pages/{surveyPageId}')->group(function () {
 Route::get('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'show']);
 Route::put('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'update']);
 Route::delete('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'destroy']);
+
+// Role management
+Route::prefix('roles')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [RoleController::class, 'index']);
+    Route::post('/assign', [RoleController::class, 'assign']);
+    Route::post('/remove', [RoleController::class, 'remove']);
+    Route::get('/users/{userId}', [RoleController::class, 'userRoles']);
+    Route::get('/surveys/{surveyId}', [RoleController::class, 'surveyRoles']);
+    Route::get('/users/{userId}/has/{roleName}', [RoleController::class, 'userHasRole']);
+    Route::get('/surveys/{surveyId}/has/{roleName}', [RoleController::class, 'surveyHasRole']);
+});
