@@ -3,121 +3,121 @@
 ## Model ve Sütun Tanımları
 
 ### 🔑 User Modeli
-- id (PK)
-- name
-- email (unique)
-- password
-- provider (nullable) - Google, Facebook vb.
-- provider_id (nullable)
-- created_at
-- updated_at
+- [x] id (PK)
+- [x] name
+- [x] email (unique)
+- [x] password
+- [x] provider (nullable) - Google, Facebook vb.
+- [x] provider_id (nullable)
+- [x] created_at
+- [x] updated_at
 
 ### 📋 Template Modeli
-- id (PK)
-- title
-- description (nullable)
-- is_public (boolean, default: false)
-- created_by (FK: users.id)
-- forked_from_template_id (nullable, FK: templates.id)
-- created_at
-- updated_at
+- [x] id (PK)
+- [x] title
+- [x] description (nullable)
+- [x] is_public (boolean, default: false)
+- [x] created_by (FK: users.id)
+- [x] forked_from_template_id (nullable, FK: templates.id)
+- [x] created_at
+- [x] updated_at
 
 ### 🔄 TemplateVersion Modeli
-- id (PK)
-- template_id (FK: templates.id)
-- version (string, semantic versioning)
-- snapshot (JSON) - Template'in o anki tam durumu
-- created_at
+- [x] id (PK)
+- [x] template_id (FK: templates.id)
+- [x] version (string, semantic versioning)
+- [x] snapshot (JSON) - Template'in o anki tam durumu
+- [x] created_at
 
 ### 📊 Survey Modeli
-- id (PK)
-- title
-- description (nullable)
-- status (enum: draft, active, archived)
-- created_by (FK: users.id)
-- template_id (nullable, FK: templates.id)
-- template_version_id (nullable, FK: template_versions.id)
-- settings (JSON, nullable) - Anket ayarları (anonim, çoklu yanıt, vb.)
-- expires_at (timestamp, nullable) - Bitiş tarihi
-- max_responses (integer, nullable) - Maksimum yanıt sayısı
-- created_at
-- updated_at
+- [x] id (PK)
+- [x] title
+- [x] description (nullable)
+- [x] status (enum: draft, active, archived)
+- [x] created_by (FK: users.id)
+- [x] template_id (nullable, FK: templates.id)
+- [x] template_version_id (nullable, FK: template_versions.id)
+- [x] settings (JSON, nullable) - Anket ayarları (anonim, çoklu yanıt, vb.)
+- [x] expires_at (timestamp, nullable) - Bitiş tarihi
+- [x] max_responses (integer, nullable) - Maksimum yanıt sayısı
+- [x] created_at
+- [x] updated_at
 
 ### 📄 SurveyPage Modeli
-- id (PK)
-- survey_id (FK: surveys.id)
-- order_index (integer, default: 0)
-- title (nullable)
-- created_at
-- updated_at
+- [x] id (PK)
+- [x] survey_id (FK: surveys.id)
+- [x] order_index (integer, default: 0)
+- [x] title (nullable)
+- [x] created_at
+- [x] updated_at
 
 ### ❓ Question Modeli
-- id (PK)
-- page_id (FK: survey_pages.id)
-- type (string: text, multiple_choice, rating, etc.)
-- title
-- is_required (boolean, default: false)
-- help_text (text, nullable) - Yardım metni
-- placeholder (text, nullable) - Placeholder metni
-- config (JSON, nullable) - Validasyon, koşullu mantık, medya referansları
-- order_index (integer, default: 0)
-- created_at
-- updated_at
+- [x] id (PK)
+- [x] page_id (FK: survey_pages.id)
+- [x] type (string: text, multiple_choice, rating, etc.)
+- [x] title
+- [x] is_required (boolean, default: false)
+- [x] help_text (text, nullable) - Yardım metni
+- [x] placeholder (text, nullable) - Placeholder metni
+- [x] config (JSON, nullable) - Validasyon, koşullu mantık, medya referansları
+- [x] order_index (integer, default: 0)
+- [x] created_at
+- [x] updated_at
 
 ### 🔘 Choice Modeli
-- id (PK)
-- question_id (FK: questions.id)
-- label
-- value
-- order_index (integer, default: 0)
-- created_at
-- updated_at
+- [ ] id (PK)
+- [ ] question_id (FK: questions.id)
+- [ ] label
+- [ ] value
+- [ ] order_index (integer, default: 0)
+- [ ] created_at
+- [ ] updated_at
 
 ### 📤 Response Modeli
-- id (PK)
-- survey_id (FK: surveys.id)
-- user_id (nullable, FK: users.id) - Anonim yanıtlar için
-- started_at (timestamp, nullable) - Başlangıç zamanı
-- submitted_at (timestamp, nullable) - Tamamlanma zamanı
-- metadata (JSON, nullable) - IP, user_agent, vb.
-- is_complete (boolean, default: false)
-- created_at
-- updated_at
+- [ ] id (PK)
+- [ ] survey_id (FK: surveys.id)
+- [ ] user_id (nullable, FK: users.id) - Anonim yanıtlar için
+- [ ] started_at (timestamp, nullable) - Başlangıç zamanı
+- [ ] submitted_at (timestamp, nullable) - Tamamlanma zamanı
+- [ ] metadata (JSON, nullable) - IP, user_agent, vb.
+- [ ] is_complete (boolean, default: false)
+- [ ] created_at
+- [ ] updated_at
 
 ### 📝 Answer Modeli
-- id (PK)
-- response_id (FK: responses.id)
-- question_id (FK: questions.id)
-- choice_id (nullable, FK: choices.id)
-- value (text, nullable)
-- order_index (integer, default: 0) - Çoklu cevap sıralaması
-- created_at
+- [ ] id (PK)
+- [ ] response_id (FK: responses.id)
+- [ ] question_id (FK: questions.id)
+- [ ] choice_id (nullable, FK: choices.id)
+- [ ] value (text, nullable)
+- [ ] order_index (integer, default: 0) - Çoklu cevap sıralaması
+- [ ] created_at
 
 ### 🎭 Role/Permission Tabloları (spatie/laravel-permission)
-- roles
-- permissions
-- model_has_roles
-- model_has_permissions
-- role_has_permissions
+- [ ] roles
+- [ ] permissions
+- [ ] model_has_roles
+- [ ] model_has_permissions
+- [ ] role_has_permissions
 
 ### 📸 Media Tabloları (spatie/laravel-medialibrary)
-- media
-- model_has_media
+- [ ] media
+- [ ] model_has_media
 
 ### 📜 Activity Log Tabloları (spatie/laravel-activitylog)
-- activity_log
+- [ ] activity_log
 
 ---
 
 ## Geliştirme Adımları
 
-- [ ] **Adım 1: Çekirdek Yapı ve Temel API'ler**
-  - [ ] Migrations: users, templates, surveys, survey_pages, questions, choices, responses, answers
-  - [ ] Modeller ve ilişkilerin tanımlanması
-  - [ ] Temel CRUD API'leri:
-    - [ ] Survey oluşturma/güncelleme/listeleme
-    - [ ] SurveyPage ekleme/silme/sıralama
-    - [ ] Question ekleme/güncelleme/silme
+- [x] **Adım 1: Çekirdek Yapı ve Temel API'ler**
+  - [x] Migrations: users, templates, surveys, survey_pages, questions
+  - [x] Modeller ve ilişkilerin tanımlanması
+  - [x] Temel CRUD API'leri:
+    - [x] Survey oluşturma/güncelleme/listeleme
+    - [x] SurveyPage ekleme/silme/sıralama
+    - [x] Question ekleme/güncelleme/silme
     - [ ] Choice ekleme/güncelleme/silme
     - [ ] Response başlatma
     - [ ] Answer kaydetme
@@ -145,16 +145,16 @@
   - [ ] DB indeksleme (survey_id, question_id, response_id)
   - [ ] Task Scheduling: Günlük arşivleme, eski draft temizliği
 
-- [ ] **Adım 6: Şablon Yönetimi**
-  - [ ] Template CRUD API'leri
-  - [ ] Şablon seçimi ve detay endpointleri
+- [x] **Adım 6: Şablon Yönetimi**
+  - [x] Template CRUD API'leri
+  - [x] Şablon seçimi ve detay endpointleri
 
-- [ ] **Adım 7: Şablon Versiyonlama**
-  - [ ] template_versions tablosu
-  - [ ] Versiyon listeleme ve geri alma API'leri
+- [x] **Adım 7: Şablon Versiyonlama**
+  - [x] template_versions tablosu
+  - [x] Versiyon listeleme ve geri alma API'leri
 
-- [ ] **Adım 8: Raporlama ve Analitik**
-  - [ ] Temel istatistik endpointleri
+- [x] **Adım 8: Raporlama ve Analitik**
+  - [x] Temel istatistik endpointleri (Survey, Template, Question sayıları)
   - [ ] Cevap dağılımları
   - [ ] Dışa aktarma (CSV/Excel/PDF)
 

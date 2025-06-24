@@ -124,7 +124,16 @@ class SurveyController extends Controller
 
     public function updatePage(UpdateSurveyPageRequest $request, int $id): JsonResponse
     {
-        $dto = SurveyPageDto::fromArray($request->validated());
+        $data = $request->validated();
+        
+        // Get the existing page to get survey_id
+        $page = \App\Models\SurveyPage::find($id);
+        if (!$page) {
+            return response()->json(['message' => 'Page not found'], 404);
+        }
+        
+        $data['survey_id'] = $page->survey_id;
+        $dto = SurveyPageDto::fromArray($data);
         $result = $this->surveyPageService->update($id, $dto);
         return $result->toResponse();
     }

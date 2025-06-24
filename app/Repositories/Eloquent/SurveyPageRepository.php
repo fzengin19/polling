@@ -56,6 +56,13 @@ class SurveyPageRepository implements SurveyPageRepositoryInterface
     public function reorder(int $surveyId, array $pageIds): bool
     {
         return DB::transaction(function () use ($surveyId, $pageIds) {
+            // 1. Her sayfanın order_index'ini geçici büyük değere ata
+            $pages = $this->model->whereIn('id', $pageIds)->get();
+            foreach ($pages as $page) {
+                $page->order_index = $page->order_index + 1000;
+                $page->save();
+            }
+            // 2. Yeni sıralamaya göre gerçek order_index ata
             foreach ($pageIds as $index => $pageId) {
                 $this->model->where('id', $pageId)
                     ->where('survey_id', $surveyId)
