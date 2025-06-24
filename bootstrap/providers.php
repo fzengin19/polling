@@ -5,4 +5,5 @@ return [
     App\Providers\RepositoryServiceProvider::class,
     App\Providers\ResourceServiceProvider::class,
     App\Providers\ServiceResponseProvider::class,
+    App\Providers\DomainServiceProvider::class,
 ];

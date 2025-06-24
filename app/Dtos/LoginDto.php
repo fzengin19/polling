@@ -2,12 +2,9 @@
 
 namespace App\Dtos;
 
-readonly class RegisterDto {
+readonly class LoginDto {
     public function __construct(
-        public string $name,
         public string $email,
         public string $password
-    ) {
-        // Validasyon buraya
-    }
-}
+    ) {}
+} 
