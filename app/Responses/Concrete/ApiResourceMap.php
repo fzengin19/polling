@@ -5,6 +5,7 @@ namespace App\Responses\Concrete;
 use App\Http\Resources\PollResource;
 use App\Http\Resources\TemplateResource;
 use App\Http\Resources\TemplateVersionResource;
+use App\Http\Resources\SurveyResource;
 use App\Responses\Abstract\ResourceMapInterface;
 use Illuminate\Support\Str;
 
@@ -16,6 +17,8 @@ class ApiResourceMap implements ResourceMapInterface
         'templates' => TemplateResource::class,
         'template_version' => TemplateVersionResource::class,
         'template_versions' => TemplateVersionResource::class,
+        'survey' => SurveyResource::class,
+        'surveys' => SurveyResource::class,
     ];
 
     public function resolve(string $key): ?string

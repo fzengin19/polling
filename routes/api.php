@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TemplateController;
+use App\Http\Controllers\Api\SurveyController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -26,4 +27,19 @@ Route::prefix('templates')->group(function () {
     Route::get('/{id}/versions', [TemplateController::class, 'versions']);
     Route::post('/{id}/versions', [TemplateController::class, 'createVersion'])->middleware('auth:sanctum');
     Route::post('/{id}/versions/{versionId}/restore', [TemplateController::class, 'restoreVersion'])->middleware('auth:sanctum');
+});
+
+Route::prefix('surveys')->group(function () {
+    Route::get('/', [SurveyController::class, 'index']);
+    Route::get('/active', [SurveyController::class, 'activeSurveys']);
+    Route::get('/my', [SurveyController::class, 'mySurveys'])->middleware('auth:sanctum');
+    Route::get('/status/{status}', [SurveyController::class, 'byStatus']);
+    Route::get('/template/{templateId}', [SurveyController::class, 'byTemplate']);
+    Route::post('/', [SurveyController::class, 'store'])->middleware('auth:sanctum');
+    Route::get('/{id}', [SurveyController::class, 'show']);
+    Route::put('/{id}', [SurveyController::class, 'update'])->middleware('auth:sanctum');
+    Route::delete('/{id}', [SurveyController::class, 'destroy'])->middleware('auth:sanctum');
+    Route::post('/{id}/publish', [SurveyController::class, 'publish'])->middleware('auth:sanctum');
+    Route::post('/{id}/archive', [SurveyController::class, 'archive'])->middleware('auth:sanctum');
+    Route::post('/{id}/duplicate', [SurveyController::class, 'duplicate'])->middleware('auth:sanctum');
 });
