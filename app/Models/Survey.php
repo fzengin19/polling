@@ -17,7 +17,7 @@ class Survey extends Model
      *
      * @var string
      */
-    protected $guard_name = 'web';
+    protected $guard_name = 'api';
 
     /**
      * The attributes that are mass assignable.
@@ -77,6 +77,14 @@ class Survey extends Model
     public function pages(): HasMany
     {
         return $this->hasMany(SurveyPage::class);
+    }
+
+    /**
+     * Get the responses for this survey.
+     */
+    public function responses(): HasMany
+    {
+        return $this->hasMany(Response::class);
     }
 
     /**

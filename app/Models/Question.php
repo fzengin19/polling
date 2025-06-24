@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Question extends Model
 {
@@ -40,5 +41,21 @@ class Question extends Model
     public function survey()
     {
         return $this->surveyPage->survey();
+    }
+
+    /**
+     * Get the choices for this question.
+     */
+    public function choices(): HasMany
+    {
+        return $this->hasMany(Choice::class);
+    }
+
+    /**
+     * Get the answers for this question.
+     */
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class);
     }
 } 

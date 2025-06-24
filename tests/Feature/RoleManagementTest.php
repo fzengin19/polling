@@ -25,9 +25,9 @@ class RoleManagementTest extends TestCase
         parent::setUp();
         
         // Create roles
-        $this->adminRole = Role::create(['name' => 'admin']);
-        $this->editorRole = Role::create(['name' => 'editor']);
-        $this->viewerRole = Role::create(['name' => 'viewer']);
+        $this->adminRole = Role::create(['name' => 'admin', 'guard_name' => 'api']);
+        $this->editorRole = Role::create(['name' => 'editor', 'guard_name' => 'api']);
+        $this->viewerRole = Role::create(['name' => 'viewer', 'guard_name' => 'api']);
         
         // Create users
         $this->user = User::factory()->create();

@@ -65,40 +65,40 @@
 - [x] updated_at
 
 ### 🔘 Choice Modeli
-- [ ] id (PK)
-- [ ] question_id (FK: questions.id)
-- [ ] label
-- [ ] value
-- [ ] order_index (integer, default: 0)
-- [ ] created_at
-- [ ] updated_at
+- [x] id (PK)
+- [x] question_id (FK: questions.id)
+- [x] label
+- [x] value
+- [x] order_index (integer, default: 0)
+- [x] created_at
+- [x] updated_at
 
 ### 📤 Response Modeli
-- [ ] id (PK)
-- [ ] survey_id (FK: surveys.id)
-- [ ] user_id (nullable, FK: users.id) - Anonim yanıtlar için
-- [ ] started_at (timestamp, nullable) - Başlangıç zamanı
-- [ ] submitted_at (timestamp, nullable) - Tamamlanma zamanı
-- [ ] metadata (JSON, nullable) - IP, user_agent, vb.
-- [ ] is_complete (boolean, default: false)
-- [ ] created_at
-- [ ] updated_at
+- [x] id (PK)
+- [x] survey_id (FK: surveys.id)
+- [x] user_id (nullable, FK: users.id) - Anonim yanıtlar için
+- [x] started_at (timestamp, nullable) - Başlangıç zamanı
+- [x] submitted_at (timestamp, nullable) - Tamamlanma zamanı
+- [x] metadata (JSON, nullable) - IP, user_agent, vb.
+- [x] is_complete (boolean, default: false)
+- [x] created_at
+- [x] updated_at
 
 ### 📝 Answer Modeli
-- [ ] id (PK)
-- [ ] response_id (FK: responses.id)
-- [ ] question_id (FK: questions.id)
-- [ ] choice_id (nullable, FK: choices.id)
-- [ ] value (text, nullable)
-- [ ] order_index (integer, default: 0) - Çoklu cevap sıralaması
-- [ ] created_at
+- [x] id (PK)
+- [x] response_id (FK: responses.id)
+- [x] question_id (FK: questions.id)
+- [x] choice_id (nullable, FK: choices.id)
+- [x] value (text, nullable)
+- [x] order_index (integer, default: 0) - Çoklu cevap sıralaması
+- [x] created_at
 
 ### 🎭 Role/Permission Tabloları (spatie/laravel-permission)
-- [ ] roles
-- [ ] permissions
-- [ ] model_has_roles
-- [ ] model_has_permissions
-- [ ] role_has_permissions
+- [x] roles
+- [x] permissions
+- [x] model_has_roles
+- [x] model_has_permissions
+- [x] role_has_permissions
 
 ### 📸 Media Tabloları (spatie/laravel-medialibrary)
 - [ ] media
@@ -123,11 +123,11 @@
     - [ ] Answer kaydetme
     - [ ] Response tamamlama
 
-- [ ] **Adım 2: Rol ve Yetki Yönetimi**
-  - [ ] spatie/laravel-permission kurulumu
-  - [ ] Survey modeline HasRoles trait eklenmesi
-  - [ ] Rol atama/kaldırma API'leri
-  - [ ] Middleware ile erişim kontrolü
+- [x] **Adım 2: Rol ve Yetki Yönetimi** ✅ TAMAMLANDI
+  - [x] spatie/laravel-permission kurulumu
+  - [x] Survey modeline HasRoles trait eklenmesi
+  - [x] Rol atama/kaldırma API'leri
+  - [x] Middleware ile erişim kontrolü
 
 - [ ] **Adım 3: Medya Yönetimi**
   - [ ] spatie/laravel-medialibrary kurulumu
