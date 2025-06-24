@@ -3,6 +3,7 @@
 namespace App\Services\Concrete;
 
 use App\Repositories\Abstract\TemplateRepositoryInterface;
+use App\Repositories\Abstract\TemplateVersionRepositoryInterface;
 use App\Services\Abstract\TemplateServiceInterface;
 use App\Dtos\TemplateDto;
 use App\Responses\ServiceResponse;
@@ -14,6 +15,7 @@ class TemplateService implements TemplateServiceInterface
 {
     public function __construct(
         protected TemplateRepositoryInterface $templateRepository,
+        protected TemplateVersionRepositoryInterface $templateVersionRepository,
         protected ResourceMapInterface $resourceMap
     ) {}
 
@@ -119,5 +121,94 @@ class TemplateService implements TemplateServiceInterface
         ]);
 
         return new ServiceResponse($forkedTemplate, $this->resourceMap, 201);
+    }
+
+    // Version Management Methods
+    public function getVersions(int $templateId): ServiceResponse
+    {
+        $template = $this->templateRepository->find($templateId);
+
+        if (!$template) {
+            throw new ModelNotFoundException('Template not found.');
+        }
+
+        // Check if user can access this template (owner or public)
+        if ($template->created_by !== Auth::id() && !$template->is_public) {
+            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
+        }
+
+        $versions = $this->templateVersionRepository->findByTemplate($templateId);
+
+        return new ServiceResponse($versions, $this->resourceMap);
+    }
+
+    public function createVersion(int $templateId, int $userId): ServiceResponse
+    {
+        $template = $this->templateRepository->find($templateId);
+
+        if (!$template) {
+            throw new ModelNotFoundException('Template not found.');
+        }
+
+        // Check if user owns this template
+        if ($template->created_by !== $userId) {
+            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
+        }
+
+        // Get latest version number
+        $latestVersion = $this->templateVersionRepository->getLatestVersion($templateId);
+        $versionNumber = $latestVersion ? $this->incrementVersion($latestVersion->version) : '1.0.0';
+
+        // Create snapshot of current template state
+        $snapshot = [
+            'title' => $template->title,
+            'description' => $template->description,
+            'is_public' => $template->is_public,
+            'created_at' => $template->created_at,
+            'updated_at' => $template->updated_at,
+        ];
+
+        $version = $this->templateVersionRepository->create([
+            'template_id' => $templateId,
+            'version' => $versionNumber,
+            'snapshot' => $snapshot,
+        ]);
+
+        return new ServiceResponse($version, $this->resourceMap, 201);
+    }
+
+    public function restoreVersion(int $templateId, int $versionId, int $userId): ServiceResponse
+    {
+        $template = $this->templateRepository->find($templateId);
+
+        if (!$template) {
+            throw new ModelNotFoundException('Template not found.');
+        }
+
+        // Check if user owns this template
+        if ($template->created_by !== $userId) {
+            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
+        }
+
+        $version = $this->templateVersionRepository->find($versionId);
+
+        if (!$version || $version->template_id !== $templateId) {
+            throw new ModelNotFoundException('Version not found.');
+        }
+
+        // Restore template from version snapshot
+        $this->templateRepository->update($template, $version->snapshot);
+
+        return new ServiceResponse($template->fresh(), $this->resourceMap);
+    }
+
+    /**
+     * Increment semantic version
+     */
+    private function incrementVersion(string $version): string
+    {
+        $parts = explode('.', $version);
+        $parts[2] = (int)$parts[2] + 1; // Increment patch version
+        return implode('.', $parts);
     }
 } 

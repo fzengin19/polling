@@ -72,4 +72,23 @@ class TemplateController extends Controller
         $result = $this->templateService->fork($id, Auth::id());
         return $result->toResponse();
     }
+
+    // Template Version Management
+    public function versions(int $id): JsonResponse
+    {
+        $result = $this->templateService->getVersions($id);
+        return $result->toResponse();
+    }
+
+    public function createVersion(int $id): JsonResponse
+    {
+        $result = $this->templateService->createVersion($id, Auth::id());
+        return $result->toResponse();
+    }
+
+    public function restoreVersion(int $id, int $versionId): JsonResponse
+    {
+        $result = $this->templateService->restoreVersion($id, $versionId, Auth::id());
+        return $result->toResponse();
+    }
 } 

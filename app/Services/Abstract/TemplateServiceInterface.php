@@ -16,4 +16,9 @@ interface TemplateServiceInterface
     public function getByUser(int $userId): ServiceResponse;
     public function getPublicTemplates(): ServiceResponse;
     public function fork(int $templateId, int $userId): ServiceResponse;
+    
+    // Version Management
+    public function getVersions(int $templateId): ServiceResponse;
+    public function createVersion(int $templateId, int $userId): ServiceResponse;
+    public function restoreVersion(int $templateId, int $versionId, int $userId): ServiceResponse;
 } 

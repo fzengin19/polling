@@ -21,4 +21,9 @@ Route::prefix('templates')->group(function () {
     Route::put('/{id}', [TemplateController::class, 'update'])->middleware('auth:sanctum');
     Route::delete('/{id}', [TemplateController::class, 'destroy'])->middleware('auth:sanctum');
     Route::post('/{id}/fork', [TemplateController::class, 'fork'])->middleware('auth:sanctum');
+    
+    // Template Version Management
+    Route::get('/{id}/versions', [TemplateController::class, 'versions']);
+    Route::post('/{id}/versions', [TemplateController::class, 'createVersion'])->middleware('auth:sanctum');
+    Route::post('/{id}/versions/{versionId}/restore', [TemplateController::class, 'restoreVersion'])->middleware('auth:sanctum');
 });
