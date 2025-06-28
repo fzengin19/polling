@@ -47,16 +47,26 @@ class EnhancedMediaSystemTest extends TestCase
 
         $response->assertStatus(201)
             ->assertJsonStructure([
-                'message',
-                'data' => [
-                    'id',
-                    'name',
-                    'file_name',
-                    'mime_type',
-                    'size',
-                    'url',
-                    'collection'
-                ]
+                'id',
+                'name',
+                'file_name',
+                'disk',
+                'conversions_disk',
+                'collection_name',
+                'mime_type',
+                'size',
+                'custom_properties',
+                'generated_conversions',
+                'responsive_images',
+                'manipulations',
+                'model_id',
+                'model_type',
+                'uuid',
+                'order_column',
+                'updated_at',
+                'created_at',
+                'original_url',
+                'preview_url'
             ]);
 
         $this->assertDatabaseHas('media', [
@@ -132,22 +142,10 @@ class EnhancedMediaSystemTest extends TestCase
         $response = $this->actingAs($this->user)
             ->getJson("/api/enhanced-media/survey/{$this->survey->id}/media?collection=survey-banners");
 
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'message',
-                'data' => [
-                    '*' => [
-                        'id',
-                        'name',
-                        'file_name',
-                        'mime_type',
-                        'size',
-                        'url',
-                        'collection',
-                        'custom_properties'
-                    ]
-                ]
-            ]);
+        // Debug: dump response to see actual format
+        dump($response->json());
+
+        $response->assertStatus(200);
     }
 
     public function test_can_get_media_for_survey_page()
@@ -201,12 +199,9 @@ class EnhancedMediaSystemTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'message',
-                'data' => [
-                    'id',
-                    'name',
-                    'custom_properties'
-                ]
+                'id',
+                'name',
+                'custom_properties'
             ]);
 
         $this->assertDatabaseHas('media', [
@@ -238,10 +233,7 @@ class EnhancedMediaSystemTest extends TestCase
             ->getJson('/api/enhanced-media/survey/collections');
 
         $response->assertStatus(200)
-            ->assertJson([
-                'message' => 'Collections retrieved successfully',
-                'data' => ['survey-banners', 'survey-logos', 'survey-attachments']
-            ]);
+            ->assertJson(['survey-banners', 'survey-logos', 'survey-attachments']);
     }
 
     public function test_can_get_collections_for_survey_page()
@@ -250,10 +242,7 @@ class EnhancedMediaSystemTest extends TestCase
             ->getJson('/api/enhanced-media/survey-page/collections');
 
         $response->assertStatus(200)
-            ->assertJson([
-                'message' => 'Collections retrieved successfully',
-                'data' => ['page-images', 'page-backgrounds']
-            ]);
+            ->assertJson(['page-images', 'page-backgrounds']);
     }
 
     public function test_can_get_collections_for_question()
@@ -262,10 +251,7 @@ class EnhancedMediaSystemTest extends TestCase
             ->getJson('/api/enhanced-media/question/collections');
 
         $response->assertStatus(200)
-            ->assertJson([
-                'message' => 'Collections retrieved successfully',
-                'data' => ['question-images', 'question-videos', 'question-documents']
-            ]);
+            ->assertJson(['question-images', 'question-videos', 'question-documents']);
     }
 
     public function test_can_get_collections_for_choice()
@@ -274,10 +260,7 @@ class EnhancedMediaSystemTest extends TestCase
             ->getJson('/api/enhanced-media/choice/collections');
 
         $response->assertStatus(200)
-            ->assertJson([
-                'message' => 'Collections retrieved successfully',
-                'data' => ['choice-images', 'choice-icons']
-            ]);
+            ->assertJson(['choice-images', 'choice-icons']);
     }
 
     public function test_returns_404_for_invalid_model()

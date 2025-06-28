@@ -38,24 +38,8 @@ class EnhancedMediaController extends Controller
             return response()->json(['message' => 'No file provided'], 400);
         }
 
-        try {
-            $media = $this->mediaService->uploadMediaForModel($model, $file, $collection);
-            
-            return response()->json([
-                'message' => 'Media uploaded successfully',
-                'data' => [
-                    'id' => $media->id,
-                    'name' => $media->name,
-                    'file_name' => $media->file_name,
-                    'mime_type' => $media->mime_type,
-                    'size' => $media->size,
-                    'url' => $media->getUrl(),
-                    'collection' => $collection,
-                ]
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to upload media: ' . $e->getMessage()], 500);
-        }
+        $result = $this->mediaService->uploadMediaForModel($model, $file, $collection);
+        return $result->toResponse();
     }
 
     /**
@@ -71,27 +55,8 @@ class EnhancedMediaController extends Controller
 
         $collection = $request->input('collection');
         
-        try {
-            $media = $this->mediaService->getMedia($model, $collection);
-            
-            return response()->json([
-                'message' => 'Media retrieved successfully',
-                'data' => $media->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'name' => $item->name,
-                        'file_name' => $item->file_name,
-                        'mime_type' => $item->mime_type,
-                        'size' => $item->size,
-                        'url' => $item->getUrl(),
-                        'collection' => $item->collection_name,
-                        'custom_properties' => $item->custom_properties,
-                    ];
-                })
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to retrieve media: ' . $e->getMessage()], 500);
-        }
+        $result = $this->mediaService->getMedia($model, $collection);
+        return $result->toResponse();
     }
 
     /**
@@ -99,20 +64,8 @@ class EnhancedMediaController extends Controller
      */
     public function updateMediaMetadata(UpdateMediaMetadataRequest $request, int $mediaId): JsonResponse
     {
-        try {
-            $media = $this->mediaService->updateMediaMetadata($mediaId, $request->validated());
-            
-            return response()->json([
-                'message' => 'Media metadata updated successfully',
-                'data' => [
-                    'id' => $media->id,
-                    'name' => $media->name,
-                    'custom_properties' => $media->custom_properties,
-                ]
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to update media metadata: ' . $e->getMessage()], 500);
-        }
+        $result = $this->mediaService->updateMediaMetadata($mediaId, $request->validated());
+        return $result->toResponse();
     }
 
     /**
@@ -120,13 +73,8 @@ class EnhancedMediaController extends Controller
      */
     public function deleteMedia(int $mediaId): JsonResponse
     {
-        try {
-            $this->mediaService->deleteMedia($mediaId);
-            
-            return response()->json(['message' => 'Media deleted successfully']);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to delete media: ' . $e->getMessage()], 500);
-        }
+        $result = $this->mediaService->deleteMedia($mediaId);
+        return $result->toResponse();
     }
 
     /**
@@ -134,18 +82,8 @@ class EnhancedMediaController extends Controller
      */
     public function getCollections(string $modelType): JsonResponse
     {
-        $collections = match ($modelType) {
-            'survey' => ['survey-banners', 'survey-logos', 'survey-attachments'],
-            'survey-page' => ['page-images', 'page-backgrounds'],
-            'question' => ['question-images', 'question-videos', 'question-documents'],
-            'choice' => ['choice-images', 'choice-icons'],
-            default => []
-        };
-
-        return response()->json([
-            'message' => 'Collections retrieved successfully',
-            'data' => $collections
-        ]);
+        $result = $this->mediaService->getCollections($modelType);
+        return $result->toResponse();
     }
 
     /**
