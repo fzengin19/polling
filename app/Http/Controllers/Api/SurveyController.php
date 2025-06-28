@@ -8,6 +8,7 @@ use App\Http\Requests\Survey\CreateSurveyRequest;
 use App\Http\Requests\Survey\UpdateSurveyRequest;
 use App\Http\Requests\SurveyPage\CreateSurveyPageRequest;
 use App\Http\Requests\SurveyPage\UpdateSurveyPageRequest;
+use App\Http\Requests\SurveyPage\ReorderSurveyPagesRequest;
 use App\Dtos\SurveyDto;
 use App\Dtos\SurveyPageDto;
 use App\Http\Controllers\Controller;
@@ -143,14 +144,9 @@ class SurveyController extends Controller
         return $result->toResponse();
     }
 
-    public function reorderPages(Request $request, int $surveyId): JsonResponse
+    public function reorderPages(ReorderSurveyPagesRequest $request, int $surveyId): JsonResponse
     {
-        $request->validate([
-            'page_ids' => 'required|array',
-            'page_ids.*' => 'integer|exists:survey_pages,id'
-        ]);
-
-        $result = $this->surveyPageService->reorder($surveyId, $request->page_ids);
+        $result = $this->surveyPageService->reorder($surveyId, $request->validated('page_ids'));
         return $result->toResponse();
     }
 } 
