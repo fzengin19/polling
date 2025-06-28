@@ -22,7 +22,7 @@ class CreateSurveyPageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'survey_id' => 'required|integer',
+            'survey_id' => 'required|integer|min:1',
             'title' => 'nullable|string|max:255',
             'order_index' => 'integer|min:0',
         ];
@@ -37,7 +37,7 @@ class CreateSurveyPageRequest extends FormRequest
     {
         return [
             'survey_id.required' => 'Survey ID is required.',
-            'survey_id.exists' => 'The selected survey does not exist.',
+            'survey_id.min' => 'Survey ID must be at least 1.',
             'title.max' => 'Page title cannot exceed 255 characters.',
             'order_index.min' => 'Order index must be at least 0.',
         ];

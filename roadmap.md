@@ -197,3 +197,8 @@
 
 > **Not:** Planın mevcut hali, ileride Dragonfly gibi bir in-memory cache ve batch senkronizasyon mimarisi için uygundur. Servis katmanında soyutlama ve task scheduling adımlarına dikkat et.
 
+
+
+
+
+bak sen gerizekalı mısın max min gibi kontroller de veri formatına dahil sayılır bunu akıl edemiyor musun? migration dosyalarına ve @roadmap.md  dosyasına bak ve bunlarla tutarlı şekilde tüm requestlerii kontrol et rulesleri ve bodyParameters methodunu düzgünce güncelle. request sınıfları min max regex type gibi şeyleri kontrol etcek ama exists gibi iş mantığı saılacak şeyler servis katmanında olcak bunu akıl etmek tutarlı korumak çok mu zor neyini anlamıyorsun anlamadıysan sor bana valla çok basit lan.

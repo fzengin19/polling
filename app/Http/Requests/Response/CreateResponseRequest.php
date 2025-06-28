@@ -22,8 +22,42 @@ class CreateResponseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'survey_id' => 'required|integer',
+            'survey_id' => 'required|integer|min:1',
             'metadata' => 'sometimes|array',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'survey_id.required' => 'Survey ID is required.',
+            'survey_id.min' => 'Survey ID must be at least 1.',
+        ];
+    }
+
+    /**
+     * Get body parameters for API documentation
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function bodyParameters(): array
+    {
+        return [
+            'survey_id' => [
+                'description' => 'ID of the survey to respond to',
+                'example' => 1,
+                'required' => true,
+            ],
+            'metadata' => [
+                'description' => 'Response metadata (IP, user_agent, etc.)',
+                'example' => ['ip' => '192.168.1.1', 'user_agent' => 'Mozilla/5.0...'],
+                'required' => false,
+            ],
         ];
     }
 } 

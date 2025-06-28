@@ -27,7 +27,7 @@ class UpdateSurveyRequest extends FormRequest
             'status' => 'sometimes|in:draft,active,archived',
             'settings' => 'nullable|array',
             'expires_at' => 'nullable|date',
-            'max_responses' => 'nullable|integer|min:1',
+            'max_responses' => 'nullable|integer|min:1|max:1000000',
         ];
     }
 
@@ -44,6 +44,7 @@ class UpdateSurveyRequest extends FormRequest
             'description.max' => 'Survey description cannot exceed 1000 characters.',
             'status.in' => 'Status must be draft, active, or archived.',
             'max_responses.min' => 'Maximum responses must be at least 1.',
+            'max_responses.max' => 'Maximum responses cannot exceed 1,000,000.',
         ];
     }
 

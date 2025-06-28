@@ -23,9 +23,9 @@ class CreateTemplateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:1000',
             'is_public' => 'boolean',
-            'forked_from_template_id' => 'nullable|integer',
+            'forked_from_template_id' => 'nullable|integer|min:1',
         ];
     }
 
@@ -40,7 +40,7 @@ class CreateTemplateRequest extends FormRequest
             'title.required' => 'Template title is required.',
             'title.max' => 'Template title cannot exceed 255 characters.',
             'description.max' => 'Template description cannot exceed 1000 characters.',
-            'forked_from_template_id.exists' => 'The selected template to fork from does not exist.',
+            'forked_from_template_id.min' => 'Forked template ID must be at least 1.',
         ];
     }
 

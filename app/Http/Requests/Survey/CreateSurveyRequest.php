@@ -23,13 +23,13 @@ class CreateSurveyRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:1000',
             'status' => 'required|in:draft,active,archived',
-            'template_id' => 'nullable|integer',
-            'template_version_id' => 'nullable|integer',
+            'template_id' => 'nullable|integer|min:1',
+            'template_version_id' => 'nullable|integer|min:1',
             'settings' => 'nullable|array',
             'expires_at' => 'nullable|date|after:now',
-            'max_responses' => 'nullable|integer|min:1',
+            'max_responses' => 'nullable|integer|min:1|max:1000000',
         ];
     }
 
@@ -45,10 +45,11 @@ class CreateSurveyRequest extends FormRequest
             'title.max' => 'Survey title cannot exceed 255 characters.',
             'description.max' => 'Survey description cannot exceed 1000 characters.',
             'status.in' => 'Status must be draft, active, or archived.',
-            'template_id.exists' => 'The selected template does not exist.',
-            'template_version_id.exists' => 'The selected template version does not exist.',
+            'template_id.min' => 'Template ID must be at least 1.',
+            'template_version_id.min' => 'Template version ID must be at least 1.',
             'expires_at.after' => 'Expiration date must be in the future.',
             'max_responses.min' => 'Maximum responses must be at least 1.',
+            'max_responses.max' => 'Maximum responses cannot exceed 1,000,000.',
         ];
     }
 
@@ -73,7 +74,7 @@ class CreateSurveyRequest extends FormRequest
             'status' => [
                 'description' => 'Survey status',
                 'example' => 'draft',
-                'required' => false,
+                'required' => true,
             ],
             'template_id' => [
                 'description' => 'ID of the template to base this survey on',
