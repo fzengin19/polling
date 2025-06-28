@@ -30,7 +30,7 @@ interface TemplateRepositoryInterface
     /**
      * Get templates by user ID and public status
      */
-    public function findByUserAndPublic(int $userId, bool $isPublic = null): Collection;
+    public function findByUserAndPublic(int $userId, ?bool $isPublic = null): Collection;
 
     /**
      * Create new template

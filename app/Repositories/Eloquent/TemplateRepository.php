@@ -32,7 +32,7 @@ class TemplateRepository implements TemplateRepositoryInterface
         return $this->model->where('is_public', true)->get();
     }
 
-    public function findByUserAndPublic(int $userId, bool $isPublic = null): Collection
+    public function findByUserAndPublic(int $userId, ?bool $isPublic = null): Collection
     {
         $query = $this->model->where('created_by', $userId);
         

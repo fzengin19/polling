@@ -5,9 +5,12 @@ namespace App\Services\Concrete;
 use App\Dtos\ChoiceDto;
 use App\Models\Choice;
 use App\Models\Question;
+use App\Models\SurveyPage;
+use App\Models\Survey;
 use App\Responses\ServiceResponse;
 use App\Responses\Concrete\ApiResourceMap;
 use App\Services\Abstract\ChoiceServiceInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ChoiceService implements ChoiceServiceInterface
@@ -21,20 +24,32 @@ class ChoiceService implements ChoiceServiceInterface
         try {
             DB::beginTransaction();
 
-            // Check if question exists
             $question = Question::find($dto->question_id);
             if (!$question) {
-                return new ServiceResponse(['error' => 'Question not found'], $this->resourceMap, 404);
+                DB::rollBack();
+                return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
+            }
+            
+            // Check if question type is multiple_choice
+            if ($question->type !== 'multiple_choice') {
+                DB::rollBack();
+                return new ServiceResponse(['errors' => ['question_id' => ['Choices can only be added to multiple_choice questions']]], $this->resourceMap, 422);
+            }
+            
+            // Check authorization
+            $surveyPage = SurveyPage::find($question->page_id);
+            $survey = $surveyPage ? Survey::find($surveyPage->survey_id) : null;
+            if (!$survey || $survey->created_by !== Auth::id()) {
+                DB::rollBack();
+                return new ServiceResponse(['message' => 'Forbidden'], $this->resourceMap, 403);
             }
 
             $choice = Choice::create($dto->toArray());
-            
             DB::commit();
-            return new ServiceResponse(['choice' => $choice], $this->resourceMap, 201);
-
+            return new ServiceResponse($choice, $this->resourceMap, 201);
         } catch (\Exception $e) {
             DB::rollBack();
-            return new ServiceResponse(['error' => $e->getMessage()], $this->resourceMap, 500);
+            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
         }
     }
 
@@ -43,22 +58,25 @@ class ChoiceService implements ChoiceServiceInterface
         try {
             $choice = Choice::find($id);
             if (!$choice) {
-                return new ServiceResponse(['error' => 'Choice not found'], $this->resourceMap, 404);
+                return new ServiceResponse(['message' => 'Choice not found'], $this->resourceMap, 404);
             }
-
-            // Check if question exists if question_id is being updated
-            if ($dto->question_id !== $choice->question_id) {
-                $question = Question::find($dto->question_id);
-                if (!$question) {
-                    return new ServiceResponse(['error' => 'Question not found'], $this->resourceMap, 404);
-                }
+            $question = Question::find($choice->question_id);
+            if (!$question) {
+                return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
             }
-
-            $choice->update($dto->toArray());
-            return new ServiceResponse(['choice' => $choice], $this->resourceMap, 200);
-
+            $surveyPage = SurveyPage::find($question->page_id);
+            $survey = $surveyPage ? Survey::find($surveyPage->survey_id) : null;
+            if (!$survey || $survey->created_by !== Auth::id()) {
+                return new ServiceResponse(['message' => 'Forbidden'], $this->resourceMap, 403);
+            }
+            $choice->update([
+                'label' => $dto->label,
+                'value' => $dto->value,
+                'order_index' => $dto->order_index,
+            ]);
+            return new ServiceResponse($choice, $this->resourceMap, 200);
         } catch (\Exception $e) {
-            return new ServiceResponse(['error' => $e->getMessage()], $this->resourceMap, 500);
+            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
         }
     }
 
@@ -67,57 +85,61 @@ class ChoiceService implements ChoiceServiceInterface
         try {
             $choice = Choice::find($id);
             if (!$choice) {
-                return new ServiceResponse(['error' => 'Choice not found'], $this->resourceMap, 404);
+                return new ServiceResponse(['message' => 'Choice not found'], $this->resourceMap, 404);
             }
-
+            $question = Question::find($choice->question_id);
+            if (!$question) {
+                return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
+            }
+            $surveyPage = SurveyPage::find($question->page_id);
+            $survey = $surveyPage ? Survey::find($surveyPage->survey_id) : null;
+            if (!$survey || $survey->created_by !== Auth::id()) {
+                return new ServiceResponse(['message' => 'Forbidden'], $this->resourceMap, 403);
+            }
             $choice->delete();
             return new ServiceResponse(['message' => 'Choice deleted successfully'], $this->resourceMap, 200);
-
         } catch (\Exception $e) {
-            return new ServiceResponse(['error' => $e->getMessage()], $this->resourceMap, 500);
+            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
         }
     }
 
     public function getByQuestion(int $questionId): ServiceResponse
     {
         try {
-            // Check if question exists
             $question = Question::find($questionId);
             if (!$question) {
-                return new ServiceResponse(['error' => 'Question not found'], $this->resourceMap, 404);
+                return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
             }
-
             $choices = $question->choices()->orderBy('order_index')->get();
-            return new ServiceResponse(['choices' => $choices], $this->resourceMap, 200);
-
+            return new ServiceResponse(['data' => $choices], $this->resourceMap, 200);
         } catch (\Exception $e) {
-            return new ServiceResponse(['error' => $e->getMessage()], $this->resourceMap, 500);
+            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
         }
     }
 
-    public function reorder(int $questionId, array $choiceIds): ServiceResponse
+    public function reorder(int $questionId, array $choices): ServiceResponse
     {
         try {
-            // Check if question exists
             $question = Question::find($questionId);
             if (!$question) {
-                return new ServiceResponse(['error' => 'Question not found'], $this->resourceMap, 404);
+                return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
             }
-
-            foreach ($choiceIds as $index => $choiceId) {
-                $choice = Choice::where('id', $choiceId)
+            $surveyPage = SurveyPage::find($question->page_id);
+            $survey = $surveyPage ? Survey::find($surveyPage->survey_id) : null;
+            if (!$survey || $survey->created_by !== Auth::id()) {
+                return new ServiceResponse(['message' => 'Forbidden'], $this->resourceMap, 403);
+            }
+            foreach ($choices as $choiceData) {
+                $choice = Choice::where('id', $choiceData['id'])
                     ->where('question_id', $questionId)
                     ->first();
-                
                 if ($choice) {
-                    $choice->update(['order_index' => $index]);
+                    $choice->update(['order_index' => $choiceData['order_index']]);
                 }
             }
-
             return new ServiceResponse(['message' => 'Choices reordered successfully'], $this->resourceMap, 200);
-
         } catch (\Exception $e) {
-            return new ServiceResponse(['error' => $e->getMessage()], $this->resourceMap, 500);
+            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
         }
     }
 } 

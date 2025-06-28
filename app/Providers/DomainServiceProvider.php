@@ -18,6 +18,8 @@ use App\Services\Abstract\MediaServiceInterface;
 use App\Services\Concrete\MediaService;
 use App\Services\Abstract\ChoiceServiceInterface;
 use App\Services\Concrete\ChoiceService;
+use App\Services\Abstract\ResponseServiceInterface;
+use App\Services\Concrete\ResponseService;
 use Illuminate\Support\ServiceProvider;
 
 class DomainServiceProvider extends ServiceProvider
@@ -35,6 +37,7 @@ class DomainServiceProvider extends ServiceProvider
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
         $this->app->bind(MediaServiceInterface::class, MediaService::class);
         $this->app->bind(ChoiceServiceInterface::class, ChoiceService::class);
+        $this->app->bind(ResponseServiceInterface::class, ResponseService::class);
     }
 
     /**

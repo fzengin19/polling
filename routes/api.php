@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\SurveyController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\EnhancedMediaController;
+use App\Http\Controllers\Api\ChoiceController;
+use App\Http\Controllers\Api\ResponseController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -53,6 +55,9 @@ Route::prefix('surveys')->group(function () {
     Route::put('/pages/{id}', [SurveyController::class, 'updatePage'])->middleware('auth:sanctum');
     Route::delete('/pages/{id}', [SurveyController::class, 'destroyPage'])->middleware('auth:sanctum');
     Route::post('/{surveyId}/pages/reorder', [SurveyController::class, 'reorderPages'])->middleware('auth:sanctum');
+    
+    // Survey Response Statistics
+    Route::get('/{id}/responses', [SurveyController::class, 'responseStatistics']);
 });
 
 // Question management
@@ -65,6 +70,28 @@ Route::prefix('survey-pages/{surveyPageId}')->group(function () {
 Route::get('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'show']);
 Route::put('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'update']);
 Route::delete('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'destroy']);
+
+// Choice management
+Route::prefix('choices')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [ChoiceController::class, 'index']);
+    Route::post('/', [ChoiceController::class, 'store']);
+    Route::get('/{id}', [ChoiceController::class, 'show']);
+    Route::put('/{id}', [ChoiceController::class, 'update']);
+    Route::delete('/{id}', [ChoiceController::class, 'destroy']);
+});
+
+// Question choices
+Route::prefix('questions/{questionId}')->group(function () {
+    Route::get('choices', [ChoiceController::class, 'getByQuestion']);
+    Route::post('choices/reorder', [ChoiceController::class, 'reorder'])->middleware('auth:sanctum');
+});
+
+// Response management
+Route::prefix('responses')->group(function () {
+    Route::post('/', [ResponseController::class, 'store']);
+    Route::get('/{id}', [ResponseController::class, 'show']);
+    Route::post('/{id}/submit', [ResponseController::class, 'submit']);
+});
 
 // Role management
 Route::prefix('roles')->middleware('auth:sanctum')->group(function () {

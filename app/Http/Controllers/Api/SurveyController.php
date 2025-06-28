@@ -14,12 +14,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Abstract\ResponseServiceInterface;
 
 class SurveyController extends Controller
 {
     public function __construct(
         protected SurveyServiceInterface $surveyService,
-        protected SurveyPageServiceInterface $surveyPageService
+        protected SurveyPageServiceInterface $surveyPageService,
+        protected ResponseServiceInterface $responseService
     ) {}
 
     public function index(): JsonResponse
@@ -99,6 +101,12 @@ class SurveyController extends Controller
     public function duplicate(int $id): JsonResponse
     {
         $result = $this->surveyService->duplicate($id);
+        return $result->toResponse();
+    }
+
+    public function responseStatistics(int $id): JsonResponse
+    {
+        $result = $this->responseService->getStatistics($id);
         return $result->toResponse();
     }
 

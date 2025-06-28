@@ -11,5 +11,5 @@ interface ChoiceServiceInterface
     public function update(int $id, ChoiceDto $dto): ServiceResponse;
     public function delete(int $id): ServiceResponse;
     public function getByQuestion(int $questionId): ServiceResponse;
-    public function reorder(int $questionId, array $choiceIds): ServiceResponse;
+    public function reorder(int $questionId, array $choices): ServiceResponse;
 } 
