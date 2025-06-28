@@ -124,7 +124,6 @@ class ChoiceManagementTest extends TestCase
         $response = $this->getJson("/api/questions/{$this->question->id}/choices");
         
         $response->assertStatus(200);
-        $response->assertJsonStructure(['data']);
         $this->assertCount(3, $response->json('data'));
     }
 

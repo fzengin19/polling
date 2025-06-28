@@ -4,7 +4,7 @@ namespace App\Dtos;
 
 class QuestionDto
 {
-    public int $page_id;
+    public ?int $page_id;
     public string $type;
     public string $title;
     public bool $is_required;
@@ -15,7 +15,7 @@ class QuestionDto
 
     public function __construct(array $data)
     {
-        $this->page_id = $data['page_id'];
+        $this->page_id = $data['page_id'] ?? null;
         $this->type = $data['type'];
         $this->title = $data['title'];
         $this->is_required = (bool)($data['is_required'] ?? false);
@@ -27,8 +27,7 @@ class QuestionDto
 
     public function toArray(): array
     {
-        return [
-            'page_id' => $this->page_id,
+        $array = [
             'type' => $this->type,
             'title' => $this->title,
             'is_required' => $this->is_required,
@@ -37,5 +36,11 @@ class QuestionDto
             'config' => $this->config,
             'order_index' => $this->order_index,
         ];
+        
+        if ($this->page_id !== null) {
+            $array['page_id'] = $this->page_id;
+        }
+        
+        return $array;
     }
 } 

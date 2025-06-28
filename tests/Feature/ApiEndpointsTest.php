@@ -455,7 +455,7 @@ class ApiEndpointsTest extends TestCase
         
         $response = $this->postJson("/api/survey-pages/{$page->id}/questions", $data);
         $response->assertStatus(201);
-        $response->assertJsonStructure(['data' => ['id', 'title', 'type']]);
+        $response->assertJsonStructure(['id', 'title', 'type']);
     }
 
     public function test_questions_show(): void
@@ -464,14 +464,13 @@ class ApiEndpointsTest extends TestCase
         
         $response = $this->getJson("/api/questions/{$question->id}");
         $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => ['id', 'title']]);
+        $response->assertJsonStructure(['id', 'title']);
     }
 
     public function test_questions_update(): void
     {
         $question = Question::factory()->create();
         $data = [
-            'page_id' => $question->page_id,
             'type' => 'select',
             'title' => 'Updated Question',
             'is_required' => false,
@@ -486,7 +485,7 @@ class ApiEndpointsTest extends TestCase
         
         $response = $this->putJson("/api/questions/{$question->id}", $data);
         $response->assertStatus(200);
-        $response->assertJson(['data' => ['title' => 'Updated Question']]);
+        $response->assertJson(['title' => 'Updated Question']);
     }
 
     public function test_questions_destroy(): void

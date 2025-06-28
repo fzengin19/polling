@@ -5,7 +5,7 @@ namespace App\Dtos;
 class SurveyPageDto
 {
     public function __construct(
-        public readonly int $surveyId,
+        public readonly ?int $surveyId,
         public readonly ?string $title,
         public readonly ?int $orderIndex = null
     ) {}
@@ -16,7 +16,7 @@ class SurveyPageDto
     public static function fromArray(array $data): self
     {
         return new self(
-            surveyId: $data['survey_id'],
+            surveyId: $data['survey_id'] ?? null,
             title: $data['title'] ?? null,
             orderIndex: $data['order_index'] ?? null
         );
@@ -27,10 +27,15 @@ class SurveyPageDto
      */
     public function toArray(): array
     {
-        return [
-            'survey_id' => $this->surveyId,
+        $array = [
             'title' => $this->title,
             'order_index' => $this->orderIndex,
         ];
+        
+        if ($this->surveyId !== null) {
+            $array['survey_id'] = $this->surveyId;
+        }
+        
+        return $array;
     }
 } 

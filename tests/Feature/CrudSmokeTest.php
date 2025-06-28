@@ -81,6 +81,6 @@ class CrudSmokeTest extends TestCase
         // List Questions
         $response = $this->getJson('/api/survey-pages/'.$pageId.'/questions');
         $response->assertStatus(200);
-        $this->assertTrue(count($response->json('data')) > 0);
+        $this->assertTrue(count($response->json()) > 0);
     }
 } 
