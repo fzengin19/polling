@@ -6,8 +6,6 @@ use App\Dtos\QuestionDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\CreateQuestionRequest;
 use App\Http\Requests\Question\UpdateQuestionRequest;
-use App\Http\Resources\QuestionResource;
-use App\Models\Question;
 use App\Services\Abstract\QuestionServiceInterface;
 use Illuminate\Http\Request;
 
@@ -17,45 +15,34 @@ class QuestionController extends Controller
 
     public function index(Request $request, $surveyPageId)
     {
-        $questions = $this->questions->getBySurveyPage($surveyPageId);
-        return QuestionResource::collection($questions);
+        $result = $this->questions->getBySurveyPage($surveyPageId);
+        return $result->toResponse();
     }
 
     public function show($id)
     {
-        $question = $this->questions->findById($id);
-        if (!$question) {
-            return response()->json(['message' => 'Question not found'], 404);
-        }
-        return new QuestionResource($question);
+        $result = $this->questions->findById($id);
+        return $result->toResponse();
     }
 
     public function store(CreateQuestionRequest $request)
     {
         $dto = new QuestionDto($request->validated());
-        $question = $this->questions->create($dto);
-        return new QuestionResource($question);
+        $result = $this->questions->create($dto);
+        return $result->toResponse();
     }
 
     public function update(UpdateQuestionRequest $request, $id)
     {
-        $question = $this->questions->findById($id);
-        if (!$question) {
-            return response()->json(['message' => 'Question not found'], 404);
-        }
-        $dto = new QuestionDto(array_merge($question->toArray(), $request->validated()));
-        $question = $this->questions->update($question, $dto);
-        return new QuestionResource($question);
+        $dto = new QuestionDto($request->validated());
+        $result = $this->questions->update($id, $dto);
+        return $result->toResponse();
     }
 
     public function destroy($id)
     {
-        $question = $this->questions->findById($id);
-        if (!$question) {
-            return response()->json(['message' => 'Question not found'], 404);
-        }
-        $this->questions->delete($question);
-        return response()->json(['message' => 'Question deleted']);
+        $result = $this->questions->delete($id);
+        return $result->toResponse();
     }
 
     public function reorder(Request $request, $surveyPageId)
@@ -64,13 +51,13 @@ class QuestionController extends Controller
             'question_ids' => 'required|array',
             'question_ids.*' => 'integer|exists:questions,id',
         ]);
-        $this->questions->reorder($surveyPageId, $request->question_ids);
-        return response()->json(['message' => 'Questions reordered']);
+        $result = $this->questions->reorder($surveyPageId, $request->question_ids);
+        return $result->toResponse();
     }
 
     public function byType(Request $request, $surveyPageId, $type)
     {
-        $questions = $this->questions->getByType($surveyPageId, $type);
-        return QuestionResource::collection($questions);
+        $result = $this->questions->getByType($surveyPageId, $type);
+        return $result->toResponse();
     }
 } 

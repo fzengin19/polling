@@ -22,6 +22,8 @@ class ApiResourceMap implements ResourceMapInterface
         'surveys' => SurveyResource::class,
         'survey_page' => SurveyPageResource::class,
         'survey_pages' => SurveyPageResource::class,
+        'question' => \App\Http\Resources\QuestionResource::class,
+        'questions' => \App\Http\Resources\QuestionResource::class,
     ];
 
     public function resolve(string $key): ?string
