@@ -2,13 +2,23 @@
 
 namespace App\Dtos;
 
-class RoleAssignmentDto
+use App\Core\BaseDto;
+
+class RoleAssignmentDto extends BaseDto
 {
+    public readonly string $roleName;
+    public readonly ?int $userId;
+    public readonly ?int $surveyId;
+
     public function __construct(
-        public readonly string $roleName,
-        public readonly ?int $userId = null,
-        public readonly ?int $surveyId = null
-    ) {}
+        string $roleName,
+        ?int $userId = null,
+        ?int $surveyId = null
+    ) {
+        $this->roleName = $roleName;
+        $this->userId = $userId;
+        $this->surveyId = $surveyId;
+    }
 
     /**
      * Create DTO from array
@@ -18,19 +28,7 @@ class RoleAssignmentDto
         return new self(
             roleName: $data['role_name'],
             userId: $data['user_id'] ?? null,
-            surveyId: $data['survey_id'] ?? null
+            surveyId: $data['survey_id'] ?? null,
         );
-    }
-
-    /**
-     * Convert to array for database operations
-     */
-    public function toArray(): array
-    {
-        return [
-            'role_name' => $this->roleName,
-            'user_id' => $this->userId,
-            'survey_id' => $this->surveyId,
-        ];
     }
 } 

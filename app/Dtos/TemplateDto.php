@@ -2,14 +2,17 @@
 
 namespace App\Dtos;
 
-class TemplateDto
+use App\Core\BaseDto;
+
+class TemplateDto extends BaseDto
 {
     public function __construct(
         public readonly string $title,
-        public readonly ?string $description,
-        public readonly bool $isPublic,
-        public readonly int $createdBy,
-        public readonly ?int $forkedFromTemplateId = null
+        public readonly ?string $description = null,
+        public readonly bool $is_public = false,
+        public readonly ?int $created_by = null,
+        public readonly ?int $forked_from_template_id = null,
+        public readonly ?int $id = null,
     ) {}
 
     /**
@@ -20,23 +23,10 @@ class TemplateDto
         return new self(
             title: $data['title'],
             description: $data['description'] ?? null,
-            isPublic: $data['is_public'] ?? false,
-            createdBy: $data['created_by'],
-            forkedFromTemplateId: $data['forked_from_template_id'] ?? null
+            is_public: $data['is_public'] ?? false,
+            created_by: $data['created_by'] ?? null,
+            forked_from_template_id: $data['forked_from_template_id'] ?? null,
+            id: $data['id'] ?? null,
         );
-    }
-
-    /**
-     * Convert to array for database operations
-     */
-    public function toArray(): array
-    {
-        return [
-            'title' => $this->title,
-            'description' => $this->description,
-            'is_public' => $this->isPublic,
-            'created_by' => $this->createdBy,
-            'forked_from_template_id' => $this->forkedFromTemplateId,
-        ];
     }
 } 

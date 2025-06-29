@@ -16,6 +16,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Abstract\ResponseServiceInterface;
+use App\Services\Abstract\ServiceResponse;
+use App\Services\Abstract\ApiResourceMap;
+use App\Http\Resources\SurveyResource;
+use App\Http\Resources\SurveyPageResource;
 
 class SurveyController extends Controller
 {
@@ -114,39 +118,38 @@ class SurveyController extends Controller
     // Survey Page Management
     public function pages(int $surveyId): JsonResponse
     {
-        $result = $this->surveyPageService->getOrderedPages($surveyId);
+        $result = $this->surveyPageService->getPagesBySurveyId($surveyId);
         return $result->toResponse();
     }
 
     public function storePage(CreateSurveyPageRequest $request): JsonResponse
     {
         $dto = SurveyPageDto::fromArray($request->validated());
-        $result = $this->surveyPageService->create($dto);
+        $result = $this->surveyPageService->createPage($dto);
         return $result->toResponse();
     }
 
     public function showPage(int $id): JsonResponse
     {
-        $result = $this->surveyPageService->find($id);
+        $result = $this->surveyPageService->findPage($id);
         return $result->toResponse();
     }
 
     public function updatePage(UpdateSurveyPageRequest $request, int $id): JsonResponse
     {
-        $dto = SurveyPageDto::fromArray($request->validated());
-        $result = $this->surveyPageService->update($id, $dto);
+        $result = $this->surveyPageService->updatePage($id, $request->validated());
         return $result->toResponse();
     }
 
     public function destroyPage(int $id): JsonResponse
     {
-        $result = $this->surveyPageService->delete($id);
+        $result = $this->surveyPageService->deletePage($id);
         return $result->toResponse();
     }
 
     public function reorderPages(ReorderSurveyPagesRequest $request, int $surveyId): JsonResponse
     {
-        $result = $this->surveyPageService->reorder($surveyId, $request->validated('page_ids'));
+        $result = $this->surveyPageService->reorderPages($surveyId, $request->validated()['page_ids']);
         return $result->toResponse();
     }
 } 

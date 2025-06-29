@@ -2,16 +2,11 @@
 
 namespace App\Repositories\Abstract;
 
-use App\Models\SurveyPage;
+use App\Core\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-interface SurveyPageRepositoryInterface
+interface SurveyPageRepositoryInterface extends BaseRepositoryInterface
 {
-    /**
-     * Find page by ID
-     */
-    public function find(int $id): ?SurveyPage;
-
     /**
      * Get all pages for a survey
      */
@@ -28,22 +23,7 @@ interface SurveyPageRepositoryInterface
     public function getNextOrderIndex(int $surveyId): int;
 
     /**
-     * Create new page
-     */
-    public function create(array $data): SurveyPage;
-
-    /**
-     * Update page
-     */
-    public function update(SurveyPage $page, array $data): bool;
-
-    /**
-     * Delete page
-     */
-    public function delete(SurveyPage $page): bool;
-
-    /**
      * Reorder pages
      */
-    public function reorder(int $surveyId, array $pageIds): bool;
+    public function reorder(array $pageIds): void;
 } 

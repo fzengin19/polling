@@ -251,22 +251,12 @@ class ValidationErrorTest extends TestCase
         $this->actingAs($this->user, 'sanctum');
 
         // Test required fields
-        $response = $this->postJson('/api/choices', []);
+        $response = $this->postJson("/api/questions/{$this->question->id}/choices", []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['question_id', 'label', 'value']);
-
-        // Test question_id min value
-        $response = $this->postJson('/api/choices', [
-            'question_id' => 0,
-            'label' => 'Test Choice',
-            'value' => 'test',
-        ]);
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['question_id']);
+        $response->assertJsonValidationErrors(['label', 'value']);
 
         // Test label max length
-        $response = $this->postJson('/api/choices', [
-            'question_id' => $this->question->id,
+        $response = $this->postJson("/api/questions/{$this->question->id}/choices", [
             'label' => str_repeat('a', 256),
             'value' => 'test',
         ]);
@@ -274,8 +264,7 @@ class ValidationErrorTest extends TestCase
         $response->assertJsonValidationErrors(['label']);
 
         // Test value max length
-        $response = $this->postJson('/api/choices', [
-            'question_id' => $this->question->id,
+        $response = $this->postJson("/api/questions/{$this->question->id}/choices", [
             'label' => 'Test Choice',
             'value' => str_repeat('a', 256),
         ]);
@@ -283,8 +272,7 @@ class ValidationErrorTest extends TestCase
         $response->assertJsonValidationErrors(['value']);
 
         // Test order_index min value
-        $response = $this->postJson('/api/choices', [
-            'question_id' => $this->question->id,
+        $response = $this->postJson("/api/questions/{$this->question->id}/choices", [
             'label' => 'Test Choice',
             'value' => 'test',
             'order_index' => -1,

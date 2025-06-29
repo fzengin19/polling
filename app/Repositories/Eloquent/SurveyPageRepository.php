@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Core\BaseRepository;
 use App\Models\SurveyPage;
 use App\Repositories\Abstract\SurveyPageRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-class SurveyPageRepository implements SurveyPageRepositoryInterface
+class SurveyPageRepository extends BaseRepository implements SurveyPageRepositoryInterface
 {
-    public function __construct(
-        protected SurveyPage $model
-    ) {}
-
-    public function find(int $id): ?SurveyPage
+    public function __construct(SurveyPage $model)
     {
-        return $this->model->find($id);
+        parent::__construct($model);
     }
 
     public function findBySurvey(int $surveyId): Collection
@@ -25,50 +22,30 @@ class SurveyPageRepository implements SurveyPageRepositoryInterface
 
     public function getOrderedPages(int $surveyId): Collection
     {
-        return $this->model->where('survey_id', $surveyId)
-            ->orderBy('order_index', 'asc')
-            ->get();
+        return $this->model->where('survey_id', $surveyId)->orderBy('order_index')->get();
     }
 
     public function getNextOrderIndex(int $surveyId): int
     {
-        $maxOrder = $this->model->where('survey_id', $surveyId)
-            ->max('order_index');
-        
-        return ($maxOrder ?? -1) + 1;
+        return $this->model->where('survey_id', $surveyId)->max('order_index') + 1;
     }
 
-    public function create(array $data): SurveyPage
+    public function reorder(array $pageIds): void
     {
-        return $this->model->create($data);
-    }
+        if (empty($pageIds)) {
+            return;
+        }
 
-    public function update(SurveyPage $page, array $data): bool
-    {
-        return $page->update($data);
-    }
-
-    public function delete(SurveyPage $page): bool
-    {
-        return $page->delete();
-    }
-
-    public function reorder(int $surveyId, array $pageIds): bool
-    {
-        return DB::transaction(function () use ($surveyId, $pageIds) {
-            // 1. Her sayfanın order_index'ini geçici büyük değere ata
-            $pages = $this->model->whereIn('id', $pageIds)->get();
-            foreach ($pages as $page) {
-                $page->order_index = $page->order_index + 1000;
-                $page->save();
-            }
-            // 2. Yeni sıralamaya göre gerçek order_index ata
+        DB::transaction(function () use ($pageIds) {
+            $baseOrder = $this->model->max('order_index') + 1;
+            
             foreach ($pageIds as $index => $pageId) {
-                $this->model->where('id', $pageId)
-                    ->where('survey_id', $surveyId)
-                    ->update(['order_index' => $index]);
+                $this->model->where('id', $pageId)->update(['order_index' => $baseOrder + $index]);
             }
-            return true;
+
+            foreach ($pageIds as $index => $pageId) {
+                $this->model->where('id', $pageId)->update(['order_index' => $index]);
+            }
         });
     }
 } 

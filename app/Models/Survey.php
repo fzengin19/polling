@@ -90,36 +90,6 @@ class Survey extends Model implements HasMedia
     }
 
     /**
-     * Check if survey is active
-     */
-    public function isActive(): bool
-    {
-        return $this->status === 'active';
-    }
-
-    /**
-     * Check if survey is expired
-     */
-    public function isExpired(): bool
-    {
-        return $this->expires_at && $this->expires_at->isPast();
-    }
-
-    /**
-     * Check if survey can accept more responses
-     */
-    public function canAcceptResponses(): bool
-    {
-        if ($this->isExpired()) {
-            return false;
-        }
-        if ($this->max_responses !== null && $this->responses_count !== null) {
-            return $this->responses_count < $this->max_responses;
-        }
-        return true;
-    }
-
-    /**
      * Register media collections
      */
     public function registerMediaCollections(): void

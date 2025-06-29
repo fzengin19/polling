@@ -19,15 +19,7 @@ class ResponseController extends Controller
 
     public function store(CreateResponseRequest $request): JsonResponse
     {
-        $dto = new ResponseDto(
-            id: null,
-            survey_id: $request->validated('survey_id'),
-            user_id: Auth::id(),
-            started_at: null,
-            submitted_at: null,
-            metadata: $request->validated('metadata'),
-            is_complete: false,
-        );
+        $dto = ResponseDto::fromArray($request->validated());
 
         $result = $this->responseService->create($dto);
         return $result->toResponse();

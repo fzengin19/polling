@@ -3,9 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Core\BaseRepository;
-use App\Dtos\ChoiceDto;
 use App\Models\Choice;
 use App\Repositories\Abstract\ChoiceRepositoryInterface;
+use Illuminate\Support\Collection;
 
 class ChoiceRepository extends BaseRepository implements ChoiceRepositoryInterface
 {
@@ -14,33 +14,24 @@ class ChoiceRepository extends BaseRepository implements ChoiceRepositoryInterfa
         parent::__construct($model);
     }
 
-    public function findByQuestion(int $questionId): array
+    public function findByQuestion(int $questionId): Collection
     {
-        $choices = $this->model->where('question_id', $questionId)
+        return $this->model->where('question_id', $questionId)
             ->orderBy('order_index')
             ->get();
-
-        return $choices->map(fn($choice) => ChoiceDto::fromArray($choice->toArray()))->toArray();
     }
 
-    public function reorder(int $questionId, array $choiceIds): bool
+    public function reorder(int $questionId, array $choicesData): void
     {
-        foreach ($choiceIds as $index => $choiceId) {
-            $this->model->where('id', $choiceId)
+        foreach ($choicesData as $choiceData) {
+            $this->model->where('id', $choiceData['id'])
                 ->where('question_id', $questionId)
-                ->update(['order_index' => $index]);
+                ->update(['order_index' => $choiceData['order_index']]);
         }
-
-        return true;
     }
 
-    protected function dtoToArray($dto): array
+    public function getNextOrderIndex(int $questionId): int
     {
-        return $dto->toArray();
-    }
-
-    protected function modelToDto($model): ChoiceDto
-    {
-        return ChoiceDto::fromArray($model->toArray());
+        return $this->model->where('question_id', $questionId)->max('order_index') + 1;
     }
 } 

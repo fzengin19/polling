@@ -2,25 +2,17 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Core\BaseRepository;
 use App\Models\Survey;
 use App\Repositories\Abstract\SurveyRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
 
-class SurveyRepository implements SurveyRepositoryInterface
+class SurveyRepository extends BaseRepository implements SurveyRepositoryInterface
 {
-    public function __construct(
-        protected Survey $model
-    ) {}
-
-    public function find(int $id): ?Survey
+    public function __construct(Survey $model)
     {
-        return $this->model->find($id);
-    }
-
-    public function all(): Collection
-    {
-        return $this->model->all();
+        parent::__construct($model);
     }
 
     public function findByUser(int $userId): Collection
@@ -48,21 +40,6 @@ class SurveyRepository implements SurveyRepositoryInterface
     public function findByTemplate(int $templateId): Collection
     {
         return $this->model->where('template_id', $templateId)->get();
-    }
-
-    public function create(array $data): Survey
-    {
-        return $this->model->create($data);
-    }
-
-    public function update(Survey $survey, array $data): bool
-    {
-        return $survey->update($data);
-    }
-
-    public function delete(Survey $survey): bool
-    {
-        return $survey->delete();
     }
 
     public function getExpiredSurveys(): Collection

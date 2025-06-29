@@ -14,7 +14,6 @@ class CreateQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page_id' => 'required|integer|min:1',
             'type' => 'required|string|max:50',
             'title' => 'required|string|max:255',
             'is_required' => 'boolean',
@@ -28,8 +27,6 @@ class CreateQuestionRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'page_id.required' => 'Page ID is required.',
-            'page_id.min' => 'Page ID must be at least 1.',
             'type.required' => 'Question type is required.',
             'type.max' => 'Question type cannot exceed 50 characters.',
             'title.required' => 'Question title is required.',
@@ -43,11 +40,6 @@ class CreateQuestionRequest extends FormRequest
     public function bodyParameters(): array
     {
         return [
-            'page_id' => [
-                'description' => 'ID of the survey page this question belongs to',
-                'example' => 1,
-                'required' => true,
-            ],
             'type' => [
                 'description' => 'Question type (text, multiple_choice, rating, etc.)',
                 'example' => 'multiple_choice',

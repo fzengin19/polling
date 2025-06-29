@@ -2,26 +2,20 @@
 
 namespace App\Dtos;
 
-class SubmitResponseDto
+use App\Core\BaseDto;
+
+class SubmitResponseDto extends BaseDto
 {
     public function __construct(
-        public int $responseId,
-        public array $answers,
+        public readonly int $responseId,
+        public readonly array $answers, // array of AnswerDto
     ) {}
 
     public static function fromArray(array $data): self
     {
         return new self(
             responseId: $data['response_id'],
-            answers: $data['answers'],
+            answers: $data['answers']
         );
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'response_id' => $this->responseId,
-            'answers' => $this->answers,
-        ];
     }
 } 

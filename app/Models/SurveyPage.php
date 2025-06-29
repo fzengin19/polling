@@ -49,29 +49,6 @@ class SurveyPage extends Model implements HasMedia
     }
 
     /**
-     * Get next page
-     */
-    public function getNextPage(): ?self
-    {
-        return $this->survey->pages()
-            ->where('order_index', '>', $this->order_index)
-            ->ordered()
-            ->first();
-    }
-
-    /**
-     * Get previous page
-     */
-    public function getPreviousPage(): ?self
-    {
-        return $this->survey->pages()
-            ->where('order_index', '<', $this->order_index)
-            ->ordered()
-            ->orderBy('order_index', 'desc')
-            ->first();
-    }
-
-    /**
      * Register media collections
      */
     public function registerMediaCollections(): void

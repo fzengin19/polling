@@ -3,10 +3,11 @@
 namespace App\Repositories\Abstract;
 
 use App\Core\BaseRepositoryInterface;
-use App\Dtos\ChoiceDto;
+use Illuminate\Support\Collection;
 
 interface ChoiceRepositoryInterface extends BaseRepositoryInterface
 {
-    public function findByQuestion(int $questionId): array;
-    public function reorder(int $questionId, array $choiceIds): bool;
+    public function findByQuestion(int $questionId): Collection;
+    public function reorder(int $questionId, array $choicesData): void;
+    public function getNextOrderIndex(int $questionId): int;
 } 

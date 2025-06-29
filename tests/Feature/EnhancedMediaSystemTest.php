@@ -279,13 +279,15 @@ class EnhancedMediaSystemTest extends TestCase
 
     public function test_returns_400_when_no_file_provided()
     {
-        $response = $this->actingAs($this->user)
+        $this->actingAs($this->user, 'sanctum');
+
+        $response = $this
             ->postJson("/api/enhanced-media/survey/{$this->survey->id}/upload", [
                 'collection' => 'survey-banners'
             ]);
 
-        $response->assertStatus(400)
-            ->assertJson(['message' => 'No file provided']);
+        $response->assertStatus(422)
+            ->assertJsonValidationErrorFor('file');
     }
 
     public function test_requires_authentication()

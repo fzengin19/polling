@@ -2,24 +2,16 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Core\BaseRepository;
 use App\Models\Template;
 use App\Repositories\Abstract\TemplateRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-class TemplateRepository implements TemplateRepositoryInterface
+class TemplateRepository extends BaseRepository implements TemplateRepositoryInterface
 {
-    public function __construct(
-        protected Template $model
-    ) {}
-
-    public function find(int $id): ?Template
+    public function __construct(Template $model)
     {
-        return $this->model->find($id);
-    }
-
-    public function all(): Collection
-    {
-        return $this->model->all();
+        parent::__construct($model);
     }
 
     public function findByUser(int $userId): Collection
@@ -35,27 +27,10 @@ class TemplateRepository implements TemplateRepositoryInterface
     public function findByUserAndPublic(int $userId, ?bool $isPublic = null): Collection
     {
         $query = $this->model->where('created_by', $userId);
-        
         if ($isPublic !== null) {
             $query->where('is_public', $isPublic);
         }
-        
         return $query->get();
-    }
-
-    public function create(array $data): Template
-    {
-        return $this->model->create($data);
-    }
-
-    public function update(Template $template, array $data): bool
-    {
-        return $template->update($data);
-    }
-
-    public function delete(Template $template): bool
-    {
-        return $template->delete();
     }
 
     public function getForks(int $templateId): Collection

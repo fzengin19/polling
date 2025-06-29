@@ -2,16 +2,12 @@
 
 namespace App\Repositories\Abstract;
 
+use App\Core\BaseRepositoryInterface;
 use App\Models\TemplateVersion;
 use Illuminate\Database\Eloquent\Collection;
 
-interface TemplateVersionRepositoryInterface
+interface TemplateVersionRepositoryInterface extends BaseRepositoryInterface
 {
-    /**
-     * Find version by ID
-     */
-    public function find(int $id): ?TemplateVersion;
-
     /**
      * Get all versions for a template
      */
@@ -21,14 +17,4 @@ interface TemplateVersionRepositoryInterface
      * Get latest version for a template
      */
     public function getLatestVersion(int $templateId): ?TemplateVersion;
-
-    /**
-     * Create new version
-     */
-    public function create(array $data): TemplateVersion;
-
-    /**
-     * Delete version
-     */
-    public function delete(TemplateVersion $version): bool;
 } 

@@ -2,45 +2,35 @@
 
 namespace App\Dtos;
 
-class QuestionDto
-{
-    public ?int $page_id;
-    public string $type;
-    public string $title;
-    public bool $is_required;
-    public ?string $help_text;
-    public ?string $placeholder;
-    public ?array $config;
-    public int $order_index;
+use App\Core\BaseDto;
 
-    public function __construct(array $data)
-    {
-        $this->page_id = $data['page_id'] ?? null;
-        $this->type = $data['type'];
-        $this->title = $data['title'];
-        $this->is_required = (bool)($data['is_required'] ?? false);
-        $this->help_text = $data['help_text'] ?? null;
-        $this->placeholder = $data['placeholder'] ?? null;
-        $this->config = $data['config'] ?? null;
-        $this->order_index = $data['order_index'] ?? 0;
+class QuestionDto extends BaseDto
+{
+    public function __construct(
+        public readonly string $title,
+        public readonly ?string $type = null,
+        public readonly ?int $page_id = null,
+        public readonly ?string $help_text = null,
+        public readonly ?string $placeholder = null,
+        public readonly bool $is_required = false,
+        public readonly ?array $config = null,
+        public readonly ?int $order_index = null,
+        public readonly ?int $id = null
+    ) {
     }
 
-    public function toArray(): array
+    public static function fromArray(array $data): self
     {
-        $array = [
-            'type' => $this->type,
-            'title' => $this->title,
-            'is_required' => $this->is_required,
-            'help_text' => $this->help_text,
-            'placeholder' => $this->placeholder,
-            'config' => $this->config,
-            'order_index' => $this->order_index,
-        ];
-        
-        if ($this->page_id !== null) {
-            $array['page_id'] = $this->page_id;
-        }
-        
-        return $array;
+        return new self(
+            title: $data['title'],
+            type: $data['type'] ?? null,
+            page_id: $data['page_id'] ?? null,
+            help_text: $data['help_text'] ?? null,
+            placeholder: $data['placeholder'] ?? null,
+            is_required: $data['is_required'] ?? false,
+            config: $data['config'] ?? null,
+            order_index: $data['order_index'] ?? null,
+            id: $data['id'] ?? null
+        );
     }
 } 

@@ -61,29 +61,23 @@ Route::prefix('surveys')->group(function () {
 });
 
 // Question management
-Route::prefix('survey-pages/{surveyPageId}')->group(function () {
+Route::prefix('survey-pages/{pageId}')->middleware('auth:sanctum')->group(function () {
     Route::get('questions', [\App\Http\Controllers\Api\QuestionController::class, 'index']);
-    Route::get('questions/type/{type}', [\App\Http\Controllers\Api\QuestionController::class, 'byType']);
     Route::post('questions/reorder', [\App\Http\Controllers\Api\QuestionController::class, 'reorder']);
     Route::post('questions', [\App\Http\Controllers\Api\QuestionController::class, 'store']);
 });
-Route::get('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'show']);
-Route::put('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'update']);
-Route::delete('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'destroy']);
+Route::get('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'show'])->middleware('auth:sanctum');
+Route::put('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('questions/{id}', [\App\Http\Controllers\Api\QuestionController::class, 'destroy'])->middleware('auth:sanctum');
 
 // Choice management
-Route::prefix('choices')->middleware('auth:sanctum')->group(function () {
-    Route::get('/', [ChoiceController::class, 'index']);
-    Route::post('/', [ChoiceController::class, 'store']);
-    Route::get('/{id}', [ChoiceController::class, 'show']);
-    Route::put('/{id}', [ChoiceController::class, 'update']);
-    Route::delete('/{id}', [ChoiceController::class, 'destroy']);
-});
+Route::apiResource('choices', ChoiceController::class)->except(['index', 'store'])->middleware('auth:sanctum');
 
 // Question choices
-Route::prefix('questions/{questionId}')->group(function () {
-    Route::get('choices', [ChoiceController::class, 'getByQuestion']);
-    Route::post('choices/reorder', [ChoiceController::class, 'reorder'])->middleware('auth:sanctum');
+Route::prefix('questions/{questionId}')->middleware('auth:sanctum')->group(function () {
+    Route::get('choices', [ChoiceController::class, 'index']);
+    Route::post('choices', [ChoiceController::class, 'store']);
+    Route::post('choices/reorder', [ChoiceController::class, 'reorder']);
 });
 
 // Response management

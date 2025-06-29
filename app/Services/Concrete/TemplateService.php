@@ -21,44 +21,33 @@ class TemplateService implements TemplateServiceInterface
 
     public function create(TemplateDto $dto): ServiceResponse
     {
-        $template = $this->templateRepository->create($dto->toArray());
-
+        $template = $this->templateRepository->create($dto->toDatabaseArray());
         return new ServiceResponse($template, $this->resourceMap, 201);
     }
 
     public function update(int $id, TemplateDto $dto): ServiceResponse
     {
         $template = $this->templateRepository->find($id);
-
         if (!$template) {
             throw new ModelNotFoundException('Template not found.');
         }
-
-        // Check if user owns this template
         if ($template->created_by !== Auth::id()) {
             return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
         }
-
-        $this->templateRepository->update($template, $dto->toArray());
-
-        return new ServiceResponse($template->fresh(), $this->resourceMap);
+        $this->templateRepository->update($id, $dto->toDatabaseArray());
+        return new ServiceResponse($this->templateRepository->find($id), $this->resourceMap);
     }
 
     public function delete(int $id): ServiceResponse
     {
         $template = $this->templateRepository->find($id);
-
         if (!$template) {
             throw new ModelNotFoundException('Template not found.');
         }
-
-        // Check if user owns this template
         if ($template->created_by !== Auth::id()) {
             return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
         }
-
-        $this->templateRepository->delete($template);
-
+        $this->templateRepository->delete($id);
         return new ServiceResponse(['message' => 'Template deleted successfully.'], $this->resourceMap);
     }
 
@@ -197,7 +186,7 @@ class TemplateService implements TemplateServiceInterface
         }
 
         // Restore template from version snapshot
-        $this->templateRepository->update($template, $version->snapshot);
+        $this->templateRepository->update($templateId, $version->snapshot);
 
         return new ServiceResponse($template->fresh(), $this->resourceMap);
     }

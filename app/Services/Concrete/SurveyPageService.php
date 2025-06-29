@@ -2,157 +2,76 @@
 
 namespace App\Services\Concrete;
 
-use App\Repositories\Abstract\SurveyPageRepositoryInterface;
-use App\Repositories\Abstract\SurveyRepositoryInterface;
-use App\Services\Abstract\SurveyPageServiceInterface;
 use App\Dtos\SurveyPageDto;
+use App\Models\SurveyPage;
+use App\Repositories\Abstract\SurveyPageRepositoryInterface;
+use App\Services\Abstract\SurveyPageServiceInterface;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use App\Responses\ServiceResponse;
 use App\Responses\Abstract\ResourceMapInterface;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class SurveyPageService implements SurveyPageServiceInterface
 {
+    protected ResourceMapInterface $resourceMap;
+
     public function __construct(
         protected SurveyPageRepositoryInterface $surveyPageRepository,
-        protected SurveyRepositoryInterface $surveyRepository,
-        protected ResourceMapInterface $resourceMap
-    ) {}
+        ResourceMapInterface $resourceMap
+    ) {
+        $this->resourceMap = $resourceMap;
+    }
 
-    public function create(SurveyPageDto $dto): ServiceResponse
+    public function getPagesBySurveyId(int $surveyId): ServiceResponse
     {
-        // Check if survey exists and user owns it
-        $survey = $this->surveyRepository->find($dto->surveyId);
-        if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
-        }
+        $pages = $this->surveyPageRepository->getOrderedPages($surveyId);
+        return new ServiceResponse($pages, $this->resourceMap);
+    }
 
-        if ($survey->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        // Set order index if not provided
-        $data = $dto->toArray();
+    public function createPage(SurveyPageDto $dto): ServiceResponse
+    {
+        $data = $dto->toDatabaseArray();
         if (!isset($data['order_index'])) {
-            $data['order_index'] = $this->surveyPageRepository->getNextOrderIndex($dto->surveyId);
+            $data['order_index'] = $this->surveyPageRepository->getNextOrderIndex($dto->survey_id);
         }
-
         $page = $this->surveyPageRepository->create($data);
-
         return new ServiceResponse($page, $this->resourceMap, 201);
     }
 
-    public function update(int $id, SurveyPageDto $dto): ServiceResponse
+    public function findPage(int $id): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
-
-        if (!$page) {
-            throw new ModelNotFoundException('Survey page not found.');
-        }
-
-        // Check if user owns the survey
-        $survey = $this->surveyRepository->find($page->survey_id);
-        if ($survey->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        $this->surveyPageRepository->update($page, $dto->toArray());
-
-        return new ServiceResponse($page->fresh(), $this->resourceMap);
+        $status = $page ? 200 : 404;
+        return new ServiceResponse($page, $this->resourceMap, $status);
     }
 
-    public function delete(int $id): ServiceResponse
+    public function updatePage(int $id, array $data): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
-
         if (!$page) {
-            throw new ModelNotFoundException('Survey page not found.');
+            return new ServiceResponse(null, $this->resourceMap, 404);
         }
-
-        // Check if user owns the survey
-        $survey = $this->surveyRepository->find($page->survey_id);
-        if ($survey->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        $this->surveyPageRepository->delete($page);
-
-        return new ServiceResponse(['message' => 'Survey page deleted successfully.'], $this->resourceMap);
+        $this->surveyPageRepository->update($id, $data);
+        $updatedPage = $this->surveyPageRepository->find($id);
+        return new ServiceResponse($updatedPage, $this->resourceMap);
     }
 
-    public function find(int $id): ServiceResponse
+    public function deletePage(int $id): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
-
         if (!$page) {
-            throw new ModelNotFoundException('Survey page not found.');
+            return new ServiceResponse(null, $this->resourceMap, 404);
         }
-
-        // Check if user can access the survey
-        $survey = $this->surveyRepository->find($page->survey_id);
-        if ($survey->created_by !== Auth::id() && $survey->status !== 'active') {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        return new ServiceResponse($page, $this->resourceMap);
+        $this->surveyPageRepository->delete($id);
+        return new ServiceResponse(null, $this->resourceMap, 204);
     }
 
-    public function getBySurvey(int $surveyId): ServiceResponse
+    public function reorderPages(int $surveyId, array $pageIds): ServiceResponse
     {
-        // Check if user can access the survey
-        $survey = $this->surveyRepository->find($surveyId);
-        if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
-        }
-
-        if ($survey->created_by !== Auth::id() && $survey->status !== 'active') {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        $pages = $this->surveyPageRepository->findBySurvey($surveyId);
-
-        return new ServiceResponse($pages, $this->resourceMap);
-    }
-
-    public function getOrderedPages(int $surveyId): ServiceResponse
-    {
-        // Check if user can access the survey
-        $survey = $this->surveyRepository->find($surveyId);
-        if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
-        }
-
-        if ($survey->created_by !== Auth::id() && $survey->status !== 'active') {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        $pages = $this->surveyPageRepository->getOrderedPages($surveyId);
-
-        return new ServiceResponse($pages, $this->resourceMap);
-    }
-
-    public function reorder(int $surveyId, array $pageIds): ServiceResponse
-    {
-        // Check if user owns the survey
-        $survey = $this->surveyRepository->find($surveyId);
-        if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
-        }
-
-        if ($survey->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        // Verify all pages belong to this survey
-        $existingPages = $this->surveyPageRepository->findBySurvey($surveyId);
-        $existingPageIds = $existingPages->pluck('id')->toArray();
+        $this->surveyPageRepository->reorder($pageIds);
         
-        if (count(array_diff($pageIds, $existingPageIds)) > 0) {
-            return new ServiceResponse(['message' => 'Invalid page IDs provided.'], $this->resourceMap, 400);
-        }
-
-        $this->surveyPageRepository->reorder($surveyId, $pageIds);
-
         return new ServiceResponse(['message' => 'Pages reordered successfully.'], $this->resourceMap);
     }
-} 
+}

@@ -3,11 +3,13 @@
 namespace App\Services\Concrete;
 
 use App\Dtos\MediaDto;
-use App\Models\Question;
 use App\Responses\ServiceResponse;
 use App\Responses\Abstract\ResourceMapInterface;
-use App\Responses\Concrete\ApiResourceMap;
 use App\Services\Abstract\MediaServiceInterface;
+use App\Repositories\Abstract\SurveyRepositoryInterface;
+use App\Repositories\Abstract\SurveyPageRepositoryInterface;
+use App\Repositories\Abstract\QuestionRepositoryInterface;
+use App\Repositories\Abstract\ChoiceRepositoryInterface;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
@@ -17,7 +19,11 @@ use Illuminate\Support\Facades\Log;
 class MediaService implements MediaServiceInterface
 {
     public function __construct(
-        protected ApiResourceMap $resourceMap
+        protected ResourceMapInterface $resourceMap,
+        protected SurveyRepositoryInterface $surveyRepository,
+        protected SurveyPageRepositoryInterface $surveyPageRepository,
+        protected QuestionRepositoryInterface $questionRepository,
+        protected ChoiceRepositoryInterface $choiceRepository
     ) {}
 
     public function uploadMedia(MediaDto $dto): ServiceResponse
@@ -25,7 +31,7 @@ class MediaService implements MediaServiceInterface
         try {
             DB::beginTransaction();
 
-            $question = Question::find($dto->question_id);
+            $question = $this->questionRepository->find($dto->question_id);
             if (!$question) {
                 return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
             }
@@ -47,9 +53,14 @@ class MediaService implements MediaServiceInterface
         }
     }
 
-    public function uploadMediaForModel(Model $model, UploadedFile $file, string $collection): ServiceResponse
+    public function uploadMediaForModel(string $modelType, int $modelId, UploadedFile $file, string $collection): ServiceResponse
     {
         try {
+            $model = $this->getModel($modelType, $modelId);
+            if (!$model) {
+                return new ServiceResponse(['message' => 'Model not found'], $this->resourceMap, 404);
+            }
+
             DB::beginTransaction();
 
             $media = $model->addMedia($file)
@@ -83,7 +94,7 @@ class MediaService implements MediaServiceInterface
     public function getQuestionMedia(int $questionId): ServiceResponse
     {
         try {
-            $question = Question::find($questionId);
+            $question = $this->questionRepository->find($questionId);
             if (!$question) {
                 return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
             }
@@ -96,9 +107,14 @@ class MediaService implements MediaServiceInterface
         }
     }
 
-    public function getMedia(Model $model, ?string $collection = null): ServiceResponse
+    public function getMedia(string $modelType, int $modelId, ?string $collection = null): ServiceResponse
     {
         try {
+            $model = $this->getModel($modelType, $modelId);
+            if (!$model) {
+                return new ServiceResponse(['message' => 'Model not found'], $this->resourceMap, 404);
+            }
+
             if ($collection) {
                 $media = $model->getMedia($collection);
             } else {
@@ -168,5 +184,16 @@ class MediaService implements MediaServiceInterface
         } catch (\Exception $e) {
             return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
         }
+    }
+
+    private function getModel(string $modelType, int $modelId)
+    {
+        return match ($modelType) {
+            'survey' => $this->surveyRepository->find($modelId),
+            'survey-page' => $this->surveyPageRepository->find($modelId),
+            'question' => $this->questionRepository->find($modelId),
+            'choice' => $this->choiceRepository->find($modelId),
+            default => null
+        };
     }
 } 

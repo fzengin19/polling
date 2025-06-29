@@ -42,9 +42,9 @@ class SurveyResource extends JsonResource
             'responses_count' => $this->whenCounted('responses', function () {
                 return $this->responses_count;
             }),
-            'is_active' => $this->isActive(),
-            'is_expired' => $this->isExpired(),
-            'can_accept_responses' => $this->canAcceptResponses(),
+            'is_active' => $this->resource->status === 'active',
+            'is_expired' => $this->resource->expires_at && $this->resource->expires_at->isPast(),
+            'can_accept_responses' => $this->resource->status === 'active' && (!$this->resource->expires_at || !$this->resource->expires_at->isPast()),
         ];
     }
 } 

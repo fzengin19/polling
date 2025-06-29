@@ -7,57 +7,56 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\CreateQuestionRequest;
 use App\Http\Requests\Question\UpdateQuestionRequest;
 use App\Services\Abstract\QuestionServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
-    public function __construct(protected QuestionServiceInterface $questions) {}
+    public function __construct(
+        private readonly QuestionServiceInterface $questionService
+    ) {
+    }
 
-    public function index(Request $request, $surveyPageId)
+    public function index(int $pageId): JsonResponse
     {
-        $result = $this->questions->getBySurveyPage($surveyPageId);
+        $result = $this->questionService->getQuestionsByPageId($pageId);
         return $result->toResponse();
     }
 
-    public function show($id)
+    public function store(CreateQuestionRequest $request, int $pageId): JsonResponse
     {
-        $result = $this->questions->findById($id);
+        $data = array_merge($request->validated(), ['page_id' => $pageId]);
+        $questionDto = QuestionDto::fromArray($data);
+        $result = $this->questionService->createQuestion($questionDto);
         return $result->toResponse();
     }
 
-    public function store(CreateQuestionRequest $request)
+    public function show(int $id): JsonResponse
     {
-        $dto = new QuestionDto($request->validated());
-        $result = $this->questions->create($dto);
+        $result = $this->questionService->findQuestion($id);
         return $result->toResponse();
     }
 
-    public function update(UpdateQuestionRequest $request, $id)
+    public function update(UpdateQuestionRequest $request, int $id): JsonResponse
     {
-        $dto = new QuestionDto($request->validated());
-        $result = $this->questions->update($id, $dto);
+        $questionDto = QuestionDto::fromArray($request->validated());
+        $result = $this->questionService->updateQuestion($id, $questionDto);
         return $result->toResponse();
     }
 
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        $result = $this->questions->delete($id);
+        $result = $this->questionService->deleteQuestionById($id);
         return $result->toResponse();
     }
 
-    public function reorder(Request $request, $surveyPageId)
+    public function reorder(Request $request, int $pageId): JsonResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'question_ids' => 'required|array',
-            'question_ids.*' => 'integer|exists:questions,id',
+            'question_ids.*' => 'integer',
         ]);
-        $result = $this->questions->reorder($surveyPageId, $request->question_ids);
-        return $result->toResponse();
-    }
-
-    public function byType(Request $request, $surveyPageId, $type)
-    {
-        $result = $this->questions->getByType($surveyPageId, $type);
+        $result = $this->questionService->reorder($pageId, $validated['question_ids']);
         return $result->toResponse();
     }
 } 

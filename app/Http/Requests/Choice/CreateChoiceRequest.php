@@ -22,7 +22,6 @@ class CreateChoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'question_id' => 'required|integer|min:1',
             'label' => 'required|string|max:255',
             'value' => 'required|string|max:255',
             'order_index' => 'integer|min:0',
@@ -37,8 +36,6 @@ class CreateChoiceRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'question_id.required' => 'Question ID is required.',
-            'question_id.min' => 'Question ID must be at least 1.',
             'label.required' => 'Choice label is required.',
             'label.max' => 'Choice label cannot exceed 255 characters.',
             'value.required' => 'Choice value is required.',
@@ -55,11 +52,6 @@ class CreateChoiceRequest extends FormRequest
     public function bodyParameters(): array
     {
         return [
-            'question_id' => [
-                'description' => 'ID of the question this choice belongs to',
-                'example' => 1,
-                'required' => true,
-            ],
             'label' => [
                 'description' => 'Choice label (display text)',
                 'example' => 'Red',

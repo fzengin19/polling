@@ -118,10 +118,10 @@
     - [x] Survey oluşturma/güncelleme/listeleme
     - [x] SurveyPage ekleme/silme/sıralama
     - [x] Question ekleme/güncelleme/silme
-    - [ ] Choice ekleme/güncelleme/silme
-    - [ ] Response başlatma
-    - [ ] Answer kaydetme
-    - [ ] Response tamamlama
+    - [x] Choice ekleme/güncelleme/silme
+    - [x] Response başlatma
+    - [x] Answer kaydetme
+    - [x] Response tamamlama
 
 - [x] **Adım 2: Rol ve Yetki Yönetimi** ✅ TAMAMLANDI
   - [x] spatie/laravel-permission kurulumu
@@ -134,13 +134,13 @@
   - [x] Question modeline medya desteği eklenmesi
   - [x] Medya yükleme/silme API endpointleri
 
-- [ ] **Adım 3.1: Medya Sistemi Geliştirmeleri**
-  - [ ] Choice modeline HasMedia trait eklenmesi
-  - [ ] Survey modeline medya desteği eklenmesi
-  - [ ] SurveyPage modeline medya desteği eklenmesi
-  - [ ] Media collection'ları spesifikleştirme (question-images, choice-images, survey-banners, etc.)
+- [x] **Adım 3.1: Medya Sistemi Geliştirmeleri** ✅ TAMAMLANDI
+  - [x] Choice modeline HasMedia trait eklenmesi
+  - [x] Survey modeline medya desteği eklenmesi
+  - [x] SurveyPage modeline medya desteği eklenmesi
+  - [x] Media collection'ları spesifikleştirme (question-images, choice-images, survey-banners, etc.)
   - [ ] Question.config'de medya referanslarını standardize etme
-  - [ ] Gelişmiş medya API endpointleri ve testleri
+  - [x] Gelişmiş medya API endpointleri ve testleri
 
 - [ ] **Adım 4: Audit Log Sistemi**
   - [ ] spatie/laravel-activitylog kurulumu
@@ -161,21 +161,40 @@
   - [x] template_versions tablosu
   - [x] Versiyon listeleme ve geri alma API'leri
 
-- [x] **Adım 8: Raporlama ve Analitik** ✅ TAMAMLANDI
-  - [x] Temel istatistik endpointleri (Survey, Template, Question sayıları)
-  - [ ] Cevap dağılımları
-  - [ ] Dışa aktarma (CSV/Excel/PDF)
+- [x] **Adım 8: Raporlama ve Analitik**
+  - [x] Temel istatistik endpointleri (Survey, Template, Question sayıları) ✅ TAMAMLANDI
+  - [ ] Cevap dağılımları için detaylı istatistikler
+  - [ ] Sonuçları dışa aktarma (CSV/Excel/PDF)
 
-- [ ] **Adım 9: Koşullu Mantık ve Gelişmiş Validasyon**
-  - [ ] Question.config ile koşul ekleme
-  - [ ] Backend validasyon motoru
-  - [ ] Kısmi kayıt desteği
+- [ ] **Adım 9: Koşullu Mantık (Conditional Logic)** (ÖNCELİKLİ)
+  - [ ] Question.config yapısını, "Eğer Cevap X ise, Soru Y'ye atla" gibi kuralları destekleyecek şekilde genişletme.
+  - [ ] Koşul tiplerinin tanımlanması (örn: 'equals', 'contains', 'is_selected').
+  - [ ] Frontend'in bu mantığı işleyebilmesi için API yanıtında gerekli yönlendirme bilgisini sağlama.
+  - [ ] Koşullu mantık kurallarını yönetmek için yeni API endpoint'leri (örn: `POST /api/questions/{id}/logic`).
 
-- [ ] **Adım 10: Gelişmiş Özellikler**
-  - [ ] Laravel Scout + Meilisearch entegrasyonu
-  - [ ] Zamanlanmış anket yayınlama
-  - [ ] Webhook entegrasyonları
-  - [ ] Çoklu dil desteği
+- [ ] **Adım 10: Gelişmiş Soru Tipleri**
+  - [ ] Checkbox (Çoklu Onay Kutusu)
+  - [ ] Dropdown (Açılır Menü)
+  - [ ] Linear Scale (Doğrusal Ölçek, örn: 1-5 arası puanlama)
+  - [ ] Date / Time (Tarih / Saat)
+  - [ ] File Upload (Yanıt olarak dosya yükleme)
+  - [ ] İlgili validasyon kurallarının (`Question.config`) ve `Answer.value` yapısının bu tipleri desteklemesi.
+
+- [ ] **Adım 11: Gelişmiş Anket Ayarları ve Özelleştirme**
+  - [ ] `Survey.settings` JSON sütununu kullanarak yeni ayarları yönetme.
+  - [ ] Erişim Kontrolü: "Sadece belirli e-posta adresleri yanıtlayabilir" veya "Sadece bir yanıt kabul et" gibi kurallar.
+  - [ ] Görsel Özelleştirme: Tema rengi, arka plan resmi gibi ayarları saklamak için API altyapısı.
+  - [ ] Zamanlanmış anket yayınlama ve kapatma.
+
+- [ ] **Adım 12: Gelişmiş İş Birliği Özellikleri**
+  - [ ] Mevcut rol sistemini genişletme: `owner`, `editor`, `viewer` gibi daha granüler roller tanımlama.
+  - [ ] Bir anketi başka kullanıcılarla paylaşmak için API endpoint'leri (örn: `POST /api/surveys/{id}/collaborators`).
+
+- [ ] **Adım 13: Arama ve Keşfetme**
+  - [ ] Laravel Scout + Meilisearch/Algolia entegrasyonu ile anketler ve şablonlar içinde hızlı arama.
+
+- [ ] **Adım 14: Çoklu Dil Desteği**
+  - [ ] Anket başlığı, soruları ve seçenekleri için JSON tabanlı dil çevirilerini destekleme.
 
 ---
 

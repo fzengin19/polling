@@ -20,6 +20,11 @@ class ServiceResponse
         $this->resourceMap = $resourceMap;
     }
 
+    public function getData()
+    {
+        return $this->data;
+    }
+
     public function toResponse()
     {
         $transformedData = $this->transformData($this->data);

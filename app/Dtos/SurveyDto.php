@@ -2,18 +2,21 @@
 
 namespace App\Dtos;
 
-class SurveyDto
+use App\Core\BaseDto;
+
+class SurveyDto extends BaseDto
 {
     public function __construct(
         public readonly string $title,
-        public readonly ?string $description,
-        public readonly string $status,
-        public readonly int $createdBy,
-        public readonly ?int $templateId = null,
-        public readonly ?int $templateVersionId = null,
+        public readonly ?string $description = null,
         public readonly ?array $settings = null,
-        public readonly ?string $expiresAt = null,
-        public readonly ?int $maxResponses = null
+        public readonly ?string $status = 'draft',
+        public readonly ?int $created_by = null,
+        public readonly ?int $template_id = null,
+        public readonly ?int $template_version_id = null,
+        public readonly ?string $expires_at = null,
+        public readonly ?int $max_responses = null,
+        public readonly ?int $id = null,
     ) {}
 
     /**
@@ -24,31 +27,14 @@ class SurveyDto
         return new self(
             title: $data['title'],
             description: $data['description'] ?? null,
-            status: $data['status'] ?? 'draft',
-            createdBy: $data['created_by'],
-            templateId: $data['template_id'] ?? null,
-            templateVersionId: $data['template_version_id'] ?? null,
             settings: $data['settings'] ?? null,
-            expiresAt: $data['expires_at'] ?? null,
-            maxResponses: $data['max_responses'] ?? null
+            status: $data['status'] ?? 'draft',
+            created_by: $data['created_by'] ?? null,
+            template_id: $data['template_id'] ?? null,
+            template_version_id: $data['template_version_id'] ?? null,
+            expires_at: $data['expires_at'] ?? null,
+            max_responses: $data['max_responses'] ?? null,
+            id: $data['id'] ?? null,
         );
-    }
-
-    /**
-     * Convert to array for database operations
-     */
-    public function toArray(): array
-    {
-        return [
-            'title' => $this->title,
-            'description' => $this->description,
-            'status' => $this->status,
-            'created_by' => $this->createdBy,
-            'template_id' => $this->templateId,
-            'template_version_id' => $this->templateVersionId,
-            'settings' => $this->settings,
-            'expires_at' => $this->expiresAt,
-            'max_responses' => $this->maxResponses,
-        ];
     }
 } 

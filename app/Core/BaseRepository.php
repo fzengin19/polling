@@ -3,24 +3,30 @@
 namespace App\Core;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
-    protected Model $model;
+    protected $model;
 
-    public function all(array $with = [])
+    public function __construct(Model $model)
     {
-        return $this->model->with($with)->get();
+        $this->model = $model;
     }
 
-    public function paginate(int $perPage = 15, array $with = [])
+    public function find($id)
     {
-        return $this->model->with($with)->paginate($perPage);
+        return $this->model->find($id);
     }
 
-    public function find(int $id, array $with = [])
+    public function findBy(string $field, $value): Collection
     {
-        return $this->model->with($with)->find($id);
+        return $this->model->where($field, $value)->get();
+    }
+
+    public function all(): Collection
+    {
+        return $this->model->all();
     }
 
     public function create(array $data)
@@ -28,15 +34,20 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): bool
+    public function update($id, array $data)
     {
         $record = $this->find($id);
         return $record ? $record->update($data) : false;
     }
 
-    public function delete(int $id): bool
+    public function delete($id): bool
     {
         $record = $this->find($id);
         return $record ? $record->delete() : false;
+    }
+
+    public function paginate(int $perPage = 15, array $with = [])
+    {
+        return $this->model->with($with)->paginate($perPage);
     }
 }

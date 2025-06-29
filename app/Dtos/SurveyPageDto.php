@@ -2,40 +2,25 @@
 
 namespace App\Dtos;
 
-class SurveyPageDto
+use App\Core\BaseDto;
+
+class SurveyPageDto extends BaseDto
 {
     public function __construct(
-        public readonly ?int $surveyId,
-        public readonly ?string $title,
-        public readonly ?int $orderIndex = null
-    ) {}
+        public readonly int $survey_id,
+        public readonly ?string $title = null,
+        public readonly ?int $order_index = null,
+        public readonly ?int $id = null
+    ) {
+    }
 
-    /**
-     * Create DTO from array
-     */
     public static function fromArray(array $data): self
     {
         return new self(
-            surveyId: $data['survey_id'] ?? null,
+            survey_id: $data['survey_id'],
             title: $data['title'] ?? null,
-            orderIndex: $data['order_index'] ?? null
+            order_index: $data['order_index'] ?? null,
+            id: $data['id'] ?? null
         );
-    }
-
-    /**
-     * Convert to array for database operations
-     */
-    public function toArray(): array
-    {
-        $array = [
-            'title' => $this->title,
-            'order_index' => $this->orderIndex,
-        ];
-        
-        if ($this->surveyId !== null) {
-            $array['survey_id'] = $this->surveyId;
-        }
-        
-        return $array;
     }
 } 

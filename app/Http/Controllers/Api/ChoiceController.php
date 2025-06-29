@@ -2,79 +2,104 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Dtos\ChoiceDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Choice\CreateChoiceRequest;
 use App\Http\Requests\Choice\UpdateChoiceRequest;
 use App\Services\Abstract\ChoiceServiceInterface;
-use App\Dtos\ChoiceDto;
-use App\Models\Choice;
+use App\Services\Abstract\QuestionServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ChoiceController extends Controller
 {
     public function __construct(
-        private ChoiceServiceInterface $choiceService
-    ) {}
+        private readonly ChoiceServiceInterface $choiceService,
+        private readonly QuestionServiceInterface $questionService
+    ) {
+    }
 
-    public function store(CreateChoiceRequest $request): JsonResponse
+    public function index(int $questionId): JsonResponse
     {
-        $dto = new ChoiceDto(
-            id: null,
-            question_id: $request->validated('question_id'),
-            label: $request->validated('label'),
-            value: $request->validated('value'),
-            order_index: $request->validated('order_index', 0),
-        );
+        $questionResult = $this->questionService->findQuestion($questionId);
+        if ($questionResult->getData() === null) {
+            return $questionResult->toResponse();
+        }
+        $question = $questionResult->getData();
+        $this->authorize('view', $question->surveyPage->survey);
 
-        $result = $this->choiceService->create($dto);
+        $result = $this->choiceService->getByQuestion($questionId);
+        return $result->toResponse();
+    }
+
+    public function store(CreateChoiceRequest $request, int $questionId): JsonResponse
+    {
+        $questionResult = $this->questionService->findQuestion($questionId);
+        if ($questionResult->getData() === null) {
+            return $questionResult->toResponse();
+        }
+        $question = $questionResult->getData();
+        $this->authorize('update', $question->surveyPage->survey);
+
+        $data = array_merge($request->validated(), ['question_id' => $questionId]);
+        $choiceDto = ChoiceDto::fromArray($data);
+        $result = $this->choiceService->createChoice($choiceDto);
         return $result->toResponse();
     }
 
     public function show(int $id): JsonResponse
     {
-        $choice = Choice::find($id);
-        if (!$choice) {
-            return response()->json(['message' => 'Choice not found'], 404);
+        $choiceResult = $this->choiceService->findChoice($id);
+        if ($choiceResult->getData() === null) {
+            return $choiceResult->toResponse();
         }
-        return response()->json($choice);
+        $choice = $choiceResult->getData();
+        $this->authorize('view', $choice->question->surveyPage->survey);
+
+        return $choiceResult->toResponse();
     }
 
     public function update(UpdateChoiceRequest $request, int $id): JsonResponse
     {
-        $dto = new ChoiceDto(
-            id: $id,
-            question_id: 0, // This will be ignored in update
-            label: $request->validated('label'),
-            value: $request->validated('value'),
-            order_index: $request->validated('order_index', 0),
-        );
+        $choiceResult = $this->choiceService->findChoice($id);
+        if ($choiceResult->getData() === null) {
+            return $choiceResult->toResponse();
+        }
+        $choice = $choiceResult->getData();
+        $this->authorize('update', $choice->question->surveyPage->survey);
 
-        $result = $this->choiceService->update($id, $dto);
+        $choiceDto = ChoiceDto::fromArray($request->validated());
+        $result = $this->choiceService->updateChoice($id, $choiceDto);
         return $result->toResponse();
     }
 
     public function destroy(int $id): JsonResponse
     {
-        $result = $this->choiceService->delete($id);
-        return $result->toResponse();
-    }
+        $choiceResult = $this->choiceService->findChoice($id);
+        if ($choiceResult->getData() === null) {
+            return $choiceResult->toResponse();
+        }
+        $choice = $choiceResult->getData();
+        $this->authorize('update', $choice->question->surveyPage->survey);
 
-    public function getByQuestion(int $questionId): JsonResponse
-    {
-        $result = $this->choiceService->getByQuestion($questionId);
+        $result = $this->choiceService->deleteChoiceById($id);
         return $result->toResponse();
     }
 
     public function reorder(Request $request, int $questionId): JsonResponse
     {
-        $request->validate([
-            'choices' => 'required|array',
-            'choices.*.id' => 'required|integer|exists:choices,id',
-            'choices.*.order_index' => 'required|integer|min:0',
-        ]);
+        $questionResult = $this->questionService->findQuestion($questionId);
+        if ($questionResult->getData() === null) {
+            return $questionResult->toResponse();
+        }
+        $question = $questionResult->getData();
+        $this->authorize('update', $question->surveyPage->survey);
 
-        $result = $this->choiceService->reorder($questionId, $request->choices);
+        $validated = $request->validate([
+            'choices' => 'required|array',
+            'choices.*' => 'integer',
+        ]);
+        $result = $this->choiceService->reorder($questionId, $validated['choices']);
         return $result->toResponse();
     }
 } 

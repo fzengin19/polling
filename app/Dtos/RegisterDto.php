@@ -2,10 +2,13 @@
 
 namespace App\Dtos;
 
-readonly class RegisterDto {
+use App\Core\BaseDto;
+
+class RegisterDto extends BaseDto
+{
     public function __construct(
-        public string $name,
-        public string $email,
-        public string $password
+        public readonly string $name,
+        public readonly string $email,
+        public readonly string $password,
     ) {}
 }

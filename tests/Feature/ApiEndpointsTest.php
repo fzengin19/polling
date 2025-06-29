@@ -413,7 +413,7 @@ class ApiEndpointsTest extends TestCase
         $page = SurveyPage::factory()->create(['survey_id' => $survey->id]);
         
         $response = $this->deleteJson("/api/surveys/pages/{$page->id}");
-        $response->assertStatus(200);
+        $response->assertStatus(204);
     }
 
     public function test_survey_pages_reorder(): void
@@ -422,11 +422,11 @@ class ApiEndpointsTest extends TestCase
         $survey = Survey::factory()->create(['created_by' => $this->user->id]);
         $page1 = SurveyPage::factory()->create(['survey_id' => $survey->id, 'order_index' => 0]);
         $page2 = SurveyPage::factory()->create(['survey_id' => $survey->id, 'order_index' => 1]);
-
+        
         $data = [
             'page_ids' => [$page2->id, $page1->id],
         ];
-
+        
         $response = $this->postJson("/api/surveys/{$survey->id}/pages/reorder", $data);
         $response->assertStatus(200);
     }
@@ -435,7 +435,9 @@ class ApiEndpointsTest extends TestCase
     
     public function test_questions_index(): void
     {
-        $page = SurveyPage::factory()->create();
+        $this->actingAs($this->user, 'sanctum');
+        $survey = Survey::factory()->create(['created_by' => $this->user->id]);
+        $page = SurveyPage::factory()->create(['survey_id' => $survey->id]);
         Question::factory()->create(['page_id' => $page->id]);
         
         $response = $this->getJson("/api/survey-pages/{$page->id}/questions");
@@ -445,9 +447,11 @@ class ApiEndpointsTest extends TestCase
 
     public function test_questions_store(): void
     {
-        $page = SurveyPage::factory()->create();
+        $this->actingAs($this->user, 'sanctum');
+        $survey = Survey::factory()->create(['created_by' => $this->user->id]);
+        $page = SurveyPage::factory()->create(['survey_id' => $survey->id]);
+        
         $data = [
-            'page_id' => $page->id,
             'type' => 'text',
             'title' => 'Test Question',
             'is_required' => true,
@@ -460,7 +464,10 @@ class ApiEndpointsTest extends TestCase
 
     public function test_questions_show(): void
     {
-        $question = Question::factory()->create();
+        $this->actingAs($this->user, 'sanctum');
+        $survey = Survey::factory()->create(['created_by' => $this->user->id]);
+        $page = SurveyPage::factory()->create(['survey_id' => $survey->id]);
+        $question = Question::factory()->create(['page_id' => $page->id]);
         
         $response = $this->getJson("/api/questions/{$question->id}");
         $response->assertStatus(200);
@@ -469,17 +476,13 @@ class ApiEndpointsTest extends TestCase
 
     public function test_questions_update(): void
     {
-        $question = Question::factory()->create();
+        $this->actingAs($this->user, 'sanctum');
+        $survey = Survey::factory()->create(['created_by' => $this->user->id]);
+        $page = SurveyPage::factory()->create(['survey_id' => $survey->id]);
+        $question = Question::factory()->create(['page_id' => $page->id]);
+        
         $data = [
-            'type' => 'select',
             'title' => 'Updated Question',
-            'is_required' => false,
-            'placeholder' => 'dolor',
-            'config' => [
-                'min' => 6,
-                'max' => null,
-                'options' => null
-            ],
             'order_index' => 2,
         ];
         
@@ -496,18 +499,18 @@ class ApiEndpointsTest extends TestCase
         $question = Question::factory()->create(['page_id' => $page->id]);
         
         $response = $this->deleteJson("/api/questions/{$question->id}");
-        $response->assertStatus(200);
+        $response->assertStatus(204);
     }
 
-    public function test_questions_by_type(): void
+    public function test_questions_by_type_is_removed(): void
     {
-        $page = SurveyPage::factory()->create();
+        $this->actingAs($this->user, 'sanctum');
+        $survey = Survey::factory()->create(['created_by' => $this->user->id]);
+        $page = SurveyPage::factory()->create(['survey_id' => $survey->id]);
         Question::factory()->create(['page_id' => $page->id, 'type' => 'text']);
-        Question::factory()->create(['page_id' => $page->id, 'type' => 'number']);
         
         $response = $this->getJson("/api/survey-pages/{$page->id}/questions/type/text");
-        $response->assertStatus(200);
-        $this->assertIsArray($response->json());
+        $response->assertStatus(404);
     }
 
     public function test_questions_reorder(): void

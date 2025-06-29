@@ -40,9 +40,16 @@ class Question extends Model implements HasMedia
     /**
      * Get the survey through the survey page.
      */
-    public function survey()
+    public function survey(): \Illuminate\Database\Eloquent\Relations\HasOneThrough
     {
-        return $this->surveyPage->survey();
+        return $this->hasOneThrough(
+            Survey::class,
+            SurveyPage::class,
+            'id', // Foreign key on SurveyPage table
+            'id', // Foreign key on Survey table
+            'page_id', // Local key on Question table
+            'survey_id' // Local key on SurveyPage table
+        );
     }
 
     /**
