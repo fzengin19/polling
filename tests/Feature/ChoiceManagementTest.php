@@ -65,7 +65,7 @@ class ChoiceManagementTest extends TestCase
     {
         $choice1 = Choice::factory()->create(['question_id' => $this->question->id, 'order_index' => 0]);
         $choice2 = Choice::factory()->create(['question_id' => $this->question->id, 'order_index' => 1]);
-        $data = ['choices' => [$choice2->id, $choice1->id]];
+        $data = ['choice_ids' => [$choice2->id, $choice1->id]];
         $this->actingAs($this->user)->postJson("/api/questions/{$this->question->id}/choices/reorder", $data)
             ->assertOk()
             ->assertJson(['success' => true]);

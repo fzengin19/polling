@@ -133,7 +133,7 @@ class QuestionController extends Controller
      * @urlParam pageId required The ID of the survey page. Example: 1
      * @response 200 {"success": true, "message": "Questions reordered successfully", "data": null}
      */
-    public function reorder(Request $request, int $pageId): JsonResponse
+    public function reorder(\App\Http\Requests\Question\ReorderQuestionsRequest $request, int $pageId): JsonResponse
     {
         $pageResult = $this->surveyPageService->findPage($pageId);
         if ($pageResult->getData() === null) {
@@ -142,7 +142,7 @@ class QuestionController extends Controller
         $page = $pageResult->getData();
         $this->authorize('update', $page->survey);
 
-        $result = $this->questionService->reorder($pageId, $request->input('question_ids'));
+        $result = $this->questionService->reorder($pageId, $request->validated()['question_ids']);
         return $result->toResponse();
     }
 } 

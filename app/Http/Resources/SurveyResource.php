@@ -14,15 +14,12 @@ class SurveyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $settings = $this->settings;
+        $settings = is_array($this->settings) ? $this->settings : (json_decode($this->settings, true) ?? []);
         
-        // Logo URL'yi theme içine ekle
-        if (isset($settings['theme'])) {
+        if (isset($settings['theme']) && is_array($settings['theme'])) {
             $settings['theme']['logo_url'] = $this->getFirstMediaUrl('survey-logos');
+            unset($settings['theme']['logo_media_id']);
         }
-        
-        // Clean up legacy or internal data from settings before showing to user
-        unset($settings['theme']['logo_media_id']);
 
         return [
             'id' => $this->id,

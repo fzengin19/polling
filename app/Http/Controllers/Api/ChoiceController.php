@@ -140,7 +140,7 @@ class ChoiceController extends Controller
      * @urlParam questionId required The ID of the question. Example: 1
      * @response 200 {"success": true, "message": "Choices reordered successfully", "data": null}
      */
-    public function reorder(Request $request, int $questionId): JsonResponse
+    public function reorder(\App\Http\Requests\Choice\ReorderChoicesRequest $request, int $questionId): JsonResponse
     {
         $questionResult = $this->questionService->findQuestion($questionId);
         if ($questionResult->getData() === null) {
@@ -149,11 +149,7 @@ class ChoiceController extends Controller
         $question = $questionResult->getData();
         $this->authorize('update', $question->surveyPage->survey);
 
-        $validated = $request->validate([
-            'choices' => 'required|array',
-            'choices.*' => 'integer',
-        ]);
-        $result = $this->choiceService->reorder($questionId, $validated['choices']);
+        $result = $this->choiceService->reorder($questionId, $request->validated()['choice_ids']);
         return $result->toResponse();
     }
 } 

@@ -45,7 +45,7 @@ Route::prefix('surveys')->group(function () {
     Route::get('/status/{status}', [SurveyController::class, 'byStatus']);
     Route::get('/template/{templateId}', [SurveyController::class, 'byTemplate']);
     Route::post('/', [SurveyController::class, 'store'])->middleware('auth:sanctum');
-    Route::get('/{id}', [SurveyController::class, 'show']);
+    Route::get('/{id}', [SurveyController::class, 'show'])->middleware('auth:sanctum');
     Route::put('/{id}', [SurveyController::class, 'update'])->middleware('auth:sanctum');
     Route::delete('/{id}', [SurveyController::class, 'destroy'])->middleware('auth:sanctum');
     Route::post('/{id}/publish', [SurveyController::class, 'publish'])->middleware('auth:sanctum');
@@ -53,9 +53,9 @@ Route::prefix('surveys')->group(function () {
     Route::post('/{id}/duplicate', [SurveyController::class, 'duplicate'])->middleware('auth:sanctum');
     
     // Survey Page Management
-    Route::get('/{surveyId}/pages', [SurveyController::class, 'pages']);
+    Route::get('/{surveyId}/pages', [SurveyController::class, 'pages'])->middleware('auth:sanctum');
     Route::post('/pages', [SurveyController::class, 'storePage'])->middleware('auth:sanctum');
-    Route::get('/pages/{id}', [SurveyController::class, 'showPage']);
+    Route::get('/pages/{id}', [SurveyController::class, 'showPage'])->middleware('auth:sanctum');
     Route::put('/pages/{id}', [SurveyController::class, 'updatePage'])->middleware('auth:sanctum');
     Route::delete('/pages/{id}', [SurveyController::class, 'destroyPage'])->middleware('auth:sanctum');
     Route::post('/{surveyId}/pages/reorder', [SurveyController::class, 'reorderPages'])->middleware('auth:sanctum');
