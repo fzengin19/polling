@@ -27,4 +27,6 @@ interface QuestionRepositoryInterface extends BaseRepositoryInterface
      * Get questions by type for a survey page.
      */
     public function getByType(int $surveyPageId, string $type): Collection;
+
+    public function findByJsonContains(string $column, string $key, $value): Collection;
 } 

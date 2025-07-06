@@ -49,12 +49,12 @@ class CreateResponseRequest extends FormRequest
     {
         return [
             'survey_id' => [
-                'description' => 'ID of the survey to respond to',
+                'description' => 'ID of the survey to respond to. Must be at least 1.',
                 'example' => 1,
                 'required' => true,
             ],
             'metadata' => [
-                'description' => 'Response metadata (IP, user_agent, etc.)',
+                'description' => 'Response metadata (IP, user_agent, etc.).',
                 'example' => ['ip' => '192.168.1.1', 'user_agent' => 'Mozilla/5.0...'],
                 'required' => false,
             ],

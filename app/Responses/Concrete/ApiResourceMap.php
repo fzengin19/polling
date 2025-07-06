@@ -1,8 +1,7 @@
-<?php 
+<?php
 
 namespace App\Responses\Concrete;
 
-use App\Http\Resources\PollResource;
 use App\Http\Resources\TemplateResource;
 use App\Http\Resources\TemplateVersionResource;
 use App\Http\Resources\SurveyResource;
@@ -13,7 +12,6 @@ use Illuminate\Support\Str;
 class ApiResourceMap implements ResourceMapInterface
 {
     private array $map = [
-        'poll' => PollResource::class,
         'template' => TemplateResource::class,
         'templates' => TemplateResource::class,
         'template_version' => TemplateVersionResource::class,
@@ -24,6 +22,8 @@ class ApiResourceMap implements ResourceMapInterface
         'survey_pages' => SurveyPageResource::class,
         'question' => \App\Http\Resources\QuestionResource::class,
         'questions' => \App\Http\Resources\QuestionResource::class,
+        'choice' => \App\Http\Resources\ChoiceResource::class,
+        'choices' => \App\Http\Resources\ChoiceResource::class,
     ];
 
     public function resolve(string $key): ?string

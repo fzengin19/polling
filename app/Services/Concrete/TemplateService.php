@@ -8,8 +8,8 @@ use App\Services\Abstract\TemplateServiceInterface;
 use App\Dtos\TemplateDto;
 use App\Responses\ServiceResponse;
 use App\Responses\Abstract\ResourceMapInterface;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class TemplateService implements TemplateServiceInterface
 {
@@ -22,182 +22,172 @@ class TemplateService implements TemplateServiceInterface
     public function create(TemplateDto $dto): ServiceResponse
     {
         $template = $this->templateRepository->create($dto->toDatabaseArray());
-        return new ServiceResponse($template, $this->resourceMap, 201);
+        return ServiceResponse::created($template, 'Template created successfully.');
     }
 
     public function update(int $id, TemplateDto $dto): ServiceResponse
     {
-        $template = $this->templateRepository->find($id);
-        if (!$template) {
-            throw new ModelNotFoundException('Template not found.');
-        }
-        if ($template->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
         $this->templateRepository->update($id, $dto->toDatabaseArray());
-        return new ServiceResponse($this->templateRepository->find($id), $this->resourceMap);
+        return ServiceResponse::success($this->templateRepository->find($id));
     }
 
     public function delete(int $id): ServiceResponse
     {
-        $template = $this->templateRepository->find($id);
-        if (!$template) {
-            throw new ModelNotFoundException('Template not found.');
-        }
-        if ($template->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
         $this->templateRepository->delete($id);
-        return new ServiceResponse(['message' => 'Template deleted successfully.'], $this->resourceMap);
+        return ServiceResponse::noContent('Template deleted successfully.');
     }
 
     public function find(int $id): ServiceResponse
     {
         $template = $this->templateRepository->find($id);
-
         if (!$template) {
-            throw new ModelNotFoundException('Template not found.');
+            return ServiceResponse::notFound('Template not found.');
         }
-
-        // Check if user can access this template (owner or public)
-        if ($template->created_by !== Auth::id() && !$template->is_public) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        return new ServiceResponse($template, $this->resourceMap);
+        return ServiceResponse::success($template);
     }
 
     public function getAll(): ServiceResponse
     {
         $templates = $this->templateRepository->all();
-
-        return new ServiceResponse($templates, $this->resourceMap);
+        return ServiceResponse::success($templates);
     }
 
     public function getByUser(int $userId): ServiceResponse
     {
         $templates = $this->templateRepository->findByUser($userId);
-
-        return new ServiceResponse($templates, $this->resourceMap);
+        return ServiceResponse::success($templates);
     }
 
     public function getPublicTemplates(): ServiceResponse
     {
         $templates = $this->templateRepository->getPublicTemplates();
-
-        return new ServiceResponse($templates, $this->resourceMap);
+        return ServiceResponse::success($templates);
     }
 
     public function fork(int $templateId, int $userId): ServiceResponse
     {
         $originalTemplate = $this->templateRepository->find($templateId);
-
         if (!$originalTemplate) {
-            throw new ModelNotFoundException('Template not found.');
+            return ServiceResponse::notFound('Template not found.');
         }
 
-        // Check if user can fork this template (public or owner)
-        if ($originalTemplate->created_by !== $userId && !$originalTemplate->is_public) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
+        $latestVersion = $this->templateVersionRepository->getLatestVersion($templateId);
+        if (!$latestVersion) {
+            return ServiceResponse::error('Cannot fork a template with no versions.', null, 422);
         }
 
-        $forkedTemplate = $this->templateRepository->create([
-            'title' => $originalTemplate->title . ' (Fork)',
-            'description' => $originalTemplate->description,
-            'is_public' => false, // Forked templates are private by default
-            'created_by' => $userId,
-            'forked_from_template_id' => $templateId,
-        ]);
+        $forkedTemplate = null;
+        DB::transaction(function () use ($originalTemplate, $latestVersion, $userId, &$forkedTemplate) {
+            $forkedTemplate = $this->templateRepository->create([
+                'title' => $originalTemplate->title . ' (Fork)',
+                'description' => $originalTemplate->description,
+                'is_public' => false,
+                'created_by' => $userId,
+                'forked_from_template_id' => $originalTemplate->id,
+            ]);
 
-        return new ServiceResponse($forkedTemplate, $this->resourceMap, 201);
+            $this->templateVersionRepository->create([
+                'template_id' => $forkedTemplate->id,
+                'version' => '1.0.0',
+                'snapshot' => $latestVersion->snapshot,
+            ]);
+        });
+
+        return ServiceResponse::created($forkedTemplate, 'Template forked successfully.');
     }
 
-    // Version Management Methods
     public function getVersions(int $templateId): ServiceResponse
     {
-        $template = $this->templateRepository->find($templateId);
-
-        if (!$template) {
-            throw new ModelNotFoundException('Template not found.');
-        }
-
-        // Check if user can access this template (owner or public)
-        if ($template->created_by !== Auth::id() && !$template->is_public) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
         $versions = $this->templateVersionRepository->findByTemplate($templateId);
-
-        return new ServiceResponse($versions, $this->resourceMap);
+        return ServiceResponse::success($versions);
     }
 
     public function createVersion(int $templateId, int $userId): ServiceResponse
     {
         $template = $this->templateRepository->find($templateId);
-
         if (!$template) {
-            throw new ModelNotFoundException('Template not found.');
+            return ServiceResponse::notFound('Template not found.');
         }
 
-        // Check if user owns this template
-        if ($template->created_by !== $userId) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        // Get latest version number
         $latestVersion = $this->templateVersionRepository->getLatestVersion($templateId);
-        $versionNumber = $latestVersion ? $this->incrementVersion($latestVersion->version) : '1.0.0';
+        $newVersionNumber = $this->incrementVersion($latestVersion?->version);
 
-        // Create snapshot of current template state
-        $snapshot = [
+        $latestSurvey = $template->surveys()->with('pages.questions.choices')->latest()->first();
+        $snapshot = $latestSurvey ? $latestSurvey->toArray() : [
             'title' => $template->title,
             'description' => $template->description,
-            'is_public' => $template->is_public,
-            'created_at' => $template->created_at,
-            'updated_at' => $template->updated_at,
+            'pages' => [],
         ];
 
         $version = $this->templateVersionRepository->create([
             'template_id' => $templateId,
-            'version' => $versionNumber,
+            'version' => $newVersionNumber,
             'snapshot' => $snapshot,
         ]);
 
-        return new ServiceResponse($version, $this->resourceMap, 201);
+        return ServiceResponse::created($version);
     }
 
     public function restoreVersion(int $templateId, int $versionId, int $userId): ServiceResponse
     {
         $template = $this->templateRepository->find($templateId);
-
         if (!$template) {
-            throw new ModelNotFoundException('Template not found.');
-        }
-
-        // Check if user owns this template
-        if ($template->created_by !== $userId) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
+            return ServiceResponse::notFound('Template not found.');
         }
 
         $version = $this->templateVersionRepository->find($versionId);
-
         if (!$version || $version->template_id !== $templateId) {
-            throw new ModelNotFoundException('Version not found.');
+            return ServiceResponse::notFound('Version not found for this template.');
         }
 
-        // Restore template from version snapshot
-        $this->templateRepository->update($templateId, $version->snapshot);
+        $snapshot = $version->snapshot;
+        $template->update([
+            'title' => $snapshot['title'],
+            'description' => $snapshot['description'],
+        ]);
 
-        return new ServiceResponse($template->fresh(), $this->resourceMap);
+        $survey = $template->surveys()->create([
+            'title' => $snapshot['title'],
+            'description' => $snapshot['description'],
+            'created_by' => $userId,
+            'status' => 'draft',
+        ]);
+
+        foreach ($snapshot['pages'] ?? [] as $pageData) {
+            $page = $survey->pages()->create([
+                'title' => $pageData['title'],
+                'order_index' => $pageData['order_index'],
+            ]);
+
+            foreach ($pageData['questions'] ?? [] as $questionData) {
+                $question = $page->questions()->create([
+                    'title' => $questionData['title'],
+                    'type' => $questionData['type'],
+                    'is_required' => $questionData['is_required'],
+                    'config' => $questionData['config'],
+                    'order_index' => $questionData['order_index'],
+                ]);
+
+                foreach ($questionData['choices'] ?? [] as $choiceData) {
+                    $question->choices()->create([
+                        'label' => $choiceData['label'],
+                        'value' => $choiceData['value'],
+                        'order_index' => $choiceData['order_index'],
+                    ]);
+                }
+            }
+        }
+
+        return ServiceResponse::success($template->fresh());
     }
 
-    /**
-     * Increment semantic version
-     */
-    private function incrementVersion(string $version): string
+    private function incrementVersion(?string $version): string
     {
+        if (!$version) {
+            return '1.0.0';
+        }
         $parts = explode('.', $version);
-        $parts[2] = (int)$parts[2] + 1; // Increment patch version
+        $parts[2] = (int)$parts[2] + 1;
         return implode('.', $parts);
     }
 } 

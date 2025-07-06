@@ -23,6 +23,41 @@ class EnhancedUploadMediaRequest extends FormRequest
     {
         return [
             'file' => 'required|file',
+            'collection' => 'sometimes|string',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'file.required' => 'File is required.',
+            'file.file' => 'The uploaded file is not valid.',
+        ];
+    }
+
+    /**
+     * Get body parameters for API documentation
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function bodyParameters(): array
+    {
+        return [
+            'file' => [
+                'description' => 'Media file to upload.',
+                'example' => 'image.jpg',
+                'required' => true,
+            ],
+            'collection' => [
+                'description' => 'Media collection name (optional, defaults to "default").',
+                'example' => 'question-images',
+                'required' => false,
+            ],
         ];
     }
 } 

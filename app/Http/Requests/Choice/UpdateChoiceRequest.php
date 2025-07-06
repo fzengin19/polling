@@ -51,13 +51,13 @@ class UpdateChoiceRequest extends FormRequest
     {
         return [
             'label' => [
-                'description' => 'Choice label (display text)',
-                'example' => 'Updated Red',
+                'description' => 'The new text to be displayed for this choice. Maximum 255 characters.',
+                'example' => 'Updated Option 1',
                 'required' => false,
             ],
             'value' => [
-                'description' => 'Choice value (stored value)',
-                'example' => 'updated_red',
+                'description' => 'The new value to be stored for this choice. Maximum 255 characters.',
+                'example' => 'updated_option_1',
                 'required' => false,
             ],
             'order_index' => [

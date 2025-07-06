@@ -11,7 +11,7 @@ class SurveyPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return true;
     }
@@ -19,9 +19,20 @@ class SurveyPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Survey $survey): bool
+    public function view(?User $user, Survey $survey): bool
     {
-        return $user->id === $survey->created_by || $survey->status === 'active';
+        // Publicly active surveys can be viewed by anyone.
+        if ($survey->status === 'active') {
+            return true;
+        }
+        
+        // Guests cannot view non-active surveys.
+        if ($user === null) {
+            return false;
+        }
+
+        // The owner can view their own non-active surveys.
+        return $user->id === $survey->created_by;
     }
 
     /**
@@ -44,22 +55,6 @@ class SurveyPolicy
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Survey $survey): bool
-    {
-        return $user->id === $survey->created_by;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Survey $survey): bool
-    {
-        return $user->id === $survey->created_by;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Survey $survey): bool
     {
         return $user->id === $survey->created_by;
     }

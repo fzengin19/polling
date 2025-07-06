@@ -11,7 +11,7 @@ class UpdateTemplateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Will be checked in service layer
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class UpdateTemplateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|required|string|max:255',
+            'title' => 'sometimes|string|max:255',
             'description' => 'nullable|string|max:1000',
             'is_public' => 'sometimes|boolean',
         ];
@@ -51,17 +51,17 @@ class UpdateTemplateRequest extends FormRequest
     {
         return [
             'title' => [
-                'description' => 'Template title',
-                'example' => 'Updated Customer Satisfaction Survey',
+                'description' => 'The new title for the template. Maximum 255 characters.',
+                'example' => 'Updated Employee Feedback Template',
                 'required' => false,
             ],
             'description' => [
-                'description' => 'Template description',
-                'example' => 'An updated comprehensive survey to measure customer satisfaction',
+                'description' => 'The new description for the template. Maximum 1000 characters.',
+                'example' => 'An updated template for the quarterly employee feedback process.',
                 'required' => false,
             ],
             'is_public' => [
-                'description' => 'Whether the template is public',
+                'description' => 'Update the public availability of the template.',
                 'example' => true,
                 'required' => false,
             ],

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Survey;
+use App\Models\Template;
 use App\Policies\SurveyPolicy;
+use App\Policies\TemplatePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Survey::class => SurveyPolicy::class,
+        Template::class => TemplatePolicy::class,
     ];
 
     /**

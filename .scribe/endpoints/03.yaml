@@ -1,0 +1,564 @@
+name: 'Question Management'
+description: |-
+
+  APIs for managing questions within a survey page
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: 'api/survey-pages/{pageId}/questions'
+    metadata:
+      groupName: 'Question Management'
+      groupDescription: |-
+
+        APIs for managing questions within a survey page
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List Questions by Page'
+      description: 'Get a list of all questions for a specific survey page.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      pageId:
+        name: pageId
+        description: 'The ID of the survey page.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      pageId: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": [
+                  {
+                      "id": 1,
+                      "page_id": 1,
+                      "type": "multiple_choice",
+                      "title": "How satisfied are you with our service?",
+                      "order_index": 0
+                  },
+                  {
+                      "id": 2,
+                      "page_id": 1,
+                      "type": "text",
+                      "title": "Any additional feedback?",
+                      "order_index": 1
+                  }
+              ]
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/survey-pages/{pageId}/questions/reorder'
+    metadata:
+      groupName: 'Question Management'
+      groupDescription: |-
+
+        APIs for managing questions within a survey page
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Reorder Questions'
+      description: 'Reorder the questions within a specific page.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      pageId:
+        name: pageId
+        description: 'The ID of the survey page.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      pageId: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"success": true, "message": "Questions reordered successfully", "data": null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/survey-pages/{pageId}/questions'
+    metadata:
+      groupName: 'Question Management'
+      groupDescription: |-
+
+        APIs for managing questions within a survey page
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create Question'
+      description: 'Add a new question to a specific survey page.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      pageId:
+        name: pageId
+        description: 'The ID of the survey page.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      pageId: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      type:
+        name: type
+        description: 'The type of the question (e.g., text, number, linear_scale). Must not be greater than 50 characters.'
+        required: true
+        example: number
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      title:
+        name: title
+        description: 'The question text itself. Maximum 255 characters. Must not be greater than 255 characters.'
+        required: true
+        example: 'How would you rate our service?'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      is_required:
+        name: is_required
+        description: 'Whether the user must answer this question.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      help_text:
+        name: help_text
+        description: 'Additional text to help the user answer. Maximum 255 characters. Must not be greater than 255 characters.'
+        required: false
+        example: 'Please provide a rating from 1 to 10.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      placeholder:
+        name: placeholder
+        description: 'Placeholder text for input fields. Most useful for text, email, url, phone types. Must not be greater than 255 characters.'
+        required: false
+        example: 'Enter your answer here'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      config:
+        name: config
+        description: 'Question-specific configuration. Depends on the question type.'
+        required: false
+        example:
+          min: 1
+          max: 10
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      order_index:
+        name: order_index
+        description: 'Must be at least 0.'
+        required: false
+        example: 27
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      type: number
+      title: 'How would you rate our service?'
+      is_required: false
+      help_text: 'Please provide a rating from 1 to 10.'
+      placeholder: 'Enter your answer here'
+      config:
+        min: 1
+        max: 10
+      order_index: 27
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "page_id": 1,
+                  "type": "multiple_choice",
+                  "title": "How satisfied are you with our service?",
+                  "is_required": true,
+                  "help_text": "Please select one option.",
+                  "placeholder": null,
+                  "config": {
+                      "shuffle": false
+                  },
+                  "order_index": 0,
+                  "choices": [
+                      {
+                          "id": 1,
+                          "label": "Very Satisfied",
+                          "value": "5"
+                      },
+                      {
+                          "id": 2,
+                          "label": "Satisfied",
+                          "value": "4"
+                      }
+                  ]
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/questions/{id}'
+    metadata:
+      groupName: 'Question Management'
+      groupDescription: |-
+
+        APIs for managing questions within a survey page
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Question'
+      description: 'Get the details of a specific question.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the question.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "page_id": 1,
+                  "type": "multiple_choice",
+                  "title": "How satisfied are you with our service?",
+                  "is_required": true,
+                  "help_text": "Please select one option.",
+                  "placeholder": null,
+                  "config": {
+                      "shuffle": false
+                  },
+                  "order_index": 0,
+                  "choices": [
+                      {
+                          "id": 1,
+                          "label": "Very Satisfied",
+                          "value": "5"
+                      },
+                      {
+                          "id": 2,
+                          "label": "Satisfied",
+                          "value": "4"
+                      }
+                  ]
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+    uri: 'api/questions/{id}'
+    metadata:
+      groupName: 'Question Management'
+      groupDescription: |-
+
+        APIs for managing questions within a survey page
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Question'
+      description: 'Update a specific question.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the question.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      type:
+        name: type
+        description: 'Question type (text, multiple_choice, rating, etc.). Must not be greater than 50 characters.'
+        required: true
+        example: multiple_choice
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      title:
+        name: title
+        description: 'Question title. Must not be greater than 255 characters.'
+        required: true
+        example: 'Updated question title'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      is_required:
+        name: is_required
+        description: 'Whether the question is required.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      help_text:
+        name: help_text
+        description: 'Help text for the question. Must not be greater than 1000 characters.'
+        required: false
+        example: 'Updated help text'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      placeholder:
+        name: placeholder
+        description: 'Placeholder text for input fields. Most useful for text, email, url, phone types. Must not be greater than 255 characters.'
+        required: false
+        example: 'Updated placeholder'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      config:
+        name: config
+        description: 'Question-specific configuration. Depends on the question type.'
+        required: false
+        example:
+          min: 1
+          max: 5
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      order_index:
+        name: order_index
+        description: 'Order index for question positioning. Must be at least 0.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      type: multiple_choice
+      title: 'Updated question title'
+      is_required: false
+      help_text: 'Updated help text'
+      placeholder: 'Updated placeholder'
+      config:
+        min: 1
+        max: 5
+      order_index: 1
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "page_id": 1,
+                  "type": "multiple_choice",
+                  "title": "How satisfied are you with our service?",
+                  "is_required": true,
+                  "help_text": "Please select one option.",
+                  "placeholder": null,
+                  "config": {
+                      "shuffle": false
+                  },
+                  "order_index": 0,
+                  "choices": [
+                      {
+                          "id": 1,
+                          "label": "Very Satisfied",
+                          "value": "5"
+                      },
+                      {
+                          "id": 2,
+                          "label": "Satisfied",
+                          "value": "4"
+                      }
+                  ]
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/questions/{id}'
+    metadata:
+      groupName: 'Question Management'
+      groupDescription: |-
+
+        APIs for managing questions within a survey page
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete Question'
+      description: 'Delete a specific question.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the question.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"success": true, "message": "Question deleted successfully", "data": null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

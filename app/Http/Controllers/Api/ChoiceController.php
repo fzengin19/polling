@@ -6,11 +6,19 @@ use App\Dtos\ChoiceDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Choice\CreateChoiceRequest;
 use App\Http\Requests\Choice\UpdateChoiceRequest;
+use App\Models\Choice;
+use App\Models\Question;
+use App\Responses\ServiceResponse;
 use App\Services\Abstract\ChoiceServiceInterface;
 use App\Services\Abstract\QuestionServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Choice Management
+ *
+ * APIs for managing choices within a question
+ */
 class ChoiceController extends Controller
 {
     public function __construct(
@@ -19,6 +27,13 @@ class ChoiceController extends Controller
     ) {
     }
 
+    /**
+     * List Choices by Question
+     *
+     * Get a list of all choices for a specific question.
+     * @urlParam questionId required The ID of the question. Example: 1
+     * @responseFile storage/app/private/scribe/responses/choices.index.json
+     */
     public function index(int $questionId): JsonResponse
     {
         $questionResult = $this->questionService->findQuestion($questionId);
@@ -32,6 +47,14 @@ class ChoiceController extends Controller
         return $result->toResponse();
     }
 
+    /**
+     * Create Choice
+     *
+     * Add a new choice to a specific question.
+     * @authenticated
+     * @urlParam questionId required The ID of the question. Example: 1
+     * @responseFile status=201 storage/app/private/scribe/responses/choices.show.json
+     */
     public function store(CreateChoiceRequest $request, int $questionId): JsonResponse
     {
         $questionResult = $this->questionService->findQuestion($questionId);
@@ -47,6 +70,13 @@ class ChoiceController extends Controller
         return $result->toResponse();
     }
 
+    /**
+     * Get Choice
+     *
+     * Get the details of a specific choice.
+     * @urlParam choice required The ID of the choice. Example: 1
+     * @responseFile storage/app/private/scribe/responses/choices.show.json
+     */
     public function show(int $id): JsonResponse
     {
         $choiceResult = $this->choiceService->findChoice($id);
@@ -59,6 +89,14 @@ class ChoiceController extends Controller
         return $choiceResult->toResponse();
     }
 
+    /**
+     * Update Choice
+     *
+     * Update a specific choice.
+     * @authenticated
+     * @urlParam choice required The ID of the choice. Example: 1
+     * @responseFile storage/app/private/scribe/responses/choices.show.json
+     */
     public function update(UpdateChoiceRequest $request, int $id): JsonResponse
     {
         $choiceResult = $this->choiceService->findChoice($id);
@@ -73,6 +111,14 @@ class ChoiceController extends Controller
         return $result->toResponse();
     }
 
+    /**
+     * Delete Choice
+     *
+     * Delete a specific choice.
+     * @authenticated
+     * @urlParam choice required The ID of the choice. Example: 1
+     * @response 200 {"success": true, "message": "Choice deleted successfully", "data": null}
+     */
     public function destroy(int $id): JsonResponse
     {
         $choiceResult = $this->choiceService->findChoice($id);
@@ -86,6 +132,14 @@ class ChoiceController extends Controller
         return $result->toResponse();
     }
 
+    /**
+     * Reorder Choices
+     *
+     * Reorder the choices within a specific question.
+     * @authenticated
+     * @urlParam questionId required The ID of the question. Example: 1
+     * @response 200 {"success": true, "message": "Choices reordered successfully", "data": null}
+     */
     public function reorder(Request $request, int $questionId): JsonResponse
     {
         $questionResult = $this->questionService->findQuestion($questionId);

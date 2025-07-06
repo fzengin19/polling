@@ -22,7 +22,9 @@ class UploadMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'question_id' => 'required|integer|min:1',
+            'model_type' => 'required|string|in:question,survey,survey-page,choice',
+            'model_id' => 'required|integer|min:1',
+            'collection_name' => 'required|string|max:255',
             'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:10240', // 10MB max
             'alt_text' => 'sometimes|string|max:255',
             'caption' => 'sometimes|string|max:500',
@@ -37,8 +39,10 @@ class UploadMediaRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'question_id.required' => 'Question ID is required.',
-            'question_id.min' => 'Question ID must be at least 1.',
+            'model_type.required' => 'Model type is required.',
+            'model_type.in' => 'Invalid model type provided.',
+            'model_id.required' => 'Model ID is required.',
+            'collection_name.required' => 'Collection name is required.',
             'file.required' => 'File is required.',
             'file.file' => 'The uploaded file is not valid.',
             'file.mimes' => 'File must be one of: jpeg, png, jpg, gif, svg, pdf, doc, docx.',
@@ -56,23 +60,33 @@ class UploadMediaRequest extends FormRequest
     public function bodyParameters(): array
     {
         return [
-            'question_id' => [
-                'description' => 'ID of the question to attach media to',
+            'model_type' => [
+                'description' => 'Type of the model to attach media to (e.g., "question", "survey", "survey-page", "choice").',
+                'example' => 'question',
+                'required' => true,
+            ],
+            'model_id' => [
+                'description' => 'ID of the model to attach media to. Must be at least 1.',
                 'example' => 1,
                 'required' => true,
             ],
+            'collection_name' => [
+                'description' => 'Name of the collection to store the media in. Maximum 255 characters.',
+                'example' => 'images',
+                'required' => true,
+            ],
             'file' => [
-                'description' => 'Media file to upload (jpeg, png, jpg, gif, svg, pdf, doc, docx, max 10MB)',
-                'example' => 'image.jpg',
+                'description' => 'Media file to upload. Allowed types: jpeg, png, jpg, gif, svg, pdf, doc, docx. Maximum size: 10MB.',
+                'example' => null,
                 'required' => true,
             ],
             'alt_text' => [
-                'description' => 'Alternative text for the media',
+                'description' => 'Alternative text for the media. Maximum 255 characters.',
                 'example' => 'A red circle',
                 'required' => false,
             ],
             'caption' => [
-                'description' => 'Caption for the media',
+                'description' => 'Caption for the media. Maximum 500 characters.',
                 'example' => 'This is a sample image',
                 'required' => false,
             ],

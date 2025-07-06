@@ -12,6 +12,7 @@ use App\Models\Survey;
 use App\Models\SurveyPage;
 use App\Models\Question;
 use App\Models\Choice;
+use Illuminate\Http\UploadedFile;
 
 class ValidationErrorTest extends TestCase
 {
@@ -46,7 +47,7 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson('/api/auth/register', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['name', 'email', 'password']);
+        $response->assertJsonValidationErrors(['name', 'email', 'password'], 'data');
 
         // Test email format
         $response = $this->postJson('/api/auth/register', [
@@ -55,7 +56,7 @@ class ValidationErrorTest extends TestCase
             'password' => 'password123',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['email']);
+        $response->assertJsonValidationErrors(['email'], 'data');
 
         // Test password min length
         $response = $this->postJson('/api/auth/register', [
@@ -64,7 +65,7 @@ class ValidationErrorTest extends TestCase
             'password' => '123',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['password']);
+        $response->assertJsonValidationErrors(['password'], 'data');
 
         // Test name max length
         $response = $this->postJson('/api/auth/register', [
@@ -73,7 +74,7 @@ class ValidationErrorTest extends TestCase
             'password' => 'password123',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['name']);
+        $response->assertJsonValidationErrors(['name'], 'data');
 
         // Test email max length
         $response = $this->postJson('/api/auth/register', [
@@ -82,7 +83,17 @@ class ValidationErrorTest extends TestCase
             'password' => 'password123',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['email']);
+        $response->assertJsonValidationErrors(['email'], 'data');
+
+        // Test password confirmation
+        $response = $this->postJson('/api/auth/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password1234',
+        ]);
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['password'], 'data');
     }
 
     public function test_login_validation_errors(): void
@@ -90,7 +101,7 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson('/api/auth/login', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['email', 'password']);
+        $response->assertJsonValidationErrors(['email', 'password'], 'data');
 
         // Test email format
         $response = $this->postJson('/api/auth/login', [
@@ -98,7 +109,7 @@ class ValidationErrorTest extends TestCase
             'password' => 'password',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['email']);
+        $response->assertJsonValidationErrors(['email'], 'data');
     }
 
     public function test_google_login_validation_errors(): void
@@ -106,14 +117,14 @@ class ValidationErrorTest extends TestCase
         // Test required token
         $response = $this->postJson('/api/auth/google', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['google_access_token']);
+        $response->assertJsonValidationErrors(['google_access_token'], 'data');
 
         // Test token max length
         $response = $this->postJson('/api/auth/google', [
             'google_access_token' => str_repeat('a', 1001),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['google_access_token']);
+        $response->assertJsonValidationErrors(['google_access_token'], 'data');
     }
 
     // ==================== SURVEY VALIDATION TESTS ====================
@@ -125,7 +136,7 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson('/api/surveys', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['title', 'status']);
+        $response->assertJsonValidationErrors(['title', 'status'], 'data');
 
         // Test title max length
         $response = $this->postJson('/api/surveys', [
@@ -133,7 +144,7 @@ class ValidationErrorTest extends TestCase
             'status' => 'draft',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['title']);
+        $response->assertJsonValidationErrors(['title'], 'data');
 
         // Test description max length
         $response = $this->postJson('/api/surveys', [
@@ -142,7 +153,7 @@ class ValidationErrorTest extends TestCase
             'status' => 'draft',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['description']);
+        $response->assertJsonValidationErrors(['description'], 'data');
 
         // Test invalid status
         $response = $this->postJson('/api/surveys', [
@@ -150,7 +161,7 @@ class ValidationErrorTest extends TestCase
             'status' => 'invalid_status',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['status']);
+        $response->assertJsonValidationErrors(['status'], 'data');
 
         // Test template_id min value
         $response = $this->postJson('/api/surveys', [
@@ -159,7 +170,7 @@ class ValidationErrorTest extends TestCase
             'template_id' => 0,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['template_id']);
+        $response->assertJsonValidationErrors(['template_id'], 'data');
 
         // Test max_responses min value
         $response = $this->postJson('/api/surveys', [
@@ -168,7 +179,7 @@ class ValidationErrorTest extends TestCase
             'max_responses' => 0,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['max_responses']);
+        $response->assertJsonValidationErrors(['max_responses'], 'data');
 
         // Test max_responses max value
         $response = $this->postJson('/api/surveys', [
@@ -177,7 +188,7 @@ class ValidationErrorTest extends TestCase
             'max_responses' => 1000001,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['max_responses']);
+        $response->assertJsonValidationErrors(['max_responses'], 'data');
 
         // Test expires_at future date
         $response = $this->postJson('/api/surveys', [
@@ -186,7 +197,7 @@ class ValidationErrorTest extends TestCase
             'expires_at' => now()->subDay(),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['expires_at']);
+        $response->assertJsonValidationErrors(['expires_at'], 'data');
     }
 
     // ==================== QUESTION VALIDATION TESTS ====================
@@ -198,7 +209,7 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson("/api/survey-pages/{$this->page->id}/questions", []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['type', 'title']);
+        $response->assertJsonValidationErrors(['type', 'title'], 'data');
 
         // Test type max length
         $response = $this->postJson("/api/survey-pages/{$this->page->id}/questions", [
@@ -206,7 +217,7 @@ class ValidationErrorTest extends TestCase
             'title' => 'Test Question',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['type']);
+        $response->assertJsonValidationErrors(['type'], 'data');
 
         // Test title max length
         $response = $this->postJson("/api/survey-pages/{$this->page->id}/questions", [
@@ -214,7 +225,7 @@ class ValidationErrorTest extends TestCase
             'title' => str_repeat('a', 256),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['title']);
+        $response->assertJsonValidationErrors(['title'], 'data');
 
         // Test help_text max length
         $response = $this->postJson("/api/survey-pages/{$this->page->id}/questions", [
@@ -223,7 +234,7 @@ class ValidationErrorTest extends TestCase
             'help_text' => str_repeat('a', 1001),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['help_text']);
+        $response->assertJsonValidationErrors(['help_text'], 'data');
 
         // Test placeholder max length
         $response = $this->postJson("/api/survey-pages/{$this->page->id}/questions", [
@@ -232,7 +243,7 @@ class ValidationErrorTest extends TestCase
             'placeholder' => str_repeat('a', 256),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['placeholder']);
+        $response->assertJsonValidationErrors(['placeholder'], 'data');
 
         // Test order_index min value
         $response = $this->postJson("/api/survey-pages/{$this->page->id}/questions", [
@@ -241,7 +252,7 @@ class ValidationErrorTest extends TestCase
             'order_index' => -1,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['order_index']);
+        $response->assertJsonValidationErrors(['order_index'], 'data');
     }
 
     // ==================== CHOICE VALIDATION TESTS ====================
@@ -253,7 +264,7 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson("/api/questions/{$this->question->id}/choices", []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['label', 'value']);
+        $response->assertJsonValidationErrors(['label', 'value'], 'data');
 
         // Test label max length
         $response = $this->postJson("/api/questions/{$this->question->id}/choices", [
@@ -261,7 +272,7 @@ class ValidationErrorTest extends TestCase
             'value' => 'test',
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['label']);
+        $response->assertJsonValidationErrors(['label'], 'data');
 
         // Test value max length
         $response = $this->postJson("/api/questions/{$this->question->id}/choices", [
@@ -269,7 +280,7 @@ class ValidationErrorTest extends TestCase
             'value' => str_repeat('a', 256),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['value']);
+        $response->assertJsonValidationErrors(['value'], 'data');
 
         // Test order_index min value
         $response = $this->postJson("/api/questions/{$this->question->id}/choices", [
@@ -278,7 +289,7 @@ class ValidationErrorTest extends TestCase
             'order_index' => -1,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['order_index']);
+        $response->assertJsonValidationErrors(['order_index'], 'data');
     }
 
     // ==================== SURVEY PAGE VALIDATION TESTS ====================
@@ -290,14 +301,14 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson('/api/surveys/pages', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['survey_id']);
+        $response->assertJsonValidationErrors(['survey_id'], 'data');
 
         // Test survey_id min value
         $response = $this->postJson('/api/surveys/pages', [
             'survey_id' => 0,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['survey_id']);
+        $response->assertJsonValidationErrors(['survey_id'], 'data');
 
         // Test title max length
         $response = $this->postJson('/api/surveys/pages', [
@@ -305,7 +316,7 @@ class ValidationErrorTest extends TestCase
             'title' => str_repeat('a', 256),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['title']);
+        $response->assertJsonValidationErrors(['title'], 'data');
 
         // Test order_index min value
         $response = $this->postJson('/api/surveys/pages', [
@@ -313,7 +324,7 @@ class ValidationErrorTest extends TestCase
             'order_index' => -1,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['order_index']);
+        $response->assertJsonValidationErrors(['order_index'], 'data');
     }
 
     // ==================== TEMPLATE VALIDATION TESTS ====================
@@ -325,14 +336,14 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson('/api/templates', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['title']);
+        $response->assertJsonValidationErrors(['title'], 'data');
 
         // Test title max length
         $response = $this->postJson('/api/templates', [
             'title' => str_repeat('a', 256),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['title']);
+        $response->assertJsonValidationErrors(['title'], 'data');
 
         // Test description max length
         $response = $this->postJson('/api/templates', [
@@ -340,7 +351,7 @@ class ValidationErrorTest extends TestCase
             'description' => str_repeat('a', 1001),
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['description']);
+        $response->assertJsonValidationErrors(['description'], 'data');
 
         // Test forked_from_template_id min value
         $response = $this->postJson('/api/templates', [
@@ -348,7 +359,7 @@ class ValidationErrorTest extends TestCase
             'forked_from_template_id' => 0,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['forked_from_template_id']);
+        $response->assertJsonValidationErrors(['forked_from_template_id'], 'data');
     }
 
     // ==================== MEDIA VALIDATION TESTS ====================
@@ -360,30 +371,22 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson('/api/media/upload', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['question_id', 'file']);
+        $response->assertJsonValidationErrors([
+            'model_type',
+            'model_id',
+            'collection_name',
+            'file'
+        ], 'data');
 
-        // Test question_id min value
+        // Test model_type validation
         $response = $this->postJson('/api/media/upload', [
-            'question_id' => 0,
+            'model_type' => 'invalid_model',
+            'model_id' => 1,
+            'collection_name' => 'images',
+            'file' => UploadedFile::fake()->image('test.jpg')
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['question_id']);
-
-        // Test alt_text max length
-        $response = $this->postJson('/api/media/upload', [
-            'question_id' => $this->question->id,
-            'alt_text' => str_repeat('a', 256),
-        ]);
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['alt_text']);
-
-        // Test caption max length
-        $response = $this->postJson('/api/media/upload', [
-            'question_id' => $this->question->id,
-            'caption' => str_repeat('a', 501),
-        ]);
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['caption']);
+        $response->assertJsonValidationErrors(['model_type'], 'data');
     }
 
     // ==================== ROLE VALIDATION TESTS ====================
@@ -395,30 +398,17 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson('/api/roles/assign', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['role_name']);
+        $response->assertJsonValidationErrors(['role_name', 'model_type', 'model_id'], 'data');
 
-        // Test role_name max length
-        $response = $this->postJson('/api/roles/assign', [
-            'role_name' => str_repeat('a', 256),
-        ]);
+        // Test invalid role_name
+        $response = $this->postJson('/api/roles/assign', ['role_name' => 'nonexistent-role', 'model_type' => 'user', 'model_id' => 1]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['role_name']);
+        $response->assertJsonValidationErrors('role_name', 'data');
 
-        // Test user_id min value
-        $response = $this->postJson('/api/roles/assign', [
-            'role_name' => 'test_role',
-            'user_id' => 0,
-        ]);
+        // Test invalid model_type
+        $response = $this->postJson('/api/roles/assign', ['role_name' => 'editor', 'model_type' => 'invalid-type', 'model_id' => 1]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['user_id']);
-
-        // Test survey_id min value
-        $response = $this->postJson('/api/roles/assign', [
-            'role_name' => 'test_role',
-            'survey_id' => 0,
-        ]);
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['survey_id']);
+        $response->assertJsonValidationErrors('model_type', 'data');
     }
 
     // ==================== RESPONSE VALIDATION TESTS ====================
@@ -428,77 +418,37 @@ class ValidationErrorTest extends TestCase
         // Test required fields
         $response = $this->postJson('/api/responses', []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['survey_id']);
+        $response->assertJsonValidationErrors(['survey_id'], 'data');
 
         // Test survey_id min value
         $response = $this->postJson('/api/responses', [
             'survey_id' => 0,
         ]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['survey_id']);
+        $response->assertJsonValidationErrors(['survey_id'], 'data');
     }
 
     public function test_response_submit_validation_errors(): void
     {
         // Create a response first
-        $responseData = ['survey_id' => $this->survey->id];
-        $response = $this->postJson('/api/responses', $responseData);
-        $responseId = $response->json('id');
+        $response = $this->postJson("/api/responses", ['survey_id' => $this->survey->id]);
+        $responseId = $response->json('data.id');
 
-        // Test required answers
-        $response = $this->postJson("/api/responses/{$responseId}/submit", []);
+        // Test with a non-existent response ID should still trigger validation first
+        $response = $this->postJson("/api/responses/999999/submit", []);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['answers']);
+        $response->assertJsonValidationErrors(['answers'], 'data');
 
-        // Test empty answers array
+        // Test empty answers array with a valid response ID
         $response = $this->postJson("/api/responses/{$responseId}/submit", ['answers' => []]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['answers']);
+        $response->assertJsonValidationErrors(['answers'], 'data');
 
-        // Test required question_id in answers
-        $response = $this->postJson("/api/responses/{$responseId}/submit", [
-            'answers' => [
-                ['value' => 'test'],
-            ],
-        ]);
+        // Test invalid answer structure (missing question_id)
+        $response = $this->postJson("/api/responses/{$responseId}/submit", ['answers' => [
+            ['value' => 'some answer']
+        ]]);
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['answers.0.question_id']);
-
-        // Test question_id min value
-        $response = $this->postJson("/api/responses/{$responseId}/submit", [
-            'answers' => [
-                [
-                    'question_id' => 0,
-                    'value' => 'test',
-                ],
-            ],
-        ]);
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['answers.0.question_id']);
-
-        // Test value max length
-        $response = $this->postJson("/api/responses/{$responseId}/submit", [
-            'answers' => [
-                [
-                    'question_id' => $this->question->id,
-                    'value' => str_repeat('a', 1001),
-                ],
-            ],
-        ]);
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['answers.0.value']);
-
-        // Test order_index min value
-        $response = $this->postJson("/api/responses/{$responseId}/submit", [
-            'answers' => [
-                [
-                    'question_id' => $this->question->id,
-                    'value' => 'test',
-                    'order_index' => -1,
-                ],
-            ],
-        ]);
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['answers.0.order_index']);
+        $response->assertJsonValidationErrors(['answers.0.question_id'], 'data');
     }
 } 

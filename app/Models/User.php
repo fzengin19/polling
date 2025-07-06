@@ -33,6 +33,7 @@ class User extends Authenticatable
         'password',
         'provider',
         'provider_id',
+        'experience_level',
     ];
 
     /**

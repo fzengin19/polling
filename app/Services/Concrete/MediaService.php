@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Helpers\MediaConfigHelper;
 
 class MediaService implements MediaServiceInterface
 {
@@ -33,7 +35,7 @@ class MediaService implements MediaServiceInterface
 
             $question = $this->questionRepository->find($dto->question_id);
             if (!$question) {
-                return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
+                return ServiceResponse::notFound('Question not found');
             }
 
             // MediaLibrary will handle the file upload and storage
@@ -45,50 +47,61 @@ class MediaService implements MediaServiceInterface
                 ->toMediaCollection('question-media');
 
             DB::commit();
-            return new ServiceResponse($media, $this->resourceMap, 201);
+            return ServiceResponse::created($media);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
+            return ServiceResponse::error($e->getMessage(), null, 500);
         }
     }
 
     public function uploadMediaForModel(string $modelType, int $modelId, UploadedFile $file, string $collection): ServiceResponse
     {
-        try {
-            $model = $this->getModel($modelType, $modelId);
-            if (!$model) {
-                return new ServiceResponse(['message' => 'Model not found'], $this->resourceMap, 404);
-            }
+        $model = $this->getModel($modelType, $modelId);
+        if (!$model) {
+            return ServiceResponse::notFound('Model not found');
+        }
 
-            DB::beginTransaction();
-
+        $media = null;
+        DB::transaction(function () use ($model, $file, $collection, &$media) {
             $media = $model->addMedia($file)
                 ->toMediaCollection($collection);
 
-            DB::commit();
-            return new ServiceResponse($media, $this->resourceMap, 201);
+            if ($model instanceof \App\Models\Question) {
+                $reference = MediaConfigHelper::createMediaReference(
+                    'image', // Simplified type for now
+                    $collection,
+                    $media->id,
+                    $media->getUrl()
+                );
+                $newConfig = MediaConfigHelper::addMediaReference($model->config ?? [], $reference);
+                $this->questionRepository->update($model->id, ['config' => $newConfig]);
+            }
+        });
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
-        }
+        return ServiceResponse::created($media);
     }
 
     public function deleteMedia(int $mediaId): ServiceResponse
     {
-        try {
+        DB::transaction(function () use ($mediaId) {
             $media = Media::find($mediaId);
             if (!$media) {
-                return new ServiceResponse(['message' => 'Media not found'], $this->resourceMap, 404);
+                throw new ModelNotFoundException('Media not found');
             }
 
-            $media->delete();
-            return new ServiceResponse(['message' => 'Media deleted successfully'], $this->resourceMap, 200);
+            // Find all questions referencing this media and clean their config
+            $questions = $this->questionRepository->findByJsonContains('config', 'media_id', $mediaId);
 
-        } catch (\Exception $e) {
-            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
-        }
+            foreach ($questions as $question) {
+                $newConfig = MediaConfigHelper::removeMediaReference($question->config, $mediaId);
+                $this->questionRepository->update($question->id, ['config' => $newConfig]);
+            }
+            
+            $media->delete();
+        });
+
+        return ServiceResponse::noContent();
     }
 
     public function getQuestionMedia(int $questionId): ServiceResponse
@@ -96,14 +109,14 @@ class MediaService implements MediaServiceInterface
         try {
             $question = $this->questionRepository->find($questionId);
             if (!$question) {
-                return new ServiceResponse(['message' => 'Question not found'], $this->resourceMap, 404);
+                return ServiceResponse::notFound('Question not found');
             }
 
             $media = $question->getMedia('question-media');
-            return new ServiceResponse($media, $this->resourceMap, 200);
+            return ServiceResponse::success($media);
 
         } catch (\Exception $e) {
-            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
+            return ServiceResponse::error($e->getMessage(), null, 500);
         }
     }
 
@@ -112,7 +125,7 @@ class MediaService implements MediaServiceInterface
         try {
             $model = $this->getModel($modelType, $modelId);
             if (!$model) {
-                return new ServiceResponse(['message' => 'Model not found'], $this->resourceMap, 404);
+                return ServiceResponse::notFound('Model not found');
             }
 
             if ($collection) {
@@ -121,10 +134,10 @@ class MediaService implements MediaServiceInterface
                 $media = $model->getMedia();
             }
             
-            return new ServiceResponse($media, $this->resourceMap, 200);
+            return ServiceResponse::success($media);
 
         } catch (\Exception $e) {
-            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
+            return ServiceResponse::error($e->getMessage(), null, 500);
         }
     }
 
@@ -133,7 +146,7 @@ class MediaService implements MediaServiceInterface
         try {
             $media = Media::find($mediaId);
             if (!$media) {
-                return new ServiceResponse(['message' => 'Media not found'], $this->resourceMap, 404);
+                return ServiceResponse::notFound('Media not found');
             }
 
             Log::info('Updating media metadata', [
@@ -161,10 +174,10 @@ class MediaService implements MediaServiceInterface
                 'display_order_from_properties' => $media->getCustomProperty('display_order')
             ]);
             
-            return new ServiceResponse($media, $this->resourceMap, 200);
+            return ServiceResponse::success($media);
 
         } catch (\Exception $e) {
-            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
+            return ServiceResponse::error($e->getMessage(), null, 500);
         }
     }
 
@@ -179,10 +192,10 @@ class MediaService implements MediaServiceInterface
                 default => []
             };
 
-            return new ServiceResponse($collections, $this->resourceMap, 200);
+            return ServiceResponse::success($collections);
 
         } catch (\Exception $e) {
-            return new ServiceResponse(['message' => $e->getMessage()], $this->resourceMap, 500);
+            return ServiceResponse::error($e->getMessage(), null, 500);
         }
     }
 

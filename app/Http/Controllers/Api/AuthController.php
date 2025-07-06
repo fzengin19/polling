@@ -12,12 +12,34 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Authentication
+ *
+ * APIs for user authentication
+ */
 class AuthController extends Controller
 {
     public function __construct(
         protected AuthServiceInterface $authService
     ) {}
 
+    /**
+     * Register
+     *
+     * Register a new user and get an API token.
+     * @response {
+     *     "success": true,
+     *     "message": "User registered successfully.",
+     *     "data": {
+     *         "user": {
+     *             "id": 1,
+     *             "name": "John Doe",
+     *             "email": "john.doe@example.com"
+     *         },
+     *         "token": "{YOUR_API_TOKEN}"
+     *     }
+     * }
+     */
     public function register(RegisterRequest $request): JsonResponse
     {
         $dto = new RegisterDto(...$request->validated());
@@ -25,6 +47,23 @@ class AuthController extends Controller
         return $result->toResponse();
     }
 
+    /**
+     * Login
+     *
+     * Log in a user and get an API token.
+     * @response {
+     *     "success": true,
+     *     "message": "User logged in successfully.",
+     *     "data": {
+     *         "user": {
+     *             "id": 1,
+     *             "name": "John Doe",
+     *             "email": "john.doe@example.com"
+     *         },
+     *         "token": "{YOUR_API_TOKEN}"
+     *     }
+     * }
+     */
     public function login(LoginRequest $request): JsonResponse
     {
         $dto = new LoginDto(...$request->validated());
@@ -32,12 +71,26 @@ class AuthController extends Controller
         return $result->toResponse();
     }
 
+    /**
+     * Logout
+     *
+     * Invalidate the current user's API token.
+     * @authenticated
+     * @response 200 {"success": true, "message": "Successfully logged out", "data": null}
+     */
     public function logout(): JsonResponse
     {
         $result = $this->authService->logout();
         return $result->toResponse();
     }
 
+    /**
+     * Get Authenticated User
+     *
+     * Get the details of the currently authenticated user.
+     * @authenticated
+     * @responseFile storage/app/private/scribe/responses/auth.me.json
+     */
     public function me(): JsonResponse
     {
         $result = $this->authService->getAuthenticatedUser();
@@ -45,7 +98,21 @@ class AuthController extends Controller
     }
 
     /**
-     * Google access token ile login/register
+     * Google Login
+     *
+     * Authenticate or register a user using a Google Access Token.
+     * @response {
+     *     "success": true,
+     *     "message": "User authenticated successfully.",
+     *     "data": {
+     *         "user": {
+     *             "id": 1,
+     *             "name": "John Doe",
+     *             "email": "john.doe@example.com"
+     *         },
+     *         "token": "{YOUR_API_TOKEN}"
+     *     }
+     * }
      */
     public function googleLogin(GoogleLoginRequest $request): JsonResponse
     {

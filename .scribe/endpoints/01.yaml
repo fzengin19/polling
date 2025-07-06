@@ -1,0 +1,725 @@
+name: 'Template Management'
+description: |-
+
+  APIs for managing templates
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/templates
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List Templates'
+      description: 'Get a paginated list of all public templates.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": [
+                  {
+                      "id": 1,
+                      "title": "Customer Feedback Template",
+                      "description": "A standard template for collecting customer feedback.",
+                      "is_public": true,
+                      "created_at": "2025-07-02T22:00:00.000000Z"
+                  },
+                  {
+                      "id": 2,
+                      "title": "Internal HR Review Template",
+                      "description": "Template for quarterly HR reviews.",
+                      "is_public": false,
+                      "created_at": "2025-07-01T11:00:00.000000Z"
+                  }
+              ]
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/templates/public
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Public Templates'
+      description: 'Get a list of all public templates.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": [
+                  {
+                      "id": 1,
+                      "title": "Customer Feedback Template",
+                      "description": "A standard template for collecting customer feedback.",
+                      "is_public": true,
+                      "created_at": "2025-07-02T22:00:00.000000Z"
+                  },
+                  {
+                      "id": 2,
+                      "title": "Internal HR Review Template",
+                      "description": "Template for quarterly HR reviews.",
+                      "is_public": false,
+                      "created_at": "2025-07-01T11:00:00.000000Z"
+                  }
+              ]
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/templates/my
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get My Templates'
+      description: 'Get a list of templates created by the authenticated user.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": [
+                  {
+                      "id": 1,
+                      "title": "Customer Feedback Template",
+                      "description": "A standard template for collecting customer feedback.",
+                      "is_public": true,
+                      "created_at": "2025-07-02T22:00:00.000000Z"
+                  },
+                  {
+                      "id": 2,
+                      "title": "Internal HR Review Template",
+                      "description": "Template for quarterly HR reviews.",
+                      "is_public": false,
+                      "created_at": "2025-07-01T11:00:00.000000Z"
+                  }
+              ]
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/templates
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create Template'
+      description: 'Create a new survey template.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'The title of the template. Maximum 255 characters. Must not be greater than 255 characters.'
+        required: true
+        example: 'New Employee Onboarding Checklist'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: 'A brief description of the template. Maximum 1000 characters. Must not be greater than 1000 characters.'
+        required: false
+        example: 'A comprehensive template for the onboarding process of new hires.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      is_public:
+        name: is_public
+        description: 'Whether the template should be publicly available for others to use.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      forked_from_template_id:
+        name: forked_from_template_id
+        description: 'The ID of the template this was forked from, if any. Must be at least 1.'
+        required: false
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      title: 'New Employee Onboarding Checklist'
+      description: 'A comprehensive template for the onboarding process of new hires.'
+      is_public: false
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "title": "Customer Feedback Template",
+                  "description": "A standard template for collecting customer feedback.",
+                  "is_public": true,
+                  "created_at": "2025-07-02T22:00:00.000000Z",
+                  "updated_at": "2025-07-02T22:00:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/templates/{id}'
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Template'
+      description: 'Get the details of a specific template.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the template.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "title": "Customer Feedback Template",
+                  "description": "A standard template for collecting customer feedback.",
+                  "is_public": true,
+                  "created_at": "2025-07-02T22:00:00.000000Z",
+                  "updated_at": "2025-07-02T22:00:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+    uri: 'api/templates/{id}'
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Template'
+      description: 'Update a specific template.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the template.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'The new title for the template. Maximum 255 characters. Must not be greater than 255 characters.'
+        required: false
+        example: 'Updated Employee Feedback Template'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: 'The new description for the template. Maximum 1000 characters. Must not be greater than 1000 characters.'
+        required: false
+        example: 'An updated template for the quarterly employee feedback process.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      is_public:
+        name: is_public
+        description: 'Update the public availability of the template.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      title: 'Updated Employee Feedback Template'
+      description: 'An updated template for the quarterly employee feedback process.'
+      is_public: false
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "title": "Customer Feedback Template",
+                  "description": "A standard template for collecting customer feedback.",
+                  "is_public": true,
+                  "created_at": "2025-07-02T22:00:00.000000Z",
+                  "updated_at": "2025-07-02T22:00:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/templates/{id}'
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete Template'
+      description: 'Delete a specific template.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the template.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"success": true, "message": "Template deleted successfully", "data": null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/templates/{id}/fork'
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Fork Template'
+      description: 'Create a copy of an existing template for the authenticated user.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the template to fork.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "title": "Customer Feedback Template",
+                  "description": "A standard template for collecting customer feedback.",
+                  "is_public": true,
+                  "created_at": "2025-07-02T22:00:00.000000Z",
+                  "updated_at": "2025-07-02T22:00:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/templates/{id}/versions'
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Template Versions'
+      description: 'Get all versions of a specific template.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the template.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": [
+                  {
+                      "id": 1,
+                      "template_id": 1,
+                      "version_number": 1,
+                      "created_at": "2025-07-02T22:05:00.000000Z"
+                  },
+                  {
+                      "id": 2,
+                      "template_id": 1,
+                      "version_number": 2,
+                      "created_at": "2025-07-02T22:10:00.000000Z"
+                  }
+              ]
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/templates/{id}/versions'
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create Template Version'
+      description: 'Create a new version of a template.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the template.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 2,
+                  "template_id": 1,
+                  "version_number": 2,
+                  "created_at": "2025-07-02T22:10:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/templates/{id}/versions/{versionId}/restore'
+    metadata:
+      groupName: 'Template Management'
+      groupDescription: |-
+
+        APIs for managing templates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Restore Template Version'
+      description: 'Restore a template to a specific version.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the template.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      versionId:
+        name: versionId
+        description: 'The ID of the version to restore.'
+        required: true
+        example: '2'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: '1'
+      versionId: '2'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "title": "Customer Feedback Template",
+                  "description": "A standard template for collecting customer feedback.",
+                  "is_public": true,
+                  "created_at": "2025-07-02T22:00:00.000000Z",
+                  "updated_at": "2025-07-02T22:00:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

@@ -39,10 +39,10 @@ class AuthService implements AuthServiceInterface
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return new ServiceResponse([
+        return ServiceResponse::created([
             'token' => $token,
             'user' => $user,
-        ], $this->resourceMap, 201);
+        ], 'User registered successfully.');
     }
 
     public function login(LoginDto $dto): ServiceResponse
@@ -57,17 +57,17 @@ class AuthService implements AuthServiceInterface
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return new ServiceResponse([
+        return ServiceResponse::success([
             'token' => $token,
             'user' => $user,
-        ], $this->resourceMap);
+        ], 'Login successful.');
     }
 
     public function logout(): ServiceResponse
     {
         auth()->user()?->currentAccessToken()?->delete();
 
-        return new ServiceResponse(['message' => 'Logged out successfully.'], $this->resourceMap, 200);
+        return ServiceResponse::success(null, 'Logged out successfully.');
     }
 
     public function getAuthenticatedUser(): ServiceResponse
@@ -76,12 +76,12 @@ class AuthService implements AuthServiceInterface
 
         if (!$userId) {
             // Eğer user yoksa boş yanıt veya 401 dönebilirsin
-            return new ServiceResponse(null, $this->resourceMap, 401);
+            return ServiceResponse::unauthorized('User not authenticated.');
         }
 
         $user = $this->userRepository->find($userId);
 
-        return new ServiceResponse($user, $this->resourceMap);
+        return ServiceResponse::success($user);
     }
 
     /**
@@ -116,9 +116,9 @@ class AuthService implements AuthServiceInterface
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return new ServiceResponse([
+        return ServiceResponse::success([
             'token' => $token,
             'user' => $user,
-        ], $this->resourceMap);
+        ], 'Google login successful.');
     }
 }

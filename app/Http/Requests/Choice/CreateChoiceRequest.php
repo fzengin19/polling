@@ -53,13 +53,13 @@ class CreateChoiceRequest extends FormRequest
     {
         return [
             'label' => [
-                'description' => 'Choice label (display text)',
-                'example' => 'Red',
+                'description' => 'The text displayed to the user for this choice. Maximum 255 characters.',
+                'example' => 'Option 1',
                 'required' => true,
             ],
             'value' => [
-                'description' => 'Choice value (stored value)',
-                'example' => 'red',
+                'description' => 'The value stored in the database for this choice. Maximum 255 characters.',
+                'example' => 'option_1',
                 'required' => true,
             ],
             'order_index' => [

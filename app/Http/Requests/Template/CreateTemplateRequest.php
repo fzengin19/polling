@@ -11,7 +11,7 @@ class CreateTemplateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Authenticated users can create templates
+        return true;
     }
 
     /**
@@ -53,23 +53,23 @@ class CreateTemplateRequest extends FormRequest
     {
         return [
             'title' => [
-                'description' => 'Template title',
-                'example' => 'Customer Satisfaction Survey',
+                'description' => 'The title of the template. Maximum 255 characters.',
+                'example' => 'New Employee Onboarding Checklist',
                 'required' => true,
             ],
             'description' => [
-                'description' => 'Template description',
-                'example' => 'A comprehensive survey to measure customer satisfaction',
+                'description' => 'A brief description of the template. Maximum 1000 characters.',
+                'example' => 'A comprehensive template for the onboarding process of new hires.',
                 'required' => false,
             ],
             'is_public' => [
-                'description' => 'Whether the template is public',
+                'description' => 'Whether the template should be publicly available for others to use.',
                 'example' => false,
                 'required' => false,
             ],
             'forked_from_template_id' => [
-                'description' => 'ID of the template to fork from',
-                'example' => 1,
+                'description' => 'The ID of the template this was forked from, if any.',
+                'example' => null,
                 'required' => false,
             ],
         ];

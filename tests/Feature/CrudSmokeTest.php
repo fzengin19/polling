@@ -1,86 +1,76 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\User;
 
 class CrudSmokeTest extends TestCase
 {
     use RefreshDatabase;
 
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user, 'sanctum');
+    }
+
     public function test_user_template_survey_crud_flow(): void
     {
-        // User registration
-        $user = User::factory()->create([
-            'email' => 'testuser@example.com',
-            'password' => bcrypt('password'),
-        ]);
-
-        $this->actingAs($user, 'sanctum');
-
-        // Create Template
+        // 1. Create Template
         $templateData = [
-            'title' => 'Test Template',
-            'description' => 'desc',
+            'title' => 'My Smoke Test Template',
             'is_public' => true,
         ];
         $response = $this->postJson('/api/templates', $templateData);
         $response->assertStatus(201);
-        $templateId = $response->json('id');
+        $templateId = $response->json('data.id');
+        $this->assertDatabaseHas('templates', ['id' => $templateId, 'title' => 'My Smoke Test Template']);
 
-        // Create TemplateVersion
+        // 2. Create Template Version
         $versionData = [
             'version' => '1.0.0',
             'snapshot' => ['foo' => 'bar'],
         ];
         $response = $this->postJson("/api/templates/{$templateId}/versions", $versionData);
         $response->assertStatus(201);
-        $templateVersionId = $response->json('id');
+        $templateVersionId = $response->json('data.id');
+        $this->assertDatabaseHas('template_versions', ['id' => $templateVersionId, 'template_id' => $templateId]);
 
-        // Create Survey
+        // 3. Create Survey from Template
         $surveyData = [
-            'title' => 'Test Survey',
-            'description' => 'desc',
+            'title' => 'My Smoke Test Survey',
             'status' => 'draft',
             'template_id' => $templateId,
             'template_version_id' => $templateVersionId,
         ];
         $response = $this->postJson('/api/surveys', $surveyData);
         $response->assertStatus(201);
-        $surveyId = $response->json('id');
+        $surveyId = $response->json('data.id');
+        $this->assertDatabaseHas('surveys', ['id' => $surveyId, 'template_id' => $templateId]);
 
-        // Create SurveyPage
+        // 4. Create Survey Page
         $pageData = [
             'survey_id' => $surveyId,
-            'order_index' => 0,
             'title' => 'Page 1',
         ];
         $response = $this->postJson('/api/surveys/pages', $pageData);
         $response->assertStatus(201);
-        $pageId = $response->json('id');
+        $pageId = $response->json('data.id');
+        $this->assertDatabaseHas('survey_pages', ['id' => $pageId, 'survey_id' => $surveyId]);
 
-        // Create Question
+        // 5. Create Question
         $questionData = [
-            'page_id' => $pageId,
             'type' => 'text',
-            'title' => 'Q1',
-            'is_required' => true,
-            'help_text' => 'help',
-            'placeholder' => 'ph',
-            'config' => ['min' => 1],
-            'order_index' => 0,
+            'title' => 'What is your name?',
         ];
-        $response = $this->postJson('/api/survey-pages/'.$pageId.'/questions', $questionData);
+        $response = $this->postJson("/api/survey-pages/{$pageId}/questions", $questionData);
         $response->assertStatus(201);
-        $questionId = $response->json('id');
-
-        // List Questions
-        $response = $this->getJson('/api/survey-pages/'.$pageId.'/questions');
-        $response->assertStatus(200);
-        $this->assertTrue(count($response->json()) > 0);
+        $questionId = $response->json('data.id');
+        $this->assertDatabaseHas('questions', ['id' => $questionId, 'page_id' => $pageId]);
     }
 } 

@@ -24,20 +24,7 @@ use App\Repositories\Eloquent\TemplateRepository;
 use App\Repositories\Eloquent\TemplateVersionRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\RoleRepository;
-use App\Services\Abstract\AuthServiceInterface;
-use App\Services\Abstract\ChoiceServiceInterface;
-use App\Services\Abstract\QuestionServiceInterface;
-use App\Services\Abstract\ResponseServiceInterface;
-use App\Services\Abstract\SurveyPageServiceInterface;
-use App\Services\Abstract\SurveyServiceInterface;
-use App\Services\Abstract\TemplateServiceInterface;
-use App\Services\Concrete\AuthService;
-use App\Services\Concrete\ChoiceService;
-use App\Services\Concrete\QuestionService;
-use App\Services\Concrete\ResponseService;
-use App\Services\Concrete\SurveyPageService;
-use App\Services\Concrete\SurveyService;
-use App\Services\Concrete\TemplateService;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -59,13 +46,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AnswerRepositoryInterface::class, AnswerRepository::class);
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
         
-        $this->app->bind(AuthServiceInterface::class, AuthService::class);
-        $this->app->bind(TemplateServiceInterface::class, TemplateService::class);
-        $this->app->bind(SurveyServiceInterface::class, SurveyService::class);
-        $this->app->bind(SurveyPageServiceInterface::class, SurveyPageService::class);
-        $this->app->bind(QuestionServiceInterface::class, QuestionService::class);
-        $this->app->bind(ChoiceServiceInterface::class, ChoiceService::class);
-        $this->app->bind(ResponseServiceInterface::class, ResponseService::class);
+      
     }
 
     /**

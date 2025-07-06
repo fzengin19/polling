@@ -7,14 +7,15 @@ use App\Repositories\Abstract\RoleRepositoryInterface;
 use App\Repositories\Abstract\SurveyRepositoryInterface;
 use App\Repositories\Abstract\UserRepositoryInterface;
 use App\Responses\ServiceResponse;
-use App\Responses\Concrete\ApiResourceMap;
+use App\Responses\Abstract\ResourceMapInterface;
 use App\Services\Abstract\RoleServiceInterface;
 use Spatie\Permission\Models\Role;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RoleService implements RoleServiceInterface
 {
     public function __construct(
-        protected ApiResourceMap $resourceMap,
+        protected ResourceMapInterface $resourceMap,
         protected RoleRepositoryInterface $roleRepository,
         protected UserRepositoryInterface $userRepository,
         protected SurveyRepositoryInterface $surveyRepository
@@ -23,103 +24,81 @@ class RoleService implements RoleServiceInterface
 
     public function assignRole(RoleAssignmentDto $dto): ServiceResponse
     {
-        $role = $this->roleRepository->findByName($dto->roleName);
-        if (!$role) {
-            return new ServiceResponse(['error' => 'Role not found'], $this->resourceMap, 404);
-        }
-
-        if ($dto->userId) {
-            $user = $this->userRepository->find($dto->userId);
-            if (!$user) {
-                return new ServiceResponse(['error' => 'User not found'], $this->resourceMap, 404);
-            }
-            $user->assignRole($role);
-        }
-
-        if ($dto->surveyId) {
-            $survey = $this->surveyRepository->find($dto->surveyId);
-            if (!$survey) {
-                return new ServiceResponse(['error' => 'Survey not found'], $this->resourceMap, 404);
-            }
-            $survey->assignRole($role);
-        }
-
-        return new ServiceResponse(['message' => 'Role assigned successfully'], $this->resourceMap, 200);
+        $model = $this->getModel($dto->modelType, $dto->modelId);
+        $this->roleRepository->assignRoleToModel($model, $dto->roleName);
+        return ServiceResponse::success(null, 'Role assigned successfully.');
     }
 
     public function removeRole(RoleAssignmentDto $dto): ServiceResponse
     {
-        $role = $this->roleRepository->findByName($dto->roleName);
-        if (!$role) {
-            return new ServiceResponse(['error' => 'Role not found'], $this->resourceMap, 404);
-        }
-
-        if ($dto->userId) {
-            $user = $this->userRepository->find($dto->userId);
-            if (!$user) {
-                return new ServiceResponse(['error' => 'User not found'], $this->resourceMap, 404);
-            }
-            $user->removeRole($role);
-        }
-
-        if ($dto->surveyId) {
-            $survey = $this->surveyRepository->find($dto->surveyId);
-            if (!$survey) {
-                return new ServiceResponse(['error' => 'Survey not found'], $this->resourceMap, 404);
-            }
-            $survey->removeRole($role);
-        }
-
-        return new ServiceResponse(['message' => 'Role removed successfully'], $this->resourceMap, 200);
+        $model = $this->getModel($dto->modelType, $dto->modelId);
+        $this->roleRepository->removeRoleFromModel($model, $dto->roleName);
+        return ServiceResponse::success(null, 'Role removed successfully.');
     }
 
     public function getAllRoles(): ServiceResponse
     {
         $roles = $this->roleRepository->all();
-        return new ServiceResponse(['roles' => $roles], $this->resourceMap, 200);
+        return ServiceResponse::success(['roles' => $roles]);
     }
 
     public function getUserRoles(int $userId): ServiceResponse
     {
         $user = $this->userRepository->find($userId);
         if (!$user) {
-            return new ServiceResponse(['error' => 'User not found'], $this->resourceMap, 404);
+            return ServiceResponse::notFound('User not found.');
         }
 
         $roles = $user->roles;
-        return new ServiceResponse(['roles' => $roles], $this->resourceMap, 200);
+        return ServiceResponse::success(['roles' => $roles]);
     }
 
     public function getSurveyRoles(int $surveyId): ServiceResponse
     {
         $survey = $this->surveyRepository->find($surveyId);
         if (!$survey) {
-            return new ServiceResponse(['error' => 'Survey not found'], $this->resourceMap, 404);
+            return ServiceResponse::notFound('Survey not found.');
         }
 
         $roles = $survey->roles;
-        return new ServiceResponse(['roles' => $roles], $this->resourceMap, 200);
+        return ServiceResponse::success(['roles' => $roles]);
     }
 
     public function userHasRole(int $userId, string $roleName): ServiceResponse
     {
         $user = $this->userRepository->find($userId);
         if (!$user) {
-            return new ServiceResponse(['error' => 'User not found'], $this->resourceMap, 404);
+            return ServiceResponse::notFound('User not found.');
         }
 
         $hasRole = $user->hasRole($roleName);
-        return new ServiceResponse(['has_role' => $hasRole], $this->resourceMap, 200);
+        return ServiceResponse::success(['has_role' => $hasRole]);
     }
 
     public function surveyHasRole(int $surveyId, string $roleName): ServiceResponse
     {
         $survey = $this->surveyRepository->find($surveyId);
         if (!$survey) {
-            return new ServiceResponse(['error' => 'Survey not found'], $this->resourceMap, 404);
+            return ServiceResponse::notFound('Survey not found.');
         }
 
         $hasRole = $survey->hasRole($roleName);
-        return new ServiceResponse(['has_role' => $hasRole], $this->resourceMap, 200);
+        return ServiceResponse::success(['has_role' => $hasRole]);
+    }
+
+    private function getModel(string $modelType, int $modelId)
+    {
+        $repository = match ($modelType) {
+            'user' => $this->userRepository,
+            'survey' => $this->surveyRepository,
+            default => throw new \InvalidArgumentException("Invalid model type: {$modelType}"),
+        };
+
+        $model = $repository->find($modelId);
+        if (!$model) {
+            throw new ModelNotFoundException(ucfirst($modelType) . ' not found.');
+        }
+
+        return $model;
     }
 } 

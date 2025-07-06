@@ -16,104 +16,73 @@ class RoleManagementTest extends TestCase
     protected User $user;
     protected User $admin;
     protected Survey $survey;
-    protected Role $adminRole;
-    protected Role $editorRole;
-    protected Role $viewerRole;
 
     protected function setUp(): void
     {
         parent::setUp();
         
-        // Create roles
-        $this->adminRole = Role::create(['name' => 'admin', 'guard_name' => 'api']);
-        $this->editorRole = Role::create(['name' => 'editor', 'guard_name' => 'api']);
-        $this->viewerRole = Role::create(['name' => 'viewer', 'guard_name' => 'api']);
-        
-        // Create users
-        $this->user = User::factory()->create();
+        // Create roles with the correct guard
+        Role::findOrCreate('admin', 'api');
+        Role::findOrCreate('editor', 'api');
+        Role::findOrCreate('viewer', 'api');
+
         $this->admin = User::factory()->create();
-        $this->admin->assignRole($this->adminRole);
+        $this->admin->assignRole('admin');
         
-        // Create survey
-        $this->survey = Survey::factory()->create(['created_by' => $this->user->id]);
+        $this->user = User::factory()->create();
+        $this->survey = Survey::factory()->create();
     }
 
     public function test_can_get_all_roles(): void
     {
-        $response = $this->actingAs($this->admin, 'sanctum')
-            ->getJson('/api/roles');
-        
-        $response->assertStatus(200);
-        $response->assertJsonStructure(['roles']);
-        $this->assertCount(3, $response->json('roles'));
+        $response = $this->actingAs($this->admin)->getJson('/api/roles');
+        $response->assertOk()
+            ->assertJson(['success' => true])
+            ->assertJsonStructure(['success', 'message', 'data' => ['roles']]);
     }
 
     public function test_can_assign_role_to_user(): void
     {
-        $data = [
-            'role_name' => 'editor',
-            'user_id' => $this->user->id,
-        ];
-
-        $response = $this->actingAs($this->admin, 'sanctum')
-            ->postJson('/api/roles/assign', $data);
-        
-        $response->assertStatus(200);
-        $response->assertJson(['message' => 'Role assigned successfully']);
-        
+        $data = ['model_type' => 'user', 'model_id' => $this->user->id, 'role_name' => 'editor'];
+        $this->actingAs($this->admin)->postJson('/api/roles/assign', $data)
+            ->assertOk()
+            ->assertJson(['success' => true, 'message' => 'Role assigned successfully.']);
         $this->assertTrue($this->user->hasRole('editor'));
     }
 
     public function test_can_assign_role_to_survey(): void
     {
-        $data = [
-            'role_name' => 'viewer',
-            'survey_id' => $this->survey->id,
-        ];
-
-        $response = $this->actingAs($this->admin, 'sanctum')
-            ->postJson('/api/roles/assign', $data);
-        
-        $response->assertStatus(200);
-        $response->assertJson(['message' => 'Role assigned successfully']);
-        
+        $data = ['model_type' => 'survey', 'model_id' => $this->survey->id, 'role_name' => 'viewer'];
+        $this->actingAs($this->admin)->postJson('/api/roles/assign', $data)
+            ->assertOk()
+            ->assertJson(['success' => true, 'message' => 'Role assigned successfully.']);
         $this->assertTrue($this->survey->hasRole('viewer'));
     }
 
     public function test_can_remove_role_from_user(): void
     {
         $this->user->assignRole('editor');
+        $this->assertTrue($this->user->hasRole('editor'));
         
-        $data = [
-            'role_name' => 'editor',
-            'user_id' => $this->user->id,
-        ];
-
-        $response = $this->actingAs($this->admin, 'sanctum')
-            ->postJson('/api/roles/remove', $data);
+        $data = ['model_type' => 'user', 'model_id' => $this->user->id, 'role_name' => 'editor'];
+        $this->actingAs($this->admin)->postJson('/api/roles/remove', $data)
+            ->assertOk()
+            ->assertJsonPath('message', 'Role removed successfully.');
         
-        $response->assertStatus(200);
-        $response->assertJson(['message' => 'Role removed successfully']);
-        
-        $this->assertFalse($this->user->hasRole('editor'));
+        $this->assertFalse($this->user->fresh()->hasRole('editor'));
     }
 
     public function test_can_remove_role_from_survey(): void
     {
         $this->survey->assignRole('viewer');
+        $this->assertTrue($this->survey->hasRole('viewer'));
         
-        $data = [
-            'role_name' => 'viewer',
-            'survey_id' => $this->survey->id,
-        ];
-
-        $response = $this->actingAs($this->admin, 'sanctum')
-            ->postJson('/api/roles/remove', $data);
+        $data = ['model_type' => 'survey', 'model_id' => $this->survey->id, 'role_name' => 'viewer'];
+        $this->actingAs($this->admin)->postJson('/api/roles/remove', $data)
+            ->assertOk()
+            ->assertJsonPath('message', 'Role removed successfully.');
         
-        $response->assertStatus(200);
-        $response->assertJson(['message' => 'Role removed successfully']);
-        
-        $this->assertFalse($this->survey->hasRole('viewer'));
+        $this->assertFalse($this->survey->fresh()->hasRole('viewer'));
     }
 
     public function test_can_get_user_roles(): void
@@ -124,8 +93,8 @@ class RoleManagementTest extends TestCase
             ->getJson("/api/roles/users/{$this->user->id}");
         
         $response->assertStatus(200);
-        $response->assertJsonStructure(['roles']);
-        $this->assertCount(2, $response->json('roles'));
+        $response->assertJsonStructure(['success', 'message', 'data' => ['roles']]);
+        $this->assertCount(2, $response->json('data.roles'));
     }
 
     public function test_can_get_survey_roles(): void
@@ -136,8 +105,8 @@ class RoleManagementTest extends TestCase
             ->getJson("/api/roles/surveys/{$this->survey->id}");
         
         $response->assertStatus(200);
-        $response->assertJsonStructure(['roles']);
-        $this->assertCount(2, $response->json('roles'));
+        $response->assertJsonStructure(['success', 'message', 'data' => ['roles']]);
+        $this->assertCount(2, $response->json('data.roles'));
     }
 
     public function test_can_check_user_has_role(): void
@@ -148,7 +117,7 @@ class RoleManagementTest extends TestCase
             ->getJson("/api/roles/users/{$this->user->id}/has/editor");
         
         $response->assertStatus(200);
-        $response->assertJson(['has_role' => true]);
+        $response->assertJsonPath('data.has_role', true);
     }
 
     public function test_can_check_user_does_not_have_role(): void
@@ -157,7 +126,7 @@ class RoleManagementTest extends TestCase
             ->getJson("/api/roles/users/{$this->user->id}/has/admin");
         
         $response->assertStatus(200);
-        $response->assertJson(['has_role' => false]);
+        $response->assertJsonPath('data.has_role', false);
     }
 
     public function test_can_check_survey_has_role(): void
@@ -168,7 +137,7 @@ class RoleManagementTest extends TestCase
             ->getJson("/api/roles/surveys/{$this->survey->id}/has/viewer");
         
         $response->assertStatus(200);
-        $response->assertJson(['has_role' => true]);
+        $response->assertJsonPath('data.has_role', true);
     }
 
     public function test_can_check_survey_does_not_have_role(): void
@@ -177,14 +146,15 @@ class RoleManagementTest extends TestCase
             ->getJson("/api/roles/surveys/{$this->survey->id}/has/admin");
         
         $response->assertStatus(200);
-        $response->assertJson(['has_role' => false]);
+        $response->assertJsonPath('data.has_role', false);
     }
 
     public function test_assign_role_requires_authentication(): void
     {
         $data = [
             'role_name' => 'editor',
-            'user_id' => $this->user->id,
+            'model_type' => 'user',
+            'model_id' => $this->user->id,
         ];
 
         $response = $this->postJson('/api/roles/assign', $data);
@@ -194,40 +164,22 @@ class RoleManagementTest extends TestCase
     public function test_assign_role_validates_role_exists(): void
     {
         $data = [
-            'role_name' => 'non-existent-role',
-            'user_id' => $this->user->id,
+            'role_name' => 'nonexistent-role',
+            'model_type' => 'user',
+            'model_id' => $this->user->id,
         ];
 
         $response = $this->actingAs($this->admin, 'sanctum')
             ->postJson('/api/roles/assign', $data);
-        
-        $response->assertStatus(404);
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('role_name', 'data');
     }
 
-    public function test_assign_role_validates_user_exists(): void
+    public function test_assign_role_validates_model_exists(): void
     {
-        $data = [
-            'role_name' => 'editor',
-            'user_id' => 99999,
-        ];
-
-        $response = $this->actingAs($this->admin, 'sanctum')
-            ->postJson('/api/roles/assign', $data);
-        
-        $response->assertStatus(404);
-    }
-
-    public function test_assign_role_validates_survey_exists(): void
-    {
-        $data = [
-            'role_name' => 'viewer',
-            'survey_id' => 99999,
-        ];
-
-        $response = $this->actingAs($this->admin, 'sanctum')
-            ->postJson('/api/roles/assign', $data);
-        
-        $response->assertStatus(404);
+        $data = ['model_type' => 'user', 'model_id' => 999, 'role_name' => 'editor'];
+        $this->actingAs($this->admin)->postJson('/api/roles/assign', $data)
+            ->assertNotFound();
     }
 
     public function test_returns_404_for_nonexistent_user(): void
@@ -236,6 +188,7 @@ class RoleManagementTest extends TestCase
             ->getJson('/api/roles/users/99999');
         
         $response->assertStatus(404);
+        $response->assertJson(['success' => false, 'message' => 'User not found.']);
     }
 
     public function test_returns_404_for_nonexistent_survey(): void

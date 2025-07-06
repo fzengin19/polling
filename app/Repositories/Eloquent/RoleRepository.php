@@ -17,4 +17,14 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
     {
         return $this->model->where('name', $name)->first();
     }
+
+    public function assignRoleToModel(\Illuminate\Database\Eloquent\Model $model, string $roleName): void
+    {
+        $model->assignRole($roleName);
+    }
+
+    public function removeRoleFromModel(\Illuminate\Database\Eloquent\Model $model, string $roleName): void
+    {
+        $model->removeRole($roleName);
+    }
 } 

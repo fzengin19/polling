@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Survey;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateSurveyRequest extends FormRequest
 {
@@ -28,8 +29,19 @@ class CreateSurveyRequest extends FormRequest
             'template_id' => 'nullable|integer|min:1',
             'template_version_id' => 'nullable|integer|min:1',
             'settings' => 'nullable|array',
+            'settings.anonymous' => 'nullable|boolean',
+            'settings.multiple_responses' => 'nullable|boolean',
+            'settings.ui_complexity_level' => 'nullable|string|in:basic,intermediate,advanced',
             'expires_at' => 'nullable|date|after:now',
             'max_responses' => 'nullable|integer|min:1|max:1000000',
+
+            // Theme Validation Rules
+            'settings.theme' => 'nullable|array',
+            'settings.theme.primary_color' => ['nullable', 'string', 'regex:/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/'],
+            'settings.theme.font' => ['nullable', 'string', Rule::in(['Arial', 'Georgia', 'Lato', 'Roboto', 'Verdana'])],
+            'settings.theme.logo_media_id' => 'nullable|integer|exists:media,id',
+            'settings.theme.logo_placement' => ['nullable', 'string', Rule::in(['top', 'bottom', 'top-left', 'top-right', 'bottom-left', 'bottom-right'])],
+            'settings.theme.background_color' => ['nullable', 'string', 'regex:/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/'],
         ];
     }
 
@@ -50,6 +62,11 @@ class CreateSurveyRequest extends FormRequest
             'expires_at.after' => 'Expiration date must be in the future.',
             'max_responses.min' => 'Maximum responses must be at least 1.',
             'max_responses.max' => 'Maximum responses cannot exceed 1,000,000.',
+            'settings.theme.primary_color.regex' => 'The primary color must be a valid hex code.',
+            'settings.theme.font.in' => 'The selected font is not valid.',
+            'settings.theme.logo_media_id.exists' => 'The selected logo media ID is not valid.',
+            'settings.theme.logo_placement.in' => 'The logo placement must be one of: top, bottom, top-left, top-right, bottom-left, bottom-right.',
+            'settings.theme.background_color.regex' => 'The background color must be a valid hex code.',
         ];
     }
 
@@ -62,19 +79,16 @@ class CreateSurveyRequest extends FormRequest
     {
         return [
             'title' => [
-                'description' => 'Survey title',
-                'example' => 'Customer Satisfaction Survey 2024',
-                'required' => true,
+                'description' => 'The title of the survey.',
+                'example' => 'Customer Satisfaction Survey',
             ],
             'description' => [
-                'description' => 'Survey description',
-                'example' => 'A comprehensive survey to measure customer satisfaction levels',
-                'required' => false,
+                'description' => 'A brief description of the survey.',
+                'example' => 'Please provide your valuable feedback.',
             ],
             'status' => [
-                'description' => 'Survey status',
+                'description' => 'The status of the survey.',
                 'example' => 'draft',
-                'required' => true,
             ],
             'template_id' => [
                 'description' => 'ID of the template to base this survey on',
@@ -87,8 +101,18 @@ class CreateSurveyRequest extends FormRequest
                 'required' => false,
             ],
             'settings' => [
-                'description' => 'Survey settings (anonymous, multiple responses, etc.)',
-                'example' => ['anonymous' => true, 'multiple_responses' => false],
+                'description' => 'Survey settings (anonymous, complexity, theming, etc.)',
+                'example' => [
+                    'anonymous' => true,
+                    'multiple_responses' => false, 
+                    'ui_complexity_level' => 'basic',
+                    'theme' => [
+                        'primary_color' => '#3B82F6',
+                        'font' => 'Roboto',
+                        'logo_media_id' => 1,
+                        'background_color' => '#F9FAFB'
+                    ]
+                ],
                 'required' => false,
             ],
             'expires_at' => [

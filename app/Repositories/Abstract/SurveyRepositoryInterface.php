@@ -36,4 +36,9 @@ interface SurveyRepositoryInterface extends BaseRepositoryInterface
      * Get surveys that need to be archived (expired)
      */
     public function getExpiredSurveys(): Collection;
+
+    public function getByUser(int $userId): Collection;
+    public function getByStatus(string $status): Collection;
+    public function getByTemplate(int $templateId): Collection;
+    public function duplicate(int $id): int;
 } 

@@ -5,17 +5,21 @@ use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\SurveyController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\MediaController;
-use App\Http\Controllers\Api\EnhancedMediaController;
 use App\Http\Controllers\Api\ChoiceController;
 use App\Http\Controllers\Api\ResponseController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-    Route::get('me', [AuthController::class, 'me'])->middleware('auth:sanctum');
     Route::post('google', [AuthController::class, 'googleLogin']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::put('/me', [UserController::class, 'update']);
 });
 
 Route::prefix('templates')->group(function () {
@@ -31,7 +35,7 @@ Route::prefix('templates')->group(function () {
     // Template Version Management
     Route::get('/{id}/versions', [TemplateController::class, 'versions']);
     Route::post('/{id}/versions', [TemplateController::class, 'createVersion'])->middleware('auth:sanctum');
-    Route::post('/{id}/versions/{versionId}/restore', [TemplateController::class, 'restoreVersion'])->middleware('auth:sanctum');
+    Route::post('/{id}/versions/{versionId}/restore', [TemplateController::class, 'restoreVersion']);
 });
 
 Route::prefix('surveys')->group(function () {
@@ -101,17 +105,8 @@ Route::prefix('roles')->middleware('auth:sanctum')->group(function () {
 // Media routes
 Route::prefix('media')->middleware('auth:sanctum')->group(function () {
     Route::post('/upload', [MediaController::class, 'upload']);
-    Route::delete('/{mediaId}', [MediaController::class, 'delete']);
+    Route::delete('/{mediaId}', [MediaController::class, 'destroy']);
     Route::put('/{mediaId}/metadata', [MediaController::class, 'updateMetadata']);
 });
 
 Route::get('/questions/{questionId}/media', [MediaController::class, 'getQuestionMedia']);
-
-// Enhanced Media routes for all models
-Route::prefix('enhanced-media')->middleware('auth:sanctum')->group(function () {
-    Route::post('/{modelType}/{modelId}/upload', [EnhancedMediaController::class, 'uploadMedia']);
-    Route::get('/{modelType}/{modelId}/media', [EnhancedMediaController::class, 'getMedia']);
-    Route::put('/{mediaId}/metadata', [EnhancedMediaController::class, 'updateMediaMetadata']);
-    Route::delete('/{mediaId}', [EnhancedMediaController::class, 'deleteMedia']);
-    Route::get('/{modelType}/collections', [EnhancedMediaController::class, 'getCollections']);
-});

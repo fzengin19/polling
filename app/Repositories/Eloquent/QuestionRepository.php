@@ -43,4 +43,17 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
             ->orderBy('order_index')
             ->get();
     }
+
+    public function getOrderedPages(int $pageId): Collection
+    {
+        return $this->model->where('page_id', $pageId)->orderBy('order_index', 'asc')->get();
+    }
+
+    public function findByJsonContains(string $column, string $key, $value): Collection
+    {
+        // Using a LIKE query for robust searching within the JSON array of objects.
+        // Example: "media_id":1
+        $searchTerm = "\"{$key}\":{$value}";
+        return $this->model->where($column, 'LIKE', "%{$searchTerm}%")->get();
+    }
 } 

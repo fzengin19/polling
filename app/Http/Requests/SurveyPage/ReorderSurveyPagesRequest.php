@@ -23,7 +23,7 @@ class ReorderSurveyPagesRequest extends FormRequest
     {
         return [
             'page_ids' => 'required|array',
-            'page_ids.*' => 'integer|exists:survey_pages,id'
+            'page_ids.*' => 'integer|exists:survey_pages,id',
         ];
     }
 
@@ -37,6 +37,22 @@ class ReorderSurveyPagesRequest extends FormRequest
             'page_ids.array' => 'Page IDs must be an array.',
             'page_ids.*.integer' => 'Each page ID must be an integer.',
             'page_ids.*.exists' => 'One or more page IDs do not exist.',
+        ];
+    }
+
+    /**
+     * Get body parameters for API documentation
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function bodyParameters(): array
+    {
+        return [
+            'page_ids' => [
+                'description' => 'An array of survey page IDs in the desired order.',
+                'example' => [3, 1, 2],
+                'required' => true,
+            ],
         ];
     }
 } 

@@ -27,7 +27,7 @@ class SurveyPageService implements SurveyPageServiceInterface
     public function getPagesBySurveyId(int $surveyId): ServiceResponse
     {
         $pages = $this->surveyPageRepository->getOrderedPages($surveyId);
-        return new ServiceResponse($pages, $this->resourceMap);
+        return ServiceResponse::success($pages);
     }
 
     public function createPage(SurveyPageDto $dto): ServiceResponse
@@ -37,41 +37,41 @@ class SurveyPageService implements SurveyPageServiceInterface
             $data['order_index'] = $this->surveyPageRepository->getNextOrderIndex($dto->survey_id);
         }
         $page = $this->surveyPageRepository->create($data);
-        return new ServiceResponse($page, $this->resourceMap, 201);
+        return ServiceResponse::created($page);
     }
 
     public function findPage(int $id): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
-        $status = $page ? 200 : 404;
-        return new ServiceResponse($page, $this->resourceMap, $status);
+        if (!$page) {
+            return ServiceResponse::notFound('Page not found.');
+        }
+        return ServiceResponse::success($page);
     }
 
     public function updatePage(int $id, array $data): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
         if (!$page) {
-            return new ServiceResponse(null, $this->resourceMap, 404);
+            return ServiceResponse::notFound('Page not found.');
         }
         $this->surveyPageRepository->update($id, $data);
-        $updatedPage = $this->surveyPageRepository->find($id);
-        return new ServiceResponse($updatedPage, $this->resourceMap);
+        return ServiceResponse::success($this->surveyPageRepository->find($id));
     }
 
     public function deletePage(int $id): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
         if (!$page) {
-            return new ServiceResponse(null, $this->resourceMap, 404);
+            return ServiceResponse::notFound('Page not found.');
         }
         $this->surveyPageRepository->delete($id);
-        return new ServiceResponse(null, $this->resourceMap, 204);
+        return ServiceResponse::noContent('Page deleted successfully.');
     }
 
-    public function reorderPages(int $surveyId, array $pageIds): ServiceResponse
+    public function reorderPages(int $surveyId, array $pageOrder): ServiceResponse
     {
-        $this->surveyPageRepository->reorder($pageIds);
-        
-        return new ServiceResponse(['message' => 'Pages reordered successfully.'], $this->resourceMap);
+        $this->surveyPageRepository->reorder($pageOrder);
+        return ServiceResponse::success(null, 'Pages reordered successfully.');
     }
 }

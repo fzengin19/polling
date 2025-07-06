@@ -26,13 +26,15 @@ class GoogleLoginRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function bodyParameters(): array
     {
         return [
             'google_access_token' => [
-                'description' => 'Google OAuth access token obtained from frontend',
-                'example' => 'ya29.a0AfB_byC...',
-                'required' => true,
+                'description' => 'The Access Token provided by Google after user authentication.',
+                'example' => 'ya29.a0AfH6SMD_...',
             ],
         ];
     }

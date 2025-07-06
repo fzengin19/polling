@@ -14,8 +14,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|max:255',
-            'password' => 'required|string|max:255',
+            'email' => 'required|string|email',
+            'password' => 'required|string',
         ];
     }
 
@@ -30,18 +30,19 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function bodyParameters(): array
     {
         return [
             'email' => [
-                'description' => 'User\'s email address',
-                'example' => 'user@example.com',
-                'required' => true,
+                'description' => 'The user\'s email address.',
+                'example' => 'john.doe@example.com',
             ],
             'password' => [
-                'description' => 'User\'s password',
+                'description' => 'The user\'s password.',
                 'example' => 'password123',
-                'required' => true,
             ],
         ];
     }

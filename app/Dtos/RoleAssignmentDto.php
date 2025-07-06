@@ -6,18 +6,11 @@ use App\Core\BaseDto;
 
 class RoleAssignmentDto extends BaseDto
 {
-    public readonly string $roleName;
-    public readonly ?int $userId;
-    public readonly ?int $surveyId;
-
     public function __construct(
-        string $roleName,
-        ?int $userId = null,
-        ?int $surveyId = null
+        public readonly string $roleName,
+        public readonly string $modelType,
+        public readonly int $modelId
     ) {
-        $this->roleName = $roleName;
-        $this->userId = $userId;
-        $this->surveyId = $surveyId;
     }
 
     /**
@@ -27,8 +20,8 @@ class RoleAssignmentDto extends BaseDto
     {
         return new self(
             roleName: $data['role_name'],
-            userId: $data['user_id'] ?? null,
-            surveyId: $data['survey_id'] ?? null,
+            modelType: $data['model_type'],
+            modelId: $data['model_id'],
         );
     }
 } 

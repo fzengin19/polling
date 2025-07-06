@@ -1,143 +1,447 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="/home/fedora/polling/phpunit.xml" tests="117" assertions="460" errors="0" failures="0" skipped="0" time="1.576164">
-    <testsuite name="Unit" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.006959">
-      <testsuite name="Tests\Unit\ExampleTest" file="tests/Unit/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.006959">
-        <testcase name="that true is true" file="tests/Unit/ExampleTest.php::that true is true" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" assertions="1" time="0.006959"/>
+  <testsuite name="/home/fedora/polling/phpunit.xml" tests="126" assertions="386" errors="0" failures="25" skipped="0" time="1.567887">
+    <testsuite name="Unit" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.007908">
+      <testsuite name="Tests\Unit\ExampleTest" file="tests/Unit/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.007908">
+        <testcase name="that true is true" file="tests/Unit/ExampleTest.php::that true is true" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" assertions="1" time="0.007908"/>
       </testsuite>
     </testsuite>
-    <testsuite name="Feature" tests="116" assertions="459" errors="0" failures="0" skipped="0" time="1.569205">
-      <testsuite name="Tests\Feature\ApiEndpointsTest" file="Api Endpoints (Tests\Feature\ApiEndpoints)" tests="45" assertions="102" errors="0" failures="0" skipped="0" time="0.770512">
-        <testcase name="Auth register" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth register" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="8" time="0.321849"/>
-        <testcase name="Auth login" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth login" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009130"/>
-        <testcase name="Auth me" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth me" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="4" time="0.008576"/>
-        <testcase name="Auth logout" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth logout" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.007193"/>
-        <testcase name="Auth google login" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth google login" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009736"/>
-        <testcase name="Templates index" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates index" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010928"/>
-        <testcase name="Templates store" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates store" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="6" time="0.009497"/>
-        <testcase name="Templates show" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates show" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.009595"/>
-        <testcase name="Templates update" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates update" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.011324"/>
-        <testcase name="Templates destroy" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates destroy" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.007906"/>
-        <testcase name="Templates public" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates public" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.008205"/>
-        <testcase name="Templates my" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates my" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.008934"/>
-        <testcase name="Templates fork" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates fork" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.008721"/>
-        <testcase name="Templates versions" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates versions" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009153"/>
-        <testcase name="Templates create version" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates create version" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.008641"/>
-        <testcase name="Templates restore version" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates restore version" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.008633"/>
-        <testcase name="Surveys index" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys index" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.017649"/>
-        <testcase name="Surveys store" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys store" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="4" time="0.009497"/>
-        <testcase name="Surveys show" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys show" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.011078"/>
-        <testcase name="Surveys update" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys update" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009957"/>
-        <testcase name="Surveys destroy" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys destroy" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.018169"/>
-        <testcase name="Surveys active" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys active" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010782"/>
-        <testcase name="Surveys my" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys my" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010811"/>
-        <testcase name="Surveys by status" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys by status" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010499"/>
-        <testcase name="Surveys by template" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys by template" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.011184"/>
-        <testcase name="Surveys publish" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys publish" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009678"/>
-        <testcase name="Surveys archive" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys archive" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.010010"/>
-        <testcase name="Surveys duplicate" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys duplicate" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.011842"/>
-        <testcase name="Survey pages index" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages index" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009991"/>
-        <testcase name="Survey pages store" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages store" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.010130"/>
-        <testcase name="Survey pages show" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages show" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.010199"/>
-        <testcase name="Survey pages update" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages update" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010266"/>
-        <testcase name="Survey pages destroy" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages destroy" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009451"/>
-        <testcase name="Survey pages reorder" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages reorder" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.011188"/>
-        <testcase name="Questions index" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions index" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010834"/>
-        <testcase name="Questions store" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions store" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="4" time="0.009987"/>
-        <testcase name="Questions show" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions show" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.009902"/>
-        <testcase name="Questions update" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions update" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010696"/>
-        <testcase name="Questions destroy" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions destroy" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.016159"/>
-        <testcase name="Questions by type is removed" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions by type is removed" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.010454"/>
-        <testcase name="Questions reorder" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions reorder" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.010321"/>
-        <testcase name="Unauthorized access" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Unauthorized access" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.007567"/>
-        <testcase name="Forbidden access" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Forbidden access" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.008037"/>
-        <testcase name="Not found" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Not found" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.007764"/>
-        <testcase name="Validation errors" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Validation errors" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.008394"/>
+    <testsuite name="Feature" tests="125" assertions="385" errors="0" failures="25" skipped="0" time="1.559979">
+      <testsuite name="Tests\Feature\ApiEndpointsTest" file="Api Endpoints (Tests\Feature\ApiEndpoints)" tests="45" assertions="87" errors="0" failures="15" skipped="0" time="0.739215">
+        <testcase name="Auth register" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth register" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.294955">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Auth registerExpected response status code [201] but received 200.
+Failed asserting that 200 is identical to 201.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ApiEndpointsTest.php:44</failure>
+        </testcase>
+        <testcase name="Auth login" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth login" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="6" time="0.015660"/>
+        <testcase name="Auth me" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth me" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.008317"/>
+        <testcase name="Auth logout" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth logout" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.006853"/>
+        <testcase name="Auth google login" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Auth google login" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009435"/>
+        <testcase name="Templates index" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates index" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010367"/>
+        <testcase name="Templates store" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates store" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.011109"/>
+        <testcase name="Templates show" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates show" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="7" time="0.012341"/>
+        <testcase name="Templates update" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates update" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010462"/>
+        <testcase name="Templates destroy" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates destroy" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009911"/>
+        <testcase name="Templates public" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates public" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.008655"/>
+        <testcase name="Templates my" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates my" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.007567"/>
+        <testcase name="Templates fork" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates fork" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.009887"/>
+        <testcase name="Templates versions" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates versions" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.008281"/>
+        <testcase name="Templates create version" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates create version" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.010496">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Templates create versionExpected response status code [201] but received 200.
+Failed asserting that 200 is identical to 201.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ApiEndpointsTest.php:185</failure>
+        </testcase>
+        <testcase name="Templates restore version" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Templates restore version" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="6" time="0.011143"/>
+        <testcase name="Surveys index" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys index" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.013959"/>
+        <testcase name="Surveys store" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys store" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009166">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Surveys storeExpected response status code [201] but received 200.
+Failed asserting that 200 is identical to 201.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ApiEndpointsTest.php:269</failure>
+        </testcase>
+        <testcase name="Surveys show" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys show" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009360">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Surveys showFailed asserting that an array has the key 'id'.
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:303
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:947
+at tests/Feature/ApiEndpointsTest.php:279</failure>
+        </testcase>
+        <testcase name="Surveys update" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys update" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010016"/>
+        <testcase name="Surveys destroy" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys destroy" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.015144">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Surveys destroyExpected response status code [204] but received 200.
+Failed asserting that 200 is identical to 204.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at vendor/laravel/framework/src/Illuminate/Testing/Concerns/AssertsStatusCodes.php:47
+at tests/Feature/ApiEndpointsTest.php:302</failure>
+        </testcase>
+        <testcase name="Surveys active" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys active" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010402"/>
+        <testcase name="Surveys my" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys my" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010096"/>
+        <testcase name="Surveys by status" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys by status" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009986"/>
+        <testcase name="Surveys by template" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys by template" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010192"/>
+        <testcase name="Surveys publish" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys publish" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009887"/>
+        <testcase name="Surveys archive" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys archive" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009565"/>
+        <testcase name="Surveys duplicate" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Surveys duplicate" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.012084">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Surveys duplicateExpected response status code [201] but received 200.
+Failed asserting that 200 is identical to 201.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ApiEndpointsTest.php:371</failure>
+        </testcase>
+        <testcase name="Survey pages index" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages index" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009562"/>
+        <testcase name="Survey pages store" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages store" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009377">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Survey pages storeExpected response status code [201] but received 200.
+Failed asserting that 200 is identical to 201.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ApiEndpointsTest.php:399</failure>
+        </testcase>
+        <testcase name="Survey pages show" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages show" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009068">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Survey pages showFailed asserting that an array has the key 'id'.
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:303
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:947
+at tests/Feature/ApiEndpointsTest.php:410</failure>
+        </testcase>
+        <testcase name="Survey pages update" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages update" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.012598">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Survey pages updateUnable to find JSON: 
+
+[{
+    "title": "Updated Page"
+}]
+
+within response JSON:
+
+[{
+    "success": true,
+    "message": "Operation successful.",
+    "data": {
+        "id": 1,
+        "survey_id": 1,
+        "order_index": 1,
+        "title": "Updated Page",
+        "created_at": "2025-07-02T19:16:40.000000Z",
+        "updated_at": "2025-07-02T19:16:40.000000Z"
+    }
+}].
+
+
+Failed asserting that an array has the subset Array &amp;0 [
+    'title' =&gt; 'Updated Page',
+].
+at vendor/laravel/framework/src/Illuminate/Testing/Constraints/ArraySubset.php:80
+at vendor/laravel/framework/src/Illuminate/Testing/Assert.php:36
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:319
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:802
+at tests/Feature/ApiEndpointsTest.php:426</failure>
+        </testcase>
+        <testcase name="Survey pages destroy" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages destroy" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.010044">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Survey pages destroyExpected response status code [204] but received 200.
+Failed asserting that 200 is identical to 204.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at vendor/laravel/framework/src/Illuminate/Testing/Concerns/AssertsStatusCodes.php:47
+at tests/Feature/ApiEndpointsTest.php:435</failure>
+        </testcase>
+        <testcase name="Survey pages reorder" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Survey pages reorder" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.012520"/>
+        <testcase name="Questions index" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions index" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.010929"/>
+        <testcase name="Questions store" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions store" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009658">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Questions storeExpected response status code [201] but received 200.
+Failed asserting that 200 is identical to 201.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ApiEndpointsTest.php:480</failure>
+        </testcase>
+        <testcase name="Questions show" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions show" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009111">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Questions showFailed asserting that an array has the key 'id'.
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:303
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:947
+at tests/Feature/ApiEndpointsTest.php:493</failure>
+        </testcase>
+        <testcase name="Questions update" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions update" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.009719"/>
+        <testcase name="Questions destroy" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions destroy" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.010577">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Questions destroyExpected response status code [204] but received 200.
+Failed asserting that 200 is identical to 204.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at vendor/laravel/framework/src/Illuminate/Testing/Concerns/AssertsStatusCodes.php:47
+at tests/Feature/ApiEndpointsTest.php:514</failure>
+        </testcase>
+        <testcase name="Questions by type is removed" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions by type is removed" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009577"/>
+        <testcase name="Questions reorder" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Questions reorder" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.009903"/>
+        <testcase name="Unauthorized access" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Unauthorized access" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.007548"/>
+        <testcase name="Forbidden access" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Forbidden access" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="2" time="0.008931">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Forbidden accessUnable to find JSON: 
+
+[{
+    "success": false
+}]
+
+within response JSON:
+
+[{
+    "message": "This action is unauthorized."
+}].
+
+
+Failed asserting that an array has the subset Array &amp;0 [
+    'success' =&gt; false,
+].
+at vendor/laravel/framework/src/Illuminate/Testing/Constraints/ArraySubset.php:80
+at vendor/laravel/framework/src/Illuminate/Testing/Assert.php:36
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:319
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:802
+at tests/Feature/ApiEndpointsTest.php:558</failure>
+        </testcase>
+        <testcase name="Not found" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Not found" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="1" time="0.007073">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Not foundExpected response status code [404] but received 200.
+Failed asserting that 200 is identical to 404.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ApiEndpointsTest.php:564</failure>
+        </testcase>
+        <testcase name="Validation errors" file="Api Endpoints (Tests\Feature\ApiEndpoints)::Validation errors" class="Tests\Feature\ApiEndpointsTest" classname="Tests.Feature.ApiEndpointsTest" assertions="3" time="0.007725"/>
       </testsuite>
-      <testsuite name="Tests\Feature\ChoiceManagementTest" file="Choice Management (Tests\Feature\ChoiceManagement)" tests="9" assertions="34" errors="0" failures="0" skipped="0" time="0.104955">
-        <testcase name="Can create choice" file="Choice Management (Tests\Feature\ChoiceManagement)::Can create choice" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="10" time="0.025922"/>
-        <testcase name="Can update choice" file="Choice Management (Tests\Feature\ChoiceManagement)::Can update choice" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="3" time="0.009991"/>
-        <testcase name="Can delete choice" file="Choice Management (Tests\Feature\ChoiceManagement)::Can delete choice" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="2" time="0.008765"/>
-        <testcase name="Can get choices by question" file="Choice Management (Tests\Feature\ChoiceManagement)::Can get choices by question" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="2" time="0.010166"/>
-        <testcase name="Can reorder choices" file="Choice Management (Tests\Feature\ChoiceManagement)::Can reorder choices" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="4" time="0.009174"/>
-        <testcase name="Choice validation rules" file="Choice Management (Tests\Feature\ChoiceManagement)::Choice validation rules" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="7" time="0.010099"/>
-        <testcase name="Choice authorization" file="Choice Management (Tests\Feature\ChoiceManagement)::Choice authorization" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="3" time="0.013882"/>
-        <testcase name="Choice not found" file="Choice Management (Tests\Feature\ChoiceManagement)::Choice not found" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="1" time="0.007901"/>
-        <testcase name="Choice belongs to multiple choice question" file="Choice Management (Tests\Feature\ChoiceManagement)::Choice belongs to multiple choice question" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="2" time="0.009056"/>
+      <testsuite name="Tests\Feature\AuthorizationTest" file="Authorization (Tests\Feature\Authorization)" tests="8" assertions="8" errors="0" failures="0" skipped="0" time="0.073000">
+        <testcase name="User cannot update child page of others survey" file="Authorization (Tests\Feature\Authorization)::User cannot update child page of others survey" class="Tests\Feature\AuthorizationTest" classname="Tests.Feature.AuthorizationTest" assertions="1" time="0.019807"/>
+        <testcase name="User cannot delete child question of others survey" file="Authorization (Tests\Feature\Authorization)::User cannot delete child question of others survey" class="Tests\Feature\AuthorizationTest" classname="Tests.Feature.AuthorizationTest" assertions="1" time="0.009212"/>
+        <testcase name="Guest can view public survey" file="Authorization (Tests\Feature\Authorization)::Guest can view public survey" class="Tests\Feature\AuthorizationTest" classname="Tests.Feature.AuthorizationTest" assertions="1" time="0.007877"/>
+        <testcase name="Guest cannot view private survey" file="Authorization (Tests\Feature\Authorization)::Guest cannot view private survey" class="Tests\Feature\AuthorizationTest" classname="Tests.Feature.AuthorizationTest" assertions="1" time="0.007109"/>
+        <testcase name="User can view own private survey" file="Authorization (Tests\Feature\Authorization)::User can view own private survey" class="Tests\Feature\AuthorizationTest" classname="Tests.Feature.AuthorizationTest" assertions="1" time="0.008175"/>
+        <testcase name="User cannot publish others survey" file="Authorization (Tests\Feature\Authorization)::User cannot publish others survey" class="Tests\Feature\AuthorizationTest" classname="Tests.Feature.AuthorizationTest" assertions="1" time="0.007494"/>
+        <testcase name="User cannot fork private template of others" file="Authorization (Tests\Feature\Authorization)::User cannot fork private template of others" class="Tests\Feature\AuthorizationTest" classname="Tests.Feature.AuthorizationTest" assertions="1" time="0.006383"/>
+        <testcase name="User can fork public template of others" file="Authorization (Tests\Feature\Authorization)::User can fork public template of others" class="Tests\Feature\AuthorizationTest" classname="Tests.Feature.AuthorizationTest" assertions="1" time="0.006942"/>
       </testsuite>
-      <testsuite name="Tests\Feature\CrudSmokeTest" file="Crud Smoke (Tests\Feature\CrudSmoke)" tests="1" assertions="7" errors="0" failures="0" skipped="0" time="0.015558">
-        <testcase name="User template survey crud flow" file="Crud Smoke (Tests\Feature\CrudSmoke)::User template survey crud flow" class="Tests\Feature\CrudSmokeTest" classname="Tests.Feature.CrudSmokeTest" assertions="7" time="0.015558"/>
+      <testsuite name="Tests\Feature\ChoiceManagementTest" file="Choice Management (Tests\Feature\ChoiceManagement)" tests="5" assertions="8" errors="0" failures="2" skipped="0" time="0.051477">
+        <testcase name="Can create choice" file="Choice Management (Tests\Feature\ChoiceManagement)::Can create choice" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="1" time="0.012583">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Can create choiceExpected response status code [201] but received 200.
+Failed asserting that 200 is identical to 201.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at vendor/laravel/framework/src/Illuminate/Testing/Concerns/AssertsStatusCodes.php:26
+at tests/Feature/ChoiceManagementTest.php:34</failure>
+        </testcase>
+        <testcase name="Can update choice" file="Choice Management (Tests\Feature\ChoiceManagement)::Can update choice" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="2" time="0.009206"/>
+        <testcase name="Can delete choice" file="Choice Management (Tests\Feature\ChoiceManagement)::Can delete choice" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="1" time="0.011532">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Can delete choiceExpected response status code [204] but received 200.
+Failed asserting that 200 is identical to 204.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at vendor/laravel/framework/src/Illuminate/Testing/Concerns/AssertsStatusCodes.php:47
+at tests/Feature/ChoiceManagementTest.php:52</failure>
+        </testcase>
+        <testcase name="Can get choices by question" file="Choice Management (Tests\Feature\ChoiceManagement)::Can get choices by question" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="2" time="0.008960"/>
+        <testcase name="Can reorder choices" file="Choice Management (Tests\Feature\ChoiceManagement)::Can reorder choices" class="Tests\Feature\ChoiceManagementTest" classname="Tests.Feature.ChoiceManagementTest" assertions="2" time="0.009196"/>
       </testsuite>
-      <testsuite name="Tests\Feature\EnhancedMediaSystemTest" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)" tests="18" assertions="58" errors="0" failures="0" skipped="0" time="0.214127">
-        <testcase name="Can upload media to survey" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can upload media to survey" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="22" time="0.038817"/>
-        <testcase name="Can upload media to survey page" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can upload media to survey page" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.010034"/>
-        <testcase name="Can upload media to question" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can upload media to question" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.012191"/>
-        <testcase name="Can upload media to choice" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can upload media to choice" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.010386"/>
-        <testcase name="Can get media for survey" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get media for survey" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.012691"/>
-        <testcase name="Can get media for survey page" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get media for survey page" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.009603"/>
-        <testcase name="Can get media for question" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get media for question" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.010936"/>
-        <testcase name="Can get media for choice" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get media for choice" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.009901"/>
-        <testcase name="Can update media metadata" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can update media metadata" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="5" time="0.017834"/>
-        <testcase name="Can delete media" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can delete media" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="3" time="0.010794"/>
-        <testcase name="Can get collections for survey" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get collections for survey" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.008018"/>
-        <testcase name="Can get collections for survey page" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get collections for survey page" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.008306"/>
-        <testcase name="Can get collections for question" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get collections for question" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.009339"/>
-        <testcase name="Can get collections for choice" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get collections for choice" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.010971"/>
-        <testcase name="Returns 404 for invalid model" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Returns 404 for invalid model" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.008542"/>
-        <testcase name="Returns 400 when no file provided" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Returns 400 when no file provided" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.008067"/>
-        <testcase name="Requires authentication" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Requires authentication" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.007384"/>
-        <testcase name="Media collections are specific to models" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Media collections are specific to models" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="5" time="0.010315"/>
+      <testsuite name="Tests\Feature\CrudSmokeTest" file="Crud Smoke (Tests\Feature\CrudSmoke)" tests="1" assertions="3" errors="0" failures="1" skipped="0" time="0.009670">
+        <testcase name="User template survey crud flow" file="Crud Smoke (Tests\Feature\CrudSmoke)::User template survey crud flow" class="Tests\Feature\CrudSmokeTest" classname="Tests.Feature.CrudSmokeTest" assertions="3" time="0.009670">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">User template survey crud flowExpected response status code [201] but received 200.
+Failed asserting that 200 is identical to 201.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/CrudSmokeTest.php:41</failure>
+        </testcase>
       </testsuite>
-      <testsuite name="Tests\Feature\ExampleTest" file="tests/Feature/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.017273">
-        <testcase name="the application returns a successful response" file="tests/Feature/ExampleTest.php::the application returns a successful response" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="1" time="0.017273"/>
+      <testsuite name="Tests\Feature\EnhancedMediaSystemTest" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)" tests="20" assertions="49" errors="0" failures="5" skipped="0" time="0.224473">
+        <testcase name="Can upload media to survey" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can upload media to survey" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="8" time="0.037985"/>
+        <testcase name="Can upload media to survey page" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can upload media to survey page" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.009324"/>
+        <testcase name="Can upload media to question" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can upload media to question" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.009968"/>
+        <testcase name="Can upload media to choice" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can upload media to choice" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.009506"/>
+        <testcase name="Can get media for survey" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get media for survey" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.010548"/>
+        <testcase name="Can get media for survey page" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get media for survey page" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.009359"/>
+        <testcase name="Can get media for question" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get media for question" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.009840"/>
+        <testcase name="Can get media for choice" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get media for choice" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.010203"/>
+        <testcase name="Can update media metadata" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can update media metadata" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="4" time="0.020262"/>
+        <testcase name="Can delete media" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can delete media" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.010803"/>
+        <testcase name="Can get collections for survey" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get collections for survey" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.008111">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Can get collections for surveyUnable to find JSON: 
+
+[[
+    "survey-banners",
+    "survey-logos",
+    "survey-attachments"
+]]
+
+within response JSON:
+
+[{
+    "success": true,
+    "message": "200",
+    "data": [
+        "survey-banners",
+        "survey-logos",
+        "survey-attachments"
+    ]
+}].
+
+
+Failed asserting that an array has the subset Array &amp;0 [
+    0 =&gt; 'survey-banners',
+    1 =&gt; 'survey-logos',
+    2 =&gt; 'survey-attachments',
+].
+at vendor/laravel/framework/src/Illuminate/Testing/Constraints/ArraySubset.php:80
+at vendor/laravel/framework/src/Illuminate/Testing/Assert.php:36
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:319
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:802
+at tests/Feature/EnhancedMediaSystemTest.php:215</failure>
+        </testcase>
+        <testcase name="Can get collections for survey page" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get collections for survey page" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.008659">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Can get collections for survey pageUnable to find JSON: 
+
+[[
+    "page-images",
+    "page-backgrounds"
+]]
+
+within response JSON:
+
+[{
+    "success": true,
+    "message": "200",
+    "data": [
+        "page-images",
+        "page-backgrounds"
+    ]
+}].
+
+
+Failed asserting that an array has the subset Array &amp;0 [
+    0 =&gt; 'page-images',
+    1 =&gt; 'page-backgrounds',
+].
+at vendor/laravel/framework/src/Illuminate/Testing/Constraints/ArraySubset.php:80
+at vendor/laravel/framework/src/Illuminate/Testing/Assert.php:36
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:319
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:802
+at tests/Feature/EnhancedMediaSystemTest.php:224</failure>
+        </testcase>
+        <testcase name="Can get collections for question" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get collections for question" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.007592">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Can get collections for questionUnable to find JSON: 
+
+[[
+    "question-images",
+    "question-videos",
+    "question-documents"
+]]
+
+within response JSON:
+
+[{
+    "success": true,
+    "message": "200",
+    "data": [
+        "question-images",
+        "question-videos",
+        "question-documents"
+    ]
+}].
+
+
+Failed asserting that an array has the subset Array &amp;0 [
+    0 =&gt; 'question-images',
+    1 =&gt; 'question-videos',
+    2 =&gt; 'question-documents',
+].
+at vendor/laravel/framework/src/Illuminate/Testing/Constraints/ArraySubset.php:80
+at vendor/laravel/framework/src/Illuminate/Testing/Assert.php:36
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:319
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:802
+at tests/Feature/EnhancedMediaSystemTest.php:233</failure>
+        </testcase>
+        <testcase name="Can get collections for choice" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Can get collections for choice" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.007420">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Can get collections for choiceUnable to find JSON: 
+
+[[
+    "choice-images",
+    "choice-icons"
+]]
+
+within response JSON:
+
+[{
+    "success": true,
+    "message": "200",
+    "data": [
+        "choice-images",
+        "choice-icons"
+    ]
+}].
+
+
+Failed asserting that an array has the subset Array &amp;0 [
+    0 =&gt; 'choice-images',
+    1 =&gt; 'choice-icons',
+].
+at vendor/laravel/framework/src/Illuminate/Testing/Constraints/ArraySubset.php:80
+at vendor/laravel/framework/src/Illuminate/Testing/Assert.php:36
+at vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:319
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:802
+at tests/Feature/EnhancedMediaSystemTest.php:242</failure>
+        </testcase>
+        <testcase name="Returns 404 for invalid model" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Returns 404 for invalid model" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.007761">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Returns 404 for invalid modelExpected response status code [422] but received 200.
+Failed asserting that 200 is identical to 422.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/EnhancedMediaSystemTest.php:255</failure>
+        </testcase>
+        <testcase name="Returns 400 when no file provided" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Returns 400 when no file provided" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="2" time="0.008205"/>
+        <testcase name="Requires authentication" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Requires authentication" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="1" time="0.008516"/>
+        <testcase name="Media collections are specific to models" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Media collections are specific to models" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="5" time="0.010083"/>
+        <testcase name="Media reference is added to question config on upload" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Media reference is added to question config on upload" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="4" time="0.010076"/>
+        <testcase name="Media reference is removed from config on delete" file="Enhanced Media System (Tests\Feature\EnhancedMediaSystem)::Media reference is removed from config on delete" class="Tests\Feature\EnhancedMediaSystemTest" classname="Tests.Feature.EnhancedMediaSystemTest" assertions="4" time="0.010254"/>
       </testsuite>
-      <testsuite name="Tests\Feature\ResponseFlowTest" file="Response Flow (Tests\Feature\ResponseFlow)" tests="13" assertions="62" errors="0" failures="0" skipped="0" time="0.142245">
-        <testcase name="Can start response" file="Response Flow (Tests\Feature\ResponseFlow)::Can start response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="9" time="0.009892"/>
-        <testcase name="Can submit complete response" file="Response Flow (Tests\Feature\ResponseFlow)::Can submit complete response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="5" time="0.011038"/>
-        <testcase name="Can submit anonymous response" file="Response Flow (Tests\Feature\ResponseFlow)::Can submit anonymous response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="2" time="0.009832"/>
-        <testcase name="Can submit authenticated response" file="Response Flow (Tests\Feature\ResponseFlow)::Can submit authenticated response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="2" time="0.010117"/>
-        <testcase name="Cannot submit to inactive survey" file="Response Flow (Tests\Feature\ResponseFlow)::Cannot submit to inactive survey" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.009211"/>
-        <testcase name="Cannot submit to expired survey" file="Response Flow (Tests\Feature\ResponseFlow)::Cannot submit to expired survey" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.010276"/>
-        <testcase name="Cannot exceed max responses" file="Response Flow (Tests\Feature\ResponseFlow)::Cannot exceed max responses" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.015784"/>
-        <testcase name="Response validation rules" file="Response Flow (Tests\Feature\ResponseFlow)::Response validation rules" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="6" time="0.008454"/>
-        <testcase name="Answer validation rules" file="Response Flow (Tests\Feature\ResponseFlow)::Answer validation rules" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="18" time="0.013203"/>
-        <testcase name="Can get response statistics" file="Response Flow (Tests\Feature\ResponseFlow)::Can get response statistics" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="5" time="0.015984"/>
-        <testcase name="Can get response details" file="Response Flow (Tests\Feature\ResponseFlow)::Can get response details" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="10" time="0.012474"/>
-        <testcase name="Response not found" file="Response Flow (Tests\Feature\ResponseFlow)::Response not found" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.007860"/>
-        <testcase name="Cannot submit to nonexistent response" file="Response Flow (Tests\Feature\ResponseFlow)::Cannot submit to nonexistent response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.008120"/>
+      <testsuite name="Tests\Feature\ExampleTest" file="tests/Feature/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.022206">
+        <testcase name="the application returns a successful response" file="tests/Feature/ExampleTest.php::the application returns a successful response" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="1" time="0.022206"/>
       </testsuite>
-      <testsuite name="Tests\Feature\RoleManagementTest" file="Role Management (Tests\Feature\RoleManagement)" tests="17" assertions="35" errors="0" failures="0" skipped="0" time="0.172221">
-        <testcase name="Can get all roles" file="Role Management (Tests\Feature\RoleManagement)::Can get all roles" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.013790"/>
-        <testcase name="Can assign role to user" file="Role Management (Tests\Feature\RoleManagement)::Can assign role to user" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.010778"/>
-        <testcase name="Can assign role to survey" file="Role Management (Tests\Feature\RoleManagement)::Can assign role to survey" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.009011"/>
-        <testcase name="Can remove role from user" file="Role Management (Tests\Feature\RoleManagement)::Can remove role from user" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.010613"/>
-        <testcase name="Can remove role from survey" file="Role Management (Tests\Feature\RoleManagement)::Can remove role from survey" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.009860"/>
-        <testcase name="Can get user roles" file="Role Management (Tests\Feature\RoleManagement)::Can get user roles" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.012965"/>
-        <testcase name="Can get survey roles" file="Role Management (Tests\Feature\RoleManagement)::Can get survey roles" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.011218"/>
-        <testcase name="Can check user has role" file="Role Management (Tests\Feature\RoleManagement)::Can check user has role" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.010959"/>
-        <testcase name="Can check user does not have role" file="Role Management (Tests\Feature\RoleManagement)::Can check user does not have role" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.008781"/>
-        <testcase name="Can check survey has role" file="Role Management (Tests\Feature\RoleManagement)::Can check survey has role" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.009153"/>
-        <testcase name="Can check survey does not have role" file="Role Management (Tests\Feature\RoleManagement)::Can check survey does not have role" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.009338"/>
-        <testcase name="Assign role requires authentication" file="Role Management (Tests\Feature\RoleManagement)::Assign role requires authentication" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.009107"/>
-        <testcase name="Assign role validates role exists" file="Role Management (Tests\Feature\RoleManagement)::Assign role validates role exists" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.009185"/>
-        <testcase name="Assign role validates user exists" file="Role Management (Tests\Feature\RoleManagement)::Assign role validates user exists" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.009891"/>
-        <testcase name="Assign role validates survey exists" file="Role Management (Tests\Feature\RoleManagement)::Assign role validates survey exists" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.010032"/>
-        <testcase name="Returns 404 for nonexistent user" file="Role Management (Tests\Feature\RoleManagement)::Returns 404 for nonexistent user" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.008578"/>
-        <testcase name="Returns 404 for nonexistent survey" file="Role Management (Tests\Feature\RoleManagement)::Returns 404 for nonexistent survey" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.008961"/>
+      <testsuite name="Tests\Feature\ResourceIntegrityTest" file="Resource Integrity (Tests\Feature\ResourceIntegrity)" tests="4" assertions="8" errors="0" failures="1" skipped="0" time="0.035600">
+        <testcase name="Survey deletion cascades to related models" file="Resource Integrity (Tests\Feature\ResourceIntegrity)::Survey deletion cascades to related models" class="Tests\Feature\ResourceIntegrityTest" classname="Tests.Feature.ResourceIntegrityTest" assertions="5" time="0.012185">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Survey deletion cascades to related modelsExpected response status code [204] but received 200.
+Failed asserting that 200 is identical to 204.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ResourceIntegrityTest.php:39</failure>
+        </testcase>
+        <testcase name="User cannot update others survey" file="Resource Integrity (Tests\Feature\ResourceIntegrity)::User cannot update others survey" class="Tests\Feature\ResourceIntegrityTest" classname="Tests.Feature.ResourceIntegrityTest" assertions="1" time="0.009263"/>
+        <testcase name="User cannot delete others survey" file="Resource Integrity (Tests\Feature\ResourceIntegrity)::User cannot delete others survey" class="Tests\Feature\ResourceIntegrityTest" classname="Tests.Feature.ResourceIntegrityTest" assertions="1" time="0.007677"/>
+        <testcase name="User cannot update others template" file="Resource Integrity (Tests\Feature\ResourceIntegrity)::User cannot update others template" class="Tests\Feature\ResourceIntegrityTest" classname="Tests.Feature.ResourceIntegrityTest" assertions="1" time="0.006476"/>
       </testsuite>
-      <testsuite name="Tests\Feature\ValidationErrorTest" file="Validation Error (Tests\Feature\ValidationError)" tests="12" assertions="160" errors="0" failures="0" skipped="0" time="0.132314">
-        <testcase name="Register validation errors" file="Validation Error (Tests\Feature\ValidationError)::Register validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="17" time="0.015090"/>
-        <testcase name="Login validation errors" file="Validation Error (Tests\Feature\ValidationError)::Login validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="7" time="0.007996"/>
-        <testcase name="Google login validation errors" file="Validation Error (Tests\Feature\ValidationError)::Google login validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="6" time="0.012232"/>
-        <testcase name="Survey create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Survey create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="25" time="0.012908"/>
-        <testcase name="Question create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Question create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="19" time="0.010477"/>
-        <testcase name="Choice create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Choice create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="13" time="0.009716"/>
-        <testcase name="Survey page create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Survey page create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="12" time="0.010157"/>
-        <testcase name="Template create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Template create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="12" time="0.011952"/>
-        <testcase name="Media upload validation errors" file="Validation Error (Tests\Feature\ValidationError)::Media upload validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="13" time="0.010596"/>
-        <testcase name="Role assign validation errors" file="Validation Error (Tests\Feature\ValidationError)::Role assign validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="12" time="0.010461"/>
-        <testcase name="Response create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Response create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="6" time="0.008076"/>
-        <testcase name="Response submit validation errors" file="Validation Error (Tests\Feature\ValidationError)::Response submit validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="18" time="0.012653"/>
+      <testsuite name="Tests\Feature\ResponseFlowTest" file="Response Flow (Tests\Feature\ResponseFlow)" tests="13" assertions="33" errors="0" failures="0" skipped="0" time="0.122633">
+        <testcase name="Can start response" file="Response Flow (Tests\Feature\ResponseFlow)::Can start response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="3" time="0.009743"/>
+        <testcase name="Can submit complete response" file="Response Flow (Tests\Feature\ResponseFlow)::Can submit complete response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="2" time="0.009314"/>
+        <testcase name="Can submit anonymous response" file="Response Flow (Tests\Feature\ResponseFlow)::Can submit anonymous response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="2" time="0.008328"/>
+        <testcase name="Can submit authenticated response" file="Response Flow (Tests\Feature\ResponseFlow)::Can submit authenticated response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="2" time="0.009833"/>
+        <testcase name="Cannot submit to inactive survey" file="Response Flow (Tests\Feature\ResponseFlow)::Cannot submit to inactive survey" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.009324"/>
+        <testcase name="Cannot submit to expired survey" file="Response Flow (Tests\Feature\ResponseFlow)::Cannot submit to expired survey" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.009476"/>
+        <testcase name="Cannot exceed max responses" file="Response Flow (Tests\Feature\ResponseFlow)::Cannot exceed max responses" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.010992"/>
+        <testcase name="Response validation rules" file="Response Flow (Tests\Feature\ResponseFlow)::Response validation rules" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="6" time="0.009906"/>
+        <testcase name="Answer validation rules" file="Response Flow (Tests\Feature\ResponseFlow)::Answer validation rules" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="3" time="0.008268"/>
+        <testcase name="Can get response statistics" file="Response Flow (Tests\Feature\ResponseFlow)::Can get response statistics" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="7" time="0.011754"/>
+        <testcase name="Can get response details" file="Response Flow (Tests\Feature\ResponseFlow)::Can get response details" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="2" time="0.008064"/>
+        <testcase name="Response not found" file="Response Flow (Tests\Feature\ResponseFlow)::Response not found" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="1" time="0.009468"/>
+        <testcase name="Cannot submit to nonexistent response" file="Response Flow (Tests\Feature\ResponseFlow)::Cannot submit to nonexistent response" class="Tests\Feature\ResponseFlowTest" classname="Tests.Feature.ResponseFlowTest" assertions="2" time="0.008162"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\RoleManagementTest" file="Role Management (Tests\Feature\RoleManagement)" tests="16" assertions="46" errors="0" failures="0" skipped="0" time="0.161527">
+        <testcase name="Can get all roles" file="Role Management (Tests\Feature\RoleManagement)::Can get all roles" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="6" time="0.014132"/>
+        <testcase name="Can assign role to user" file="Role Management (Tests\Feature\RoleManagement)::Can assign role to user" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.011257"/>
+        <testcase name="Can assign role to survey" file="Role Management (Tests\Feature\RoleManagement)::Can assign role to survey" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.009480"/>
+        <testcase name="Can remove role from user" file="Role Management (Tests\Feature\RoleManagement)::Can remove role from user" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.010018"/>
+        <testcase name="Can remove role from survey" file="Role Management (Tests\Feature\RoleManagement)::Can remove role from survey" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.009984"/>
+        <testcase name="Can get user roles" file="Role Management (Tests\Feature\RoleManagement)::Can get user roles" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="6" time="0.010389"/>
+        <testcase name="Can get survey roles" file="Role Management (Tests\Feature\RoleManagement)::Can get survey roles" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="6" time="0.009482"/>
+        <testcase name="Can check user has role" file="Role Management (Tests\Feature\RoleManagement)::Can check user has role" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.009543"/>
+        <testcase name="Can check user does not have role" file="Role Management (Tests\Feature\RoleManagement)::Can check user does not have role" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.011821"/>
+        <testcase name="Can check survey has role" file="Role Management (Tests\Feature\RoleManagement)::Can check survey has role" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.012812"/>
+        <testcase name="Can check survey does not have role" file="Role Management (Tests\Feature\RoleManagement)::Can check survey does not have role" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.009144"/>
+        <testcase name="Assign role requires authentication" file="Role Management (Tests\Feature\RoleManagement)::Assign role requires authentication" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.008836"/>
+        <testcase name="Assign role validates role exists" file="Role Management (Tests\Feature\RoleManagement)::Assign role validates role exists" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="3" time="0.008932"/>
+        <testcase name="Assign role validates model exists" file="Role Management (Tests\Feature\RoleManagement)::Assign role validates model exists" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.008965"/>
+        <testcase name="Returns 404 for nonexistent user" file="Role Management (Tests\Feature\RoleManagement)::Returns 404 for nonexistent user" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="2" time="0.008346"/>
+        <testcase name="Returns 404 for nonexistent survey" file="Role Management (Tests\Feature\RoleManagement)::Returns 404 for nonexistent survey" class="Tests\Feature\RoleManagementTest" classname="Tests.Feature.RoleManagementTest" assertions="1" time="0.008388"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\ValidationErrorTest" file="Validation Error (Tests\Feature\ValidationError)" tests="12" assertions="142" errors="0" failures="1" skipped="0" time="0.120178">
+        <testcase name="Register validation errors" file="Validation Error (Tests\Feature\ValidationError)::Register validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="17" time="0.015271"/>
+        <testcase name="Login validation errors" file="Validation Error (Tests\Feature\ValidationError)::Login validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="7" time="0.008172"/>
+        <testcase name="Google login validation errors" file="Validation Error (Tests\Feature\ValidationError)::Google login validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="6" time="0.007939"/>
+        <testcase name="Survey create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Survey create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="25" time="0.012544"/>
+        <testcase name="Question create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Question create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="19" time="0.010496"/>
+        <testcase name="Choice create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Choice create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="13" time="0.009358"/>
+        <testcase name="Survey page create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Survey page create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="12" time="0.008909"/>
+        <testcase name="Template create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Template create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="12" time="0.008816"/>
+        <testcase name="Media upload validation errors" file="Validation Error (Tests\Feature\ValidationError)::Media upload validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="13" time="0.012786"/>
+        <testcase name="Role assign validation errors" file="Validation Error (Tests\Feature\ValidationError)::Role assign validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="11" time="0.009584"/>
+        <testcase name="Response create validation errors" file="Validation Error (Tests\Feature\ValidationError)::Response create validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="6" time="0.007906"/>
+        <testcase name="Response submit validation errors" file="Validation Error (Tests\Feature\ValidationError)::Response submit validation errors" class="Tests\Feature\ValidationErrorTest" classname="Tests.Feature.ValidationErrorTest" assertions="1" time="0.008397">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Response submit validation errorsExpected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+at vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+at tests/Feature/ValidationErrorTest.php:437</failure>
+        </testcase>
       </testsuite>
     </testsuite>
   </testsuite>

@@ -5,12 +5,15 @@ namespace App\Services\Concrete;
 use App\Repositories\Abstract\SurveyRepositoryInterface;
 use App\Services\Abstract\SurveyServiceInterface;
 use App\Dtos\SurveyDto;
+use App\Dtos\UpdateSurveyDto;
 use App\Responses\ServiceResponse;
 use App\Responses\Abstract\ResourceMapInterface;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Repositories\Abstract\SurveyPageRepositoryInterface;
 use App\Dtos\SurveyPageDto;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class SurveyService implements SurveyServiceInterface
 {
@@ -22,35 +25,58 @@ class SurveyService implements SurveyServiceInterface
 
     public function create(SurveyDto $dto): ServiceResponse
     {
-        $survey = $this->surveyRepository->create($dto->toDatabaseArray());
+        $data = $dto->toArray();
+        $data['created_by'] = Auth::id();
 
-        return new ServiceResponse($survey, $this->resourceMap, 201);
+        $logoMediaId = null;
+        if (isset($data['settings']['theme']['logo_media_id'])) {
+            $logoMediaId = $data['settings']['theme']['logo_media_id'];
+            // logo_media_id'yi settings'de tutuyoruz, çıkarmıyoruz
+        }
+
+        $survey = $this->surveyRepository->create($data);
+
+        if ($logoMediaId && ($media = Media::find($logoMediaId))) {
+            try {
+                $media->copy($survey, 'survey-logos');
+            } catch (\Exception $e) {
+                // Medya kopyalama başarısız olursa log'la ama işlemi durdurma
+                Log::warning("Failed to copy media {$logoMediaId} to survey {$survey->id}: " . $e->getMessage());
+            }
+        }
+
+        return ServiceResponse::created($survey);
     }
 
-    public function update(int $id, SurveyDto $dto): ServiceResponse
+    public function update(int $id, UpdateSurveyDto $dto): ServiceResponse
     {
+        $data = $dto->toArray();
+        
+        $logoMediaId = null;
+        if (isset($data['settings']['theme']['logo_media_id'])) {
+            $logoMediaId = $data['settings']['theme']['logo_media_id'];
+            // logo_media_id'yi settings'de tutuyoruz, çıkarmıyoruz
+        }
+
+        $this->surveyRepository->update($id, $data);
         $survey = $this->surveyRepository->find($id);
-        if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
+
+        if ($logoMediaId && ($media = Media::find($logoMediaId))) {
+            try {
+                $survey->clearMediaCollection('survey-logos');
+                $media->copy($survey, 'survey-logos');
+            } catch (\Exception $e) {
+                Log::warning("Failed to copy media {$logoMediaId} to survey {$survey->id}: " . $e->getMessage());
+            }
         }
-        if ($survey->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-        $this->surveyRepository->update($id, $dto->toDatabaseArray());
-        return new ServiceResponse($this->surveyRepository->find($id), $this->resourceMap);
+
+        return ServiceResponse::success($survey);
     }
 
     public function delete(int $id): ServiceResponse
     {
-        $survey = $this->surveyRepository->find($id);
-        if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
-        }
-        if ($survey->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
         $this->surveyRepository->delete($id);
-        return new ServiceResponse(['message' => 'Survey deleted successfully.'], $this->resourceMap);
+        return ServiceResponse::noContent();
     }
 
     public function find(int $id): ServiceResponse
@@ -58,171 +84,121 @@ class SurveyService implements SurveyServiceInterface
         $survey = $this->surveyRepository->find($id);
 
         if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
+            return ServiceResponse::notFound('Survey not found.');
         }
 
-        // Check if user can access this survey (owner or public)
-        if ($survey->created_by !== Auth::id() && $survey->status !== 'active') {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        return new ServiceResponse($survey, $this->resourceMap);
+        $survey->load('pages');
+        return ServiceResponse::success($survey);
     }
 
-    public function getAll(): ServiceResponse
+    public function getAll(int $perPage = 15): ServiceResponse
     {
-        $surveys = $this->surveyRepository->all();
-
-        return new ServiceResponse($surveys, $this->resourceMap);
+        $surveys = $this->surveyRepository->paginate($perPage);
+        $surveys->load('pages');
+        return ServiceResponse::success($surveys);
     }
 
     public function getByUser(int $userId): ServiceResponse
     {
         $surveys = $this->surveyRepository->findByUser($userId);
-
-        return new ServiceResponse($surveys, $this->resourceMap);
+        $surveys->load('pages');
+        return ServiceResponse::success($surveys);
     }
 
     public function getByStatus(string $status): ServiceResponse
     {
         $surveys = $this->surveyRepository->findByStatus($status);
-
-        return new ServiceResponse($surveys, $this->resourceMap);
+        $surveys->load('pages');
+        return ServiceResponse::success($surveys);
     }
 
     public function getActiveSurveys(): ServiceResponse
     {
         $surveys = $this->surveyRepository->getActiveSurveys();
-
-        return new ServiceResponse($surveys, $this->resourceMap);
+        $surveys->load('pages');
+        return ServiceResponse::success($surveys);
     }
 
     public function getByTemplate(int $templateId): ServiceResponse
     {
         $surveys = $this->surveyRepository->findByTemplate($templateId);
-
-        return new ServiceResponse($surveys, $this->resourceMap);
+        $surveys->load('pages');
+        return ServiceResponse::success($surveys);
     }
 
     public function publish(int $id): ServiceResponse
     {
         $survey = $this->surveyRepository->find($id);
-
         if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
+            return ServiceResponse::notFound('Survey not found.');
         }
 
-        // Check if user owns this survey
-        if ($survey->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        // Check if survey is in draft status
         if ($survey->status !== 'draft') {
-            return new ServiceResponse(['message' => 'Only draft surveys can be published.'], $this->resourceMap, 400);
+            return ServiceResponse::error('Only draft surveys can be published.', null, 400);
         }
 
         $this->surveyRepository->update($id, ['status' => 'active']);
-
-        return new ServiceResponse($survey->fresh(), $this->resourceMap);
+        return ServiceResponse::success($survey->fresh());
     }
 
     public function archive(int $id): ServiceResponse
     {
-        $survey = $this->surveyRepository->find($id);
-
-        if (!$survey) {
-            throw new ModelNotFoundException('Survey not found.');
-        }
-
-        // Check if user owns this survey
-        if ($survey->created_by !== Auth::id()) {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
         $this->surveyRepository->update($id, ['status' => 'archived']);
-
-        return new ServiceResponse($survey->fresh(), $this->resourceMap);
+        return ServiceResponse::success($this->surveyRepository->find($id)->fresh());
     }
 
     public function duplicate(int $id): ServiceResponse
     {
-        $originalSurvey = $this->surveyRepository->find($id);
-
-        if (!$originalSurvey) {
-            throw new ModelNotFoundException('Survey not found.');
-        }
-
-        // Check if user can access this survey (owner or public)
-        if ($originalSurvey->created_by !== Auth::id() && $originalSurvey->status !== 'active') {
-            return new ServiceResponse(['message' => 'Unauthorized.'], $this->resourceMap, 403);
-        }
-
-        $duplicatedSurvey = $this->surveyRepository->create([
-            'title' => $originalSurvey->title . ' (Copy)',
-            'description' => $originalSurvey->description,
-            'status' => 'draft', // Duplicated surveys start as draft
-            'created_by' => Auth::id(),
-            'template_id' => $originalSurvey->template_id,
-            'template_version_id' => $originalSurvey->template_version_id,
-            'settings' => $originalSurvey->settings,
-            'expires_at' => null, // Reset expiration date
-            'max_responses' => $originalSurvey->max_responses,
-        ]);
-
-        return new ServiceResponse($duplicatedSurvey, $this->resourceMap, 201);
+        $newSurveyId = $this->surveyRepository->duplicate($id);
+        $newSurvey = $this->surveyRepository->find($newSurveyId);
+        return ServiceResponse::created($newSurvey, 'Survey duplicated successfully.');
     }
 
     // Page Management Methods
     public function getOrderedPages(int $surveyId): ServiceResponse
     {
-        // Add authorization check if necessary
         $pages = $this->surveyPageRepository->getOrderedPages($surveyId);
-        return new ServiceResponse($pages, $this->resourceMap);
+        return ServiceResponse::success($pages);
     }
 
     public function createPage(SurveyPageDto $dto): ServiceResponse
     {
-        // Add authorization check if necessary
         $page = $this->surveyPageRepository->create($dto->toDatabaseArray());
-        return new ServiceResponse($page, $this->resourceMap, 201);
+        return ServiceResponse::created($page);
     }
 
     public function findPage(int $id): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
         if (!$page) {
-            return new ServiceResponse(['message' => 'Page not found'], $this->resourceMap, 404);
+            return ServiceResponse::notFound('Survey page not found.');
         }
-        return new ServiceResponse($page, $this->resourceMap);
+        return ServiceResponse::success($page);
     }
 
     public function updatePage(int $id, SurveyPageDto $dto): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
         if (!$page) {
-            return new ServiceResponse(['message' => 'Page not found'], $this->resourceMap, 404);
+            return ServiceResponse::notFound('Survey page not found.');
         }
-        // Add authorization check if necessary
         $this->surveyPageRepository->update($id, $dto->toDatabaseArray());
-        return new ServiceResponse($this->surveyPageRepository->find($id), $this->resourceMap);
+        return ServiceResponse::success($this->surveyPageRepository->find($id));
     }
 
     public function deletePage(int $id): ServiceResponse
     {
         $page = $this->surveyPageRepository->find($id);
         if (!$page) {
-            return new ServiceResponse(['message' => 'Page not found'], $this->resourceMap, 404);
+            return ServiceResponse::notFound('Survey page not found.');
         }
-        // Add authorization check if necessary
         $this->surveyPageRepository->delete($id);
-        return new ServiceResponse(['message' => 'Page deleted successfully.'], $this->resourceMap);
+        return ServiceResponse::noContent('Survey page deleted successfully.');
     }
 
     public function reorderPages(int $surveyId, array $pageIds): ServiceResponse
     {
-        // Add authorization check if necessary
-        $this->surveyPageRepository->reorder($surveyId, $pageIds);
-        return new ServiceResponse(['message' => 'Pages reordered successfully.'], $this->resourceMap);
+        $this->surveyPageRepository->reorder($pageIds);
+        return ServiceResponse::success(null, 'Pages reordered successfully.');
     }
 } 

@@ -3,6 +3,7 @@
 namespace App\Services\Abstract;
 
 use App\Dtos\SurveyDto;
+use App\Dtos\UpdateSurveyDto;
 use App\Models\Survey;
 use App\Responses\ServiceResponse;
 use App\Dtos\SurveyPageDto;
@@ -10,7 +11,7 @@ use App\Dtos\SurveyPageDto;
 interface SurveyServiceInterface
 {
     public function create(SurveyDto $dto): ServiceResponse;
-    public function update(int $id, SurveyDto $dto): ServiceResponse;
+    public function update(int $id, UpdateSurveyDto $dto): ServiceResponse;
     public function delete(int $id): ServiceResponse;
     public function find(int $id): ServiceResponse;
     public function getAll(): ServiceResponse;

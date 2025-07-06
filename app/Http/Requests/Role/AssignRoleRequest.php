@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AssignRoleRequest extends FormRequest
 {
@@ -22,9 +23,9 @@ class AssignRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_name' => 'required|string|max:255',
-            'user_id' => 'nullable|integer|min:1',
-            'survey_id' => 'nullable|integer|min:1',
+            'role_name' => 'required|string|exists:roles,name',
+            'model_type' => ['required', 'string', Rule::in(['user', 'survey'])],
+            'model_id' => 'required|integer',
         ];
     }
 
@@ -50,19 +51,19 @@ class AssignRoleRequest extends FormRequest
     {
         return [
             'role_name' => [
-                'description' => 'Name of the role to assign',
-                'example' => 'survey_editor',
+                'description' => 'Name of the role to assign. Must exist in the roles table.',
+                'example' => 'editor',
                 'required' => true,
             ],
-            'user_id' => [
-                'description' => 'ID of the user to assign the role to',
-                'example' => 1,
-                'required' => false,
+            'model_type' => [
+                'description' => 'Type of model to assign the role to. Must be either "user" or "survey".',
+                'example' => 'user',
+                'required' => true,
             ],
-            'survey_id' => [
-                'description' => 'ID of the survey to assign the role for',
+            'model_id' => [
+                'description' => 'ID of the model (user or survey) to assign the role to.',
                 'example' => 1,
-                'required' => false,
+                'required' => true,
             ],
         ];
     }

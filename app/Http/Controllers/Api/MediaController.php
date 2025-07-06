@@ -9,27 +9,59 @@ use App\Dtos\MediaDto;
 use App\Services\Abstract\MediaServiceInterface;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * @group Media Management
+ *
+ * APIs for managing media files (images, videos, documents)
+ */
 class MediaController extends Controller
 {
     public function __construct(
         protected MediaServiceInterface $mediaService
     ) {}
 
+    /**
+     * Upload Media
+     *
+     * Upload a media file and associate it with a question.
+     * @authenticated
+     * @response 200 {"success": true, "message": "Media uploaded successfully", "data": {"id": 1, "file_name": "image.jpg", "file_path": "/storage/media/image.jpg"}}
+     */
     public function upload(UploadMediaRequest $request): JsonResponse
     {
-        $dto = MediaDto::fromArray($request->validated());
-        $result = $this->mediaService->uploadMedia($dto);
+        $validatedData = $request->validated();
+        
+        $result = $this->mediaService->uploadMediaForModel(
+            $validatedData['model_type'],
+            $validatedData['model_id'],
+            $request->file('file'),
+            $validatedData['collection_name']
+        );
         
         return $result->toResponse();
     }
 
-    public function delete(int $mediaId): JsonResponse
+    /**
+     * Delete Media
+     *
+     * Delete a media file and its associated data.
+     * @authenticated
+     * @urlParam mediaId required The ID of the media file. Example: 1
+     * @response 200 {"success": true, "message": "Media deleted successfully", "data": null}
+     */
+    public function destroy(int $mediaId): JsonResponse
     {
         $result = $this->mediaService->deleteMedia($mediaId);
         
         return $result->toResponse();
     }
 
+    /**
+     * Get Question Media
+     *
+     * Get all media files associated with a specific question.
+     * @urlParam questionId required The ID of the question. Example: 1
+     */
     public function getQuestionMedia(int $questionId): JsonResponse
     {
         $result = $this->mediaService->getQuestionMedia($questionId);
@@ -37,7 +69,15 @@ class MediaController extends Controller
         return $result->toResponse();
     }
 
-    public function updateMetadata(int $mediaId, UpdateMediaMetadataRequest $request): JsonResponse
+    /**
+     * Update Media Metadata
+     *
+     * Update metadata (alt text, caption, etc.) for a media file.
+     * @authenticated
+     * @urlParam mediaId required The ID of the media file. Example: 1
+     * @response 200 {"success": true, "message": "Media metadata updated successfully", "data": {"id": 1, "alt_text": "Updated alt text", "caption": "Updated caption"}}
+     */
+    public function updateMetadata(UpdateMediaMetadataRequest $request, int $mediaId): JsonResponse
     {
         $result = $this->mediaService->updateMediaMetadata($mediaId, $request->validated());
         

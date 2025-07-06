@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RemoveRoleRequest extends FormRequest
 {
@@ -22,9 +23,9 @@ class RemoveRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_name' => 'required|string|max:255',
-            'user_id' => 'nullable|integer|min:1',
-            'survey_id' => 'nullable|integer|min:1',
+            'role_name' => 'required|string|exists:roles,name',
+            'model_type' => ['required', 'string', Rule::in(['user', 'survey'])],
+            'model_id' => 'required|integer',
         ];
     }
 
@@ -50,19 +51,19 @@ class RemoveRoleRequest extends FormRequest
     {
         return [
             'role_name' => [
-                'description' => 'Name of the role to remove',
-                'example' => 'survey_editor',
+                'description' => 'Name of the role to remove. Must exist in the roles table.',
+                'example' => 'editor',
                 'required' => true,
             ],
-            'user_id' => [
-                'description' => 'ID of the user to remove the role from',
-                'example' => 1,
-                'required' => false,
+            'model_type' => [
+                'description' => 'Type of model to remove the role from. Must be either "user" or "survey".',
+                'example' => 'user',
+                'required' => true,
             ],
-            'survey_id' => [
-                'description' => 'ID of the survey to remove the role from',
+            'model_id' => [
+                'description' => 'ID of the model (user or survey) to remove the role from.',
                 'example' => 1,
-                'required' => false,
+                'required' => true,
             ],
         ];
     }

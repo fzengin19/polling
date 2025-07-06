@@ -15,8 +15,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'required|string|min:8|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ];
     }
 
@@ -34,23 +34,27 @@ class RegisterRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function bodyParameters(): array
     {
         return [
             'name' => [
-                'description' => 'User\'s full name',
-                'example' => 'Fatih Yılmaz',
-                'required' => true,
+                'description' => 'The user\'s name.',
+                'example' => 'John Doe',
             ],
             'email' => [
-                'description' => 'User\'s email address',
-                'example' => 'fatih@example.com',
-                'required' => true,
+                'description' => 'The user\'s email address. Must be unique.',
+                'example' => 'john.doe@example.com',
             ],
             'password' => [
-                'description' => 'User\'s password (minimum 8 characters)',
+                'description' => 'The user\'s password. Minimum 8 characters.',
                 'example' => 'password123',
-                'required' => true,
+            ],
+            'password_confirmation' => [
+                'description' => 'The password confirmation. Must match the password.',
+                'example' => 'password123',
             ],
         ];
     }

@@ -51,17 +51,17 @@ class UpdateMediaMetadataRequest extends FormRequest
     {
         return [
             'alt_text' => [
-                'description' => 'Alternative text for the media',
+                'description' => 'Alternative text for the media. Maximum 255 characters.',
                 'example' => 'Updated alt text',
                 'required' => false,
             ],
             'caption' => [
-                'description' => 'Caption for the media',
+                'description' => 'Caption for the media. Maximum 500 characters.',
                 'example' => 'Updated caption',
                 'required' => false,
             ],
             'display_order' => [
-                'description' => 'Display order for media positioning',
+                'description' => 'Display order for media positioning. Must be at least 0.',
                 'example' => 1,
                 'required' => false,
             ],

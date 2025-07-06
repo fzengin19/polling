@@ -23,7 +23,7 @@ Aşağıda, bir kullanıcının `POST /api/auth/register` veya `POST /api/auth/l
 
 ### 2.2. Controller
 - `App\Http\Controllers\Api\AuthController`
-- Gelen istek, ilgili FormRequest (`RegisterRequest` veya `LoginRequest`) ile validasyondan geçer.
+- Gelen istek, ilgili FormRequest (`RegisterRequest` veya `LoginRequest`) ile validasyondan geçer(Burada form request sınıfları sadece ve sadece validasyon için kullanılır iş mantığına dahil olan kontroller servis katmanında ele alınmalıdır.).
 - Validasyon başarılıysa, veriler DTO'ya (`RegisterDto` veya `LoginDto`) dönüştürülür.
 - Controller, ilgili Service metodunu çağırır: `$this->authService->register($dto)`
 
@@ -82,6 +82,7 @@ Aşağıda, bir kullanıcının `POST /api/auth/register` veya `POST /api/auth/l
 - **Test Edilebilirlik**: Katmanlı yapı sayesinde birimler kolayca test edilebilir.
 - **Genişletilebilirlik**: Yeni bir iş kuralı/özellik eklerken mevcut katmanlara uygun şekilde ekleme yapılmalı.
 - **API Güvenliği**: Kimlik doğrulama ve yetkilendirme için middleware ve token tabanlı yapı kullanılmalı.
+- **Merkezi Hata Yönetimi**: `bootstrap/app.php` içinde tanımlanan merkezi `Exceptions` yönetimi sayesinde, `AuthorizationException`, `ModelNotFoundException`, `ValidationException` gibi tüm yaygın uygulama hataları, API genelinde standart ve tutarlı bir JSON formatında (`{success, message, errors}`) otomatik olarak istemciye döndürülür. Bu, servis katmanında gereksiz `try-catch` bloklarını ve manuel hata yanıtı oluşturmayı engeller ve ServiceResponse yanıt formatı ile tutarlılığı sağlar.
 
 ---
 
@@ -109,3 +110,21 @@ graph TD;
 - API yanıtlarını resource ile dönüştürmeyi unutmayın.
 - Provider'lara binding eklemeyi unutmayın.
 - Kodunuzu küçük, okunabilir ve tek sorumluluk prensibine uygun tutun. 
+
+---
+
+## 7. API Yanıt Standardı
+
+Tüm API yanıtları, frontend geliştirme sürecini kolaylaştırmak ve öngörülebilirliği artırmak için aşağıdaki standart JSend benzeri yapıyı takip edecektir:
+
+```json
+{
+    "success": true,
+    "data": { "id": 1, "title": "Anket Başlığı" },
+    "message": "İşlem başarılı."
+}
+```
+
+- **`success` (boolean):** İşlemin başarılı olup olmadığını belirtir (`true` veya `false`).
+- **`data` (object|array|null):** Başarılı durumda asıl veri burada yer alır. Bu bir nesne, bir dizi nesne veya `null` olabilir. Başarısız durumda bu alan `null` olur.
+- **`message` (string):** Hem başarı (`İşlem başarılı.`) hem de hata (`Kayıt bulunamadı.`) durumları için kullanıcıya gösterilebilecek, insan tarafından okunabilir bir metin içerir. 

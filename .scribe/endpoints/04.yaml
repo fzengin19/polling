@@ -1,0 +1,467 @@
+name: 'Choice Management'
+description: |-
+
+  APIs for managing choices within a question
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: 'api/choices/{id}'
+    metadata:
+      groupName: 'Choice Management'
+      groupDescription: |-
+
+        APIs for managing choices within a question
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Choice'
+      description: 'Get the details of a specific choice.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the choice.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      choice:
+        name: choice
+        description: 'The ID of the choice.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+      choice: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "question_id": 1,
+                  "label": "Yes",
+                  "value": "yes",
+                  "order_index": 0,
+                  "created_at": "2025-07-02T22:15:00.000000Z",
+                  "updated_at": "2025-07-02T22:15:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/choices/{id}'
+    metadata:
+      groupName: 'Choice Management'
+      groupDescription: |-
+
+        APIs for managing choices within a question
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Choice'
+      description: 'Update a specific choice.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the choice.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      choice:
+        name: choice
+        description: 'The ID of the choice.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+      choice: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      label:
+        name: label
+        description: 'The new text to be displayed for this choice. Maximum 255 characters. Must not be greater than 255 characters.'
+        required: false
+        example: 'Updated Option 1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      value:
+        name: value
+        description: 'The new value to be stored for this choice. Maximum 255 characters. Must not be greater than 255 characters.'
+        required: false
+        example: updated_option_1
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      order_index:
+        name: order_index
+        description: 'Order index for choice positioning. Must be at least 0.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      label: 'Updated Option 1'
+      value: updated_option_1
+      order_index: 1
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "question_id": 1,
+                  "label": "Yes",
+                  "value": "yes",
+                  "order_index": 0,
+                  "created_at": "2025-07-02T22:15:00.000000Z",
+                  "updated_at": "2025-07-02T22:15:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/choices/{id}'
+    metadata:
+      groupName: 'Choice Management'
+      groupDescription: |-
+
+        APIs for managing choices within a question
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete Choice'
+      description: 'Delete a specific choice.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the choice.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      choice:
+        name: choice
+        description: 'The ID of the choice.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+      choice: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"success": true, "message": "Choice deleted successfully", "data": null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/questions/{questionId}/choices'
+    metadata:
+      groupName: 'Choice Management'
+      groupDescription: |-
+
+        APIs for managing choices within a question
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List Choices by Question'
+      description: 'Get a list of all choices for a specific question.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      questionId:
+        name: questionId
+        description: 'The ID of the question.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      questionId: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "success": true,
+              "data": [
+                  {
+                      "id": 1,
+                      "question_id": 1,
+                      "label": "Yes",
+                      "value": "yes",
+                      "order_index": 0
+                  },
+                  {
+                      "id": 2,
+                      "question_id": 1,
+                      "label": "No",
+                      "value": "no",
+                      "order_index": 1
+                  }
+              ]
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/questions/{questionId}/choices'
+    metadata:
+      groupName: 'Choice Management'
+      groupDescription: |-
+
+        APIs for managing choices within a question
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create Choice'
+      description: 'Add a new choice to a specific question.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      questionId:
+        name: questionId
+        description: 'The ID of the question.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      questionId: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      label:
+        name: label
+        description: 'The text displayed to the user for this choice. Maximum 255 characters. Must not be greater than 255 characters.'
+        required: true
+        example: 'Option 1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      value:
+        name: value
+        description: 'The value stored in the database for this choice. Maximum 255 characters. Must not be greater than 255 characters.'
+        required: true
+        example: option_1
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      order_index:
+        name: order_index
+        description: 'Order index for choice positioning. Must be at least 0.'
+        required: false
+        example: 0
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      label: 'Option 1'
+      value: option_1
+      order_index: 0
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+              "success": true,
+              "data": {
+                  "id": 1,
+                  "question_id": 1,
+                  "label": "Yes",
+                  "value": "yes",
+                  "order_index": 0,
+                  "created_at": "2025-07-02T22:15:00.000000Z",
+                  "updated_at": "2025-07-02T22:15:00.000000Z"
+              }
+          } 
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/questions/{questionId}/choices/reorder'
+    metadata:
+      groupName: 'Choice Management'
+      groupDescription: |-
+
+        APIs for managing choices within a question
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Reorder Choices'
+      description: 'Reorder the choices within a specific question.'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      questionId:
+        name: questionId
+        description: 'The ID of the question.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      questionId: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      choices:
+        name: choices
+        description: ''
+        required: false
+        example:
+          - 16
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      choices:
+        - 16
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"success": true, "message": "Choices reordered successfully", "data": null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

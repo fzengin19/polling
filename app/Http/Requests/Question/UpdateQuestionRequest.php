@@ -13,15 +13,48 @@ class UpdateQuestionRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'type' => 'sometimes|required|string|max:50',
             'title' => 'sometimes|required|string|max:255',
-            'is_required' => 'boolean',
+            'is_required' => 'sometimes|boolean',
             'help_text' => 'nullable|string|max:1000',
             'placeholder' => 'nullable|string|max:255',
-            'config' => 'nullable|array',
-            'order_index' => 'integer|min:0',
+            'config' => 'sometimes|array',
+            'order_index' => 'sometimes|integer|min:0',
         ];
+        
+        // Add conditional validation for config based on question type
+        $rules = array_merge($rules, $this->getConditionalConfigRules());
+
+        return $rules;
+    }
+
+    protected function getConditionalConfigRules(): array
+    {
+        // Only apply these rules if the 'config' key exists in the request
+        if (!$this->has('config')) {
+            return [];
+        }
+
+        $type = $this->input('type', $this->route('question') ? $this->route('question')->type : null);
+
+        if ($type === 'number') {
+            return [
+                'config.min' => ['nullable', 'integer'],
+                'config.max' => ['nullable', 'integer', 'gte:config.min'],
+            ];
+        }
+
+        if ($type === 'linear_scale') {
+            return [
+                'config.min' => ['nullable', 'integer'],
+                'config.max' => ['nullable', 'integer', 'gte:config.min'],
+                'config.label_min' => ['nullable', 'string', 'max:50'],
+                'config.label_max' => ['nullable', 'string', 'max:50'],
+            ];
+        }
+
+        return [];
     }
 
     public function messages(): array
@@ -61,13 +94,16 @@ class UpdateQuestionRequest extends FormRequest
                 'required' => false,
             ],
             'placeholder' => [
-                'description' => 'Placeholder text for input fields',
+                'description' => 'Placeholder text for input fields. Most useful for text, email, url, phone types.',
                 'example' => 'Updated placeholder',
                 'required' => false,
             ],
             'config' => [
-                'description' => 'Question configuration (validation, conditional logic, media references)',
-                'example' => ['min_length' => 10, 'max_length' => 500],
+                'description' => 'Question-specific configuration. Depends on the question type.',
+                'example' => [
+                    'min' => 1,
+                    'max' => 5,
+                ],
                 'required' => false,
             ],
             'order_index' => [

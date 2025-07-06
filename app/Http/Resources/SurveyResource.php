@@ -14,6 +14,16 @@ class SurveyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $settings = $this->settings;
+        
+        // Logo URL'yi theme içine ekle
+        if (isset($settings['theme'])) {
+            $settings['theme']['logo_url'] = $this->getFirstMediaUrl('survey-logos');
+        }
+        
+        // Clean up legacy or internal data from settings before showing to user
+        unset($settings['theme']['logo_media_id']);
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -21,30 +31,13 @@ class SurveyResource extends JsonResource
             'status' => $this->status,
             'created_by' => $this->created_by,
             'template_id' => $this->template_id,
-            'template_version_id' => $this->template_version_id,
-            'settings' => $this->settings,
+            'settings' => $settings,
             'expires_at' => $this->expires_at,
             'max_responses' => $this->max_responses,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'creator' => $this->whenLoaded('creator', function () {
-                return new UserResource($this->creator);
-            }),
-            'template' => $this->whenLoaded('template', function () {
-                return new TemplateResource($this->template);
-            }),
-            'template_version' => $this->whenLoaded('templateVersion', function () {
-                return new TemplateVersionResource($this->templateVersion);
-            }),
-            'pages_count' => $this->whenCounted('pages', function () {
-                return $this->pages_count;
-            }),
-            'responses_count' => $this->whenCounted('responses', function () {
-                return $this->responses_count;
-            }),
-            'is_active' => $this->resource->status === 'active',
-            'is_expired' => $this->resource->expires_at && $this->resource->expires_at->isPast(),
-            'can_accept_responses' => $this->resource->status === 'active' && (!$this->resource->expires_at || !$this->resource->expires_at->isPast()),
+            'pages' => SurveyPageResource::collection($this->whenLoaded('pages')),
+            'template' => new TemplateResource($this->whenLoaded('template')),
         ];
     }
 } 

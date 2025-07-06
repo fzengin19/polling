@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\ChoiceResource;
 
 class QuestionResource extends JsonResource
 {
@@ -23,6 +24,7 @@ class QuestionResource extends JsonResource
             'order_index' => $this->order_index,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'choices' => ChoiceResource::collection($this->whenLoaded('choices')),
         ];
     }
 } 
